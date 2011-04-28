@@ -567,7 +567,7 @@ public class GameFields {
 		return multiplier;
 	}
 	
-	public static int damageCalc(Pokemon attacker, Pokemon defender, Move move, BattleStats battle) {
+	public int damageCalc(Pokemon attacker, Pokemon defender, Move move, BattleStats battle) {
 		int damageInt = 1;
 		
 		int levelVar = ((attacker.getLevel() * 2 / 5) + 2);
@@ -577,9 +577,9 @@ public class GameFields {
 		int next4 = (next3 * calcMod1(attacker, defender, move, battle)) + 2;
 		int next5 = next4 * calcCritHit(attacker, defender) * calcMod2(attacker, move);
 		int next6 = next5 * calcRandom() / 100;
-		int next7 = (int) (next6 * stabDetermine(attacker.getType1(), attacker.getType2(), move.getType()));
+		int next7 = (int) (next6 * stabDetermine(m_attackerType1, m_attackerType2, move.getType()));
 		
-		long effectiveness = typeMath(move.getType(), defender.getType1(), defender.getType2());
+		long effectiveness = typeMath(move.getType(), m_defenderType1, m_defenderType2);
 		
 		int next8 = (int) (next7 * effectiveness);
 		int next9 = (int) (next8 * calcMod3(attacker, defender, effectiveness));
@@ -949,9 +949,9 @@ public class GameFields {
 		return generator.nextInt(16) + 85;
 	}
 	
-	private static long stabDetermine(int type1, int type2, int move) {
+	private static long stabDetermine(Types attackerType1, Types attackerType2, Types moveType) {
 		long stab = 1;
-		if(move == type1 || move == type2) {
+		if(moveType == attackerType1 || moveType == attackerType2) {
 			stab = (long) 1.5;
 		}
 		return stab;
