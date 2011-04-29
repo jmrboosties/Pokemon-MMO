@@ -10,24 +10,70 @@ public class PokemonFactory {
 	
 	public static Pokemon getPokemon(PokemonSpecies species /*, int id*/) { //the commented param would be the id of the pokemon on the table*/
 		//Would normally query online db for various stats, I included them in a class		
-		Pokemon charmander = new Pokemon();
 		
-		charmander.setNickName(MyCharmander.NICKNAME);
-		charmander.setLevel(MyCharmander.LEVEL);
-		
-		charmander.setHPIV(MyCharmander.HP_IV);
-		charmander.setAttackIV(MyCharmander.ATTACK_IV);
-		charmander.setDefenseIV(MyCharmander.DEFENSE_IV);
-		charmander.setSpAttackIV(MyCharmander.SPECIAL_ATTACK_IV);
-		charmander.setSpDefenseIV(MyCharmander.SPECIAL_DEFENSE_IV);
-		charmander.setSpeedIV(MyCharmander.SPEED_IV);
-		
-		charmander.setHPStat(setHPStat(charmander, species));
-		for (Stats stat : Stats.values()) {
-			charmander.setStats(setStat(charmander, species, stat), stat);
+		if(species.getDexNumber() == 4) {
+			Pokemon charmander = new Pokemon(species);
+			
+			charmander.setNickName(MyCharmander.NICKNAME);
+			charmander.setLevel(MyCharmander.LEVEL);
+			charmander.setGender(MyCharmander.GENDER);
+			charmander.setAbility(MyCharmander.ABILITY);
+			
+			charmander.setHPIV(MyCharmander.HP_IV);
+			charmander.setAttackIV(MyCharmander.ATTACK_IV);
+			charmander.setDefenseIV(MyCharmander.DEFENSE_IV);
+			charmander.setSpAttackIV(MyCharmander.SPECIAL_ATTACK_IV);
+			charmander.setSpDefenseIV(MyCharmander.SPECIAL_DEFENSE_IV);
+			charmander.setSpeedIV(MyCharmander.SPEED_IV);
+			
+			charmander.setHPEVs(MyCharmander.HP_EVS);
+			charmander.setAttackEVs(MyCharmander.ATTACK_EVS);
+			charmander.setDefenseEVs(MyCharmander.DEFENSE_EVS);
+			charmander.setSpAttackEVs(MyCharmander.SPECIAL_ATTACK_EVS);
+			charmander.setSpDefenseEVs(MyCharmander.SPECIAL_DEFENSE_EVS);
+			charmander.setSpeedEVs(MyCharmander.SPEED_EVS);
+			
+			charmander.setHPStat(setHPStat(charmander, species));
+			for (Stats stat : Stats.values()) {
+				charmander.setStats(setStat(charmander, species, stat), stat);
+			}
+			charmander.setCurrentHP(charmander.getHPStat()); //TODO GET THIS FROM DB
+			
+			return charmander;
+		}
+		else if(species.getDexNumber() == 7) {
+			Pokemon squirtle = new Pokemon(species);
+			
+			squirtle.setNickName(MySquirtle.NICKNAME);
+			squirtle.setLevel(MySquirtle.LEVEL);
+			squirtle.setGender(MySquirtle.GENDER);
+			squirtle.setAbility(MySquirtle.ABILITY);
+			
+			squirtle.setHPIV(MySquirtle.HP_IV);
+			squirtle.setAttackIV(MySquirtle.ATTACK_IV);
+			squirtle.setDefenseIV(MySquirtle.DEFENSE_IV);
+			squirtle.setSpAttackIV(MySquirtle.SPECIAL_ATTACK_IV);
+			squirtle.setSpDefenseIV(MySquirtle.SPECIAL_DEFENSE_IV);
+			squirtle.setSpeedIV(MySquirtle.SPEED_IV);
+			
+			squirtle.setHPEVs(MySquirtle.HP_EVS);
+			squirtle.setAttackEVs(MySquirtle.ATTACK_EVS);
+			squirtle.setDefenseEVs(MySquirtle.DEFENSE_EVS);
+			squirtle.setSpAttackEVs(MySquirtle.SPECIAL_ATTACK_EVS);
+			squirtle.setSpDefenseEVs(MySquirtle.SPECIAL_DEFENSE_EVS);
+			squirtle.setSpeedEVs(MySquirtle.SPEED_EVS);
+			
+			squirtle.setHPStat(setHPStat(squirtle, species));
+			for (Stats stat : Stats.values()) {
+				squirtle.setStats(setStat(squirtle, species, stat), stat);
+			}
+			squirtle.setCurrentHP(squirtle.getHPStat()); //TODO ALSO GET THIS FROM DB
+			
+			return squirtle;
 		}
 		
-		return charmander;
+		return null;
+		
 	}
 	
 	private static int setHPStat(Pokemon pokemon, PokemonSpecies species) {
@@ -81,7 +127,7 @@ public class PokemonFactory {
 		 * Stat = ((((IV + (2 + base) + (EV/4) * Level) / 100) + 5) * Nature
 		 */
 		
-		totalStat = ((((iv + (2 + base) + (ev/4) + 100) * pokemon.getLevel()) / 100) + 5);
+		totalStat = ((((iv + (2 + base) + (ev/4) + 100) * pokemon.getLevel()) / 100) + 5) /* * nature */;
 		
 		return totalStat;
 	}

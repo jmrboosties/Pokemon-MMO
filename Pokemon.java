@@ -1,11 +1,17 @@
 package com.pokemon.mmo;
 
+import com.pokemon.mmo.Enums.Abilities;
+import com.pokemon.mmo.Enums.Genders;
 import com.pokemon.mmo.Enums.Stats;
+import com.pokemon.mmo.Enums.Status;
+import com.pokemon.mmo.Enums.Types;
 
 public class Pokemon {
 
 	private String mNickName;
 	private PokemonSpecies mSpecies;
+	private Types mType1;
+	private Types mType2;
 	
 	private int mLevel;
 	
@@ -16,13 +22,35 @@ public class Pokemon {
 	private int mSpDefenseIV;
 	private int mSpeedIV;
 
+	private int mHPEVs;
+	private int mAttackEVs;
+	private int mDefenseEVs;
+	private int mSpAttackEVs;
+	private int mSpDefenseEVs;
+	private int mSpeedEVs;
+	
 	private int mMaxHP;
-	private int mCurrentHP;
 	private int mAttack;
 	private int mDefense;
 	private int mSpAttack;
 	private int mSpDefense;
 	private int mSpeed;
+	private Genders mGender;
+	
+	private int mCurrentHP;
+	private Status mStatus;
+	private int mTurnsInBattle;
+	private Abilities mAbility;
+	
+	public Pokemon(PokemonSpecies species) {
+		this.mNickName = species.getSpeciesName();
+		this.mSpecies = species;
+		this.mGender = Genders.GENDERLESS; //CHANGE THIS TO JUST DEFAULT TO RANDOM BETWEEN MALE AND FEMALE FOLLOWING GENDER RATIO
+		this.mType1 = species.getType1(); 
+		this.mType2 = species.getType2();
+		
+		this.mTurnsInBattle = 0;
+	}
 	
 	public void setLevel(int level) {
 		this.mLevel = level;
@@ -32,9 +60,12 @@ public class Pokemon {
 		return mLevel;
 	}
 
-	public int getAbility() {
-		// TODO Auto-generated method stub
-		return 0;
+	public void setAbility(Abilities ability) {
+		this.mAbility = ability;
+	}
+	
+	public Abilities getAbility() {
+		return mAbility;
 	}
 
 	public int getHeldItem() {
@@ -42,23 +73,28 @@ public class Pokemon {
 		return 0;
 	}
 
-	public int getSpecies() {
-		// TODO Auto-generated method stub
-		return 0;
+	public PokemonSpecies getSpecies() {
+		return mSpecies;
 	}
 	
 	public void setSpecies(PokemonSpecies mSpecies) {
 		this.mSpecies = mSpecies;
 	}
 
-	public int getType1() {
-		// TODO Auto-generated method stub
-		return 0;
+	public Types getType1() {
+		return mType1;
+	}
+	
+	public void setType1(Types type) {
+		this.mType1 = type;
 	}
 
-	public int getType2() {
-		// TODO Auto-generated method stub
-		return 0;
+	public Types getType2() {
+		return mType2;
+	}
+	
+	public void setType2(Types type) {
+		this.mType2 = type;
 	}
 
 	public int getStatChanges(int column) {
@@ -115,33 +151,27 @@ public class Pokemon {
 	}
 
 	public int getHPEVs() {
-		// TODO Auto-generated method stub
-		return 0;
+		return mHPEVs;
 	}
 
 	public int getAttackEVs() {
-		// TODO Auto-generated method stub
-		return 0;
+		return mAttackEVs;
 	}
 
 	public int getDefenseEVs() {
-		// TODO Auto-generated method stub
-		return 0;
+		return mDefenseEVs;
 	}
 
 	public int getSpAttackEVs() {
-		// TODO Auto-generated method stub
-		return 0;
+		return mSpAttackEVs;
 	}
 
 	public int getSpDefenseEVs() {
-		// TODO Auto-generated method stub
-		return 0;
+		return mSpDefenseEVs;
 	}
 
 	public int getSpeedEVs() {
-		// TODO Auto-generated method stub
-		return 0;
+		return mSpeedEVs;
 	}
 
 	public void setHPStat(int setHPStat) {
@@ -197,6 +227,96 @@ public class Pokemon {
 
 	public String getNickName() {
 		return mNickName;
+	}
+
+	public void setHPEVs(int HPEVs) {
+		mHPEVs = HPEVs;
+	}
+
+	public void setAttackEVs(int AttackEVs) {
+		mAttackEVs = AttackEVs;
+	}
+
+	public void setDefenseEVs(int defenseEVs) {
+		mDefenseEVs = defenseEVs;
+	}
+
+	public void setSpAttackEVs(int spAttackEVs) {
+		mSpAttackEVs = spAttackEVs;
+	}
+
+	public void setSpDefenseEVs(int spDefenseEVs) {
+		mSpDefenseEVs = spDefenseEVs;
+	}
+
+	public void setSpeedEVs(int speedEVs) {
+		mSpeedEVs = speedEVs;
+	}
+	
+	public void setCurrentHP(int hp) {
+		this.mCurrentHP = hp;
+	}
+	
+	public int getCurrentHP() {
+		return mCurrentHP;
+	}
+
+	public boolean isHelpedByHand() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public Genders getGender() {
+		return mGender;
+	}
+	
+	public void setGender(Genders gender) {
+		this.mGender = gender;
+	}
+
+	public double getCurrentHealthRatio() {
+		double ratio = mCurrentHP / mMaxHP;
+		return ratio;
+	}
+
+	public Status getStatus() {
+		return mStatus;
+	}
+	
+	public void setStatus(Status status) {
+		this.mStatus = status;
+	}
+	
+	public boolean isAffectedByStatusAilment() {
+		if(mStatus != Status.NONE) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	public int getTurnsInBattle() {
+		return mTurnsInBattle;
+	}
+	
+	public void nextTurnInBattle() {
+		this.mTurnsInBattle = mTurnsInBattle + 1;
+	}
+
+	public boolean hasLightScreen() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean hasReflect() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean hasFlashFire() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }

@@ -100,6 +100,14 @@ public class PokemonSpecies {
 		return type2;
 	}
 
+	public void setDexNumber(int dexNumber) {
+		this.dexNumber = dexNumber;
+	}
+
+	public int getDexNumber() {
+		return dexNumber;
+	}
+
 	public String pokeName;
     private int baseHP;
     private int baseAtk;
@@ -112,6 +120,7 @@ public class PokemonSpecies {
     // poison, ground, flying, psychic, bug, rock, ghost, dragon, dark, steel=17
     private Types type1;
     private Types type2;
+    private int dexNumber;
 }
 
 /*

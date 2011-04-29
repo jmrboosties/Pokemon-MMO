@@ -1,5 +1,6 @@
 package com.pokemon.mmo;
 
+import com.pokemon.mmo.Enums.MoveKinds;
 import com.pokemon.mmo.Enums.Moves;
 import com.pokemon.mmo.Enums.Types;
 
@@ -7,6 +8,7 @@ import com.pokemon.mmo.Enums.Types;
 public class Move {
 	
 	private String mName;
+	private Moves mMove;
 	private Types mType;
 	private int mPower;
 	private int mAccuracy;
@@ -14,6 +16,7 @@ public class Move {
 	private int mSecondaryEffect;
 	private int mSecondaryChance;
 	private int mMoveKind;
+	private MoveKinds mKind;
 	
 	public static final int STATUS = 0;
 	public static final int PHYSICAL = 1;
@@ -33,8 +36,13 @@ public class Move {
 	public static final int ME_FIRST = 100;
 	public static final int CHARGE = 54;
 	
+	public static enum MoveList {
+		CHARGE, ME_FIRST
+	}
+	
 	public Move(Moves move) {
 		mName = "";
+		mMove = move;
 		mType = Types.NONE;
 		mPower = 0;
 		mAccuracy = 0;
@@ -44,6 +52,7 @@ public class Move {
 		case EMBER :
 			mName = "Ember";
 			mType = Types.FIRE;
+			mKind = MoveKinds.SPECIAL;
 			mPower = 40;
 			mAccuracy = 100;
 			mMoveKind = SPECIAL;
@@ -64,13 +73,25 @@ public class Move {
 	}
 
 	public long getBasePower() {
-		//TODO
-		return 0;
+		return mPower;
 	}
 
-	public int getKind() {
+	public MoveKinds getKind() {
+		return mKind;
+	}
+
+	public boolean isRecoil() {
+		//TODO ALL OF THIS
+		return false;
+	}
+
+	public boolean isPunching() {
 		// TODO Auto-generated method stub
-		return 0;
+		return false;
+	}
+	
+	public Moves getMove() {
+		return mMove;
 	}
 
 }

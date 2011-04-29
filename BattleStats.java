@@ -1,17 +1,43 @@
 package com.pokemon.mmo;
 
+import com.pokemon.mmo.Enums.Weather;
+
 public class BattleStats {
 
-	/**WEATHER*/
-	public static final int NO_WEATHER = 0;
-	public static final int SUNNY_DAY = 2;
-	public static final int RAIN_DANCE = 3;
-	public static final int HAIL = 6;
-	public static final int SANDSTORM = 9;
+	private Weather mWeather;
+	private Move mLastMove;
+	private Sport mSport;
 	
-	public int getWeather() {
-		// TODO Auto-generated method stub
-		return 0;
+	public static enum Sport {
+		MUD_SPORT, WATER_SPORT
+	}
+	
+	public BattleStats() {
+		mWeather = Weather.NORMAL;
+	}
+	
+	public Weather getWeather() {
+		return mWeather;
+	}
+	
+	public void setWeather(Weather weather) {
+		this.mWeather = weather;
+	}
+
+	public void setLastMove(Move lastMove) {
+		this.mLastMove = lastMove;
+	}
+
+	public Move getLastMove() {
+		return mLastMove;
+	}
+
+	public void setSport(Sport sport) {
+		this.mSport = sport;
+	}
+
+	public Sport getSport() {
+		return mSport;
 	}
 	
 }

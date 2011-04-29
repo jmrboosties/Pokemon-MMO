@@ -23,6 +23,7 @@ public class Squirtle extends PokemonSpecies {
         setType1(Types.WATER);
         setType2(Types.NONE);
         pokeName = "Squirtle";
+        setDexNumber(7);
         String temp = GetSpeciesRow(7);
     }
 }
