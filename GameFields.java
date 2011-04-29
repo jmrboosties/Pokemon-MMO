@@ -12,43 +12,6 @@ import com.pokemon.mmo.Enums.Weather;
 
 public class GameFields {
 	
-	/**POKEMON TYPES*/
-	public static final int NO_TYPE = 0;
-	public static final int NORMAL = 1;
-	public static final int FIRE = 2;
-	public static final int WATER = 3;
-	public static final int ELECTRIC = 4;
-	public static final int GRASS = 5;
-	public static final int ICE = 6;
-	public static final int FIGHTING = 7;
-	public static final int POISON = 8;
-	public static final int GROUND = 9;
-	public static final int FLYING = 10;
-	public static final int PSYCHIC = 11;
-	public static final int BUG = 12;
-	public static final int ROCK = 13;
-	public static final int GHOST = 14;
-	public static final int DRAGON = 15;
-	public static final int DARK = 16;
-	public static final int STEEL = 17;
-	
-	/**MAJOR STATUS EFFECTS*/
-	public static final int STATUS_NORMAL = 0;
-	public static final int STATUS_POISONED = 1;
-	public static final int STATUS_TOXIC_POISONED = 2;
-	public static final int STATUS_SLEEPING = 3;
-	public static final int STATUS_BURNED = 4;
-	public static final int STATUS_PARALYZED = 5;
-	public static final int STATUS_FROZEN = 6;
-	
-	/**NON MAJOR STATUS EFFECTS*/
-	public static final int NOTHING_WRONG = 0;
-	public static final int CONFUSED = 1;
-	public static final int ATTRACTED = 2;
-	public static final int CANT_ESCAPE = 3;
-	public static final int PERISH_SONG = 4;
-	public static final int YAWNED = 5;
-	
 	private Types m_attackerType1;
 	private Types m_attackerType2;
 	private Types m_defenderType1;
@@ -74,26 +37,26 @@ public class GameFields {
 		this.m_defenderType2 = type;
 	}
 		
-	public static long typeMath(Types moveType, Types defenderType1, Types defenderType2) {
-		long multiplier = 1;
+	public static double typeMath(Types moveType, Types defenderType1, Types defenderType2) {
+		double multiplier = 1;
 		switch(moveType) {
 		case NORMAL :
 			switch(defenderType1) {
 			case ROCK :
 			case STEEL : 
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			case GHOST :
-				multiplier = (long) (multiplier*(0));
+				multiplier = (double) (multiplier*(0));
 				break;
 			}
 			switch(defenderType2) {
 			case ROCK :
 			case STEEL :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			case GHOST :
-				multiplier = (long) (multiplier*(0));
+				multiplier = (double) (multiplier*(0));
 				break;
 			}
 			break;
@@ -104,13 +67,13 @@ public class GameFields {
 			case ICE :
 			case BUG :
 			case STEEL :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			case ROCK :
 			case DRAGON :
 			case WATER :
 			case FIRE :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			}
 			switch(defenderType2) {
@@ -118,13 +81,13 @@ public class GameFields {
 			case ICE :
 			case BUG :
 			case STEEL :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			case ROCK :
 			case DRAGON :
 			case WATER :
 			case FIRE :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			}
 			break;
@@ -134,24 +97,24 @@ public class GameFields {
 			case FIRE :
 			case GROUND :
 			case ROCK :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			case WATER :
 			case GRASS :
 			case DRAGON :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			}
 			switch(defenderType2) {
 			case FIRE :
 			case GROUND :
 			case ROCK :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			case WATER :
 			case GRASS :
 			case DRAGON :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			}
 			break;
@@ -160,29 +123,29 @@ public class GameFields {
 			switch(defenderType1) {
 			case WATER :
 			case FLYING :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			case ELECTRIC :
 			case GRASS :
 			case DRAGON :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			case GROUND :
-				multiplier = (long) (multiplier*(0));
+				multiplier = (double) (multiplier*(0));
 				break;
 			}
 			switch(defenderType2) {
 			case WATER :
 			case FLYING :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			case ELECTRIC :
 			case GRASS :
 			case DRAGON :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			case GROUND :
-				multiplier = (long) (multiplier*(0));
+				multiplier = (double) (multiplier*(0));
 				break;
 			}
 			break;
@@ -196,12 +159,12 @@ public class GameFields {
 			case BUG :
 			case DRAGON :
 			case STEEL :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			case WATER :
 			case GROUND :
 			case ROCK :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			}
 			switch(defenderType2) {
@@ -212,12 +175,12 @@ public class GameFields {
 			case BUG :
 			case DRAGON :
 			case STEEL :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			case WATER :
 			case GROUND :
 			case ROCK :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			}
 			break;
@@ -228,13 +191,13 @@ public class GameFields {
 			case WATER :
 			case ICE :
 			case STEEL :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			case GRASS :
 			case GROUND :
 			case FLYING :
 			case DRAGON :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			}
 			switch(defenderType2) {
@@ -242,13 +205,13 @@ public class GameFields {
 			case WATER :
 			case ICE :
 			case STEEL :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			case GRASS :
 			case GROUND :
 			case FLYING :
 			case DRAGON :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			}
 			break;
@@ -260,16 +223,16 @@ public class GameFields {
 			case ROCK :
 			case DARK :
 			case STEEL :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			case POISON :
 			case FLYING :
 			case PSYCHIC :
 			case BUG :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			case GHOST :
-				multiplier = (long) (multiplier*(0));
+				multiplier = (double) (multiplier*(0));
 				break;
 			}
 			switch(defenderType2) {
@@ -278,16 +241,16 @@ public class GameFields {
 			case ROCK :
 			case DARK :
 			case STEEL :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			case POISON :
 			case FLYING :
 			case PSYCHIC :
 			case BUG :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			case GHOST :
-				multiplier = (long) (multiplier*(0));
+				multiplier = (double) (multiplier*(0));
 				break;
 			}
 			break;
@@ -295,30 +258,30 @@ public class GameFields {
 		case POISON :
 			switch(defenderType1) {
 			case GRASS :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			case POISON :
 			case GROUND :
 			case ROCK :
 			case GHOST :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			case STEEL :
-				multiplier = (long) (multiplier*(0));
+				multiplier = (double) (multiplier*(0));
 				break;
 			}
 			switch(defenderType2) {
 			case GRASS :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			case POISON :
 			case GROUND :
 			case ROCK :
 			case GHOST :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			case STEEL :
-				multiplier = (long) (multiplier*(0));
+				multiplier = (double) (multiplier*(0));
 				break;
 			}
 			break;
@@ -330,14 +293,14 @@ public class GameFields {
 			case POISON :
 			case ROCK :
 			case STEEL :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			case GRASS :
 			case BUG :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			case FLYING :
-				multiplier = (long) (multiplier*(0));
+				multiplier = (double) (multiplier*(0));
 				break;
 			}
 			switch(defenderType2) {
@@ -346,14 +309,14 @@ public class GameFields {
 			case POISON :
 			case ROCK :
 			case STEEL :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			case GRASS :
 			case BUG :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			case FLYING :
-				multiplier = (long) (multiplier*(0));
+				multiplier = (double) (multiplier*(0));
 				break;
 			}
 			break;
@@ -363,24 +326,24 @@ public class GameFields {
 			case ELECTRIC :
 			case ROCK :
 			case STEEL :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			case GRASS :
 			case FIGHTING :
 			case BUG :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			}
 			switch(defenderType2) {
 			case ELECTRIC :
 			case ROCK :
 			case STEEL :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			case GRASS :
 			case FIGHTING :
 			case BUG :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			}
 			break;
@@ -389,27 +352,27 @@ public class GameFields {
 			switch(defenderType1) {
 			case FIGHTING :
 			case POISON :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			case PSYCHIC :
 			case STEEL :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			case DARK :
-				multiplier = (long) (multiplier*(0));
+				multiplier = (double) (multiplier*(0));
 				break;
 			}
 			switch(defenderType2) {
 			case FIGHTING :
 			case POISON :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			case PSYCHIC :
 			case STEEL :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			case DARK :
-				multiplier = (long) (multiplier*(0));
+				multiplier = (double) (multiplier*(0));
 				break;
 			}
 			break;
@@ -421,12 +384,12 @@ public class GameFields {
 			case FLYING :
 			case POISON :
 			case GHOST :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			case GRASS :
 			case PSYCHIC :
 			case DARK :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			}
 			switch(defenderType2) {
@@ -435,12 +398,12 @@ public class GameFields {
 			case FLYING :
 			case POISON :
 			case GHOST :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			case GRASS :
 			case PSYCHIC :
 			case DARK :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			}
 			break;
@@ -451,12 +414,12 @@ public class GameFields {
 			case ICE :
 			case FLYING :
 			case BUG :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			case FIGHTING :
 			case GROUND :
 			case STEEL :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			}
 			switch(defenderType2) {
@@ -464,12 +427,12 @@ public class GameFields {
 			case ICE :
 			case FLYING :
 			case BUG :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			case FIGHTING :
 			case GROUND :
 			case STEEL :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			}
 			break;
@@ -477,28 +440,28 @@ public class GameFields {
 		case GHOST :
 			switch(defenderType1) {
 			case NORMAL :
-				multiplier = (long) (multiplier*(0));
+				multiplier = (double) (multiplier*(0));
 				break;
 			case PSYCHIC :
 			case GHOST :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			case DARK :
 			case STEEL :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			}
 			switch(defenderType2) {
 			case NORMAL :
-				multiplier = (long) (multiplier*(0));
+				multiplier = (double) (multiplier*(0));
 				break;
 			case PSYCHIC :
 			case GHOST :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			case DARK :
 			case STEEL :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			}
 			break;
@@ -506,18 +469,18 @@ public class GameFields {
 		case DRAGON :
 			switch(defenderType1) {
 			case DRAGON :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			case STEEL :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			}
 			switch(defenderType2) {
 			case DRAGON :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			case STEEL :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			}
 			break;
@@ -527,22 +490,22 @@ public class GameFields {
 			case FIGHTING :
 			case DARK :
 			case STEEL :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			case PSYCHIC :
 			case GHOST :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			}
 			switch(defenderType2) {
 			case FIGHTING :
 			case DARK :
 			case STEEL :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			case PSYCHIC :
 			case GHOST :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			}
 			break;
@@ -553,11 +516,11 @@ public class GameFields {
 			case WATER :
 			case ELECTRIC :
 			case STEEL :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			case ICE :
 			case ROCK :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			}
 			switch(defenderType2) {
@@ -565,11 +528,11 @@ public class GameFields {
 			case WATER :
 			case ELECTRIC :
 			case STEEL :
-				multiplier = (long) (multiplier*(.5));
+				multiplier = (double) (multiplier*(.5));
 				break;
 			case ICE :
 			case ROCK :
-				multiplier = (long) (multiplier*(2));
+				multiplier = (double) (multiplier*(2));
 				break;
 			}
 			break;
@@ -577,7 +540,7 @@ public class GameFields {
 		return multiplier;
 	}
 	
-	public long damageCalc(Pokemon attacker, Pokemon defender, Move move, BattleStats battle) {
+	public int damageCalc(Pokemon attacker, Pokemon defender, Move move, BattleStats battle) {
 		int damageInt = 1;
 		
 		/**
@@ -589,10 +552,10 @@ public class GameFields {
 		int next2 = next1 * calcAttackOrSpAttack(attacker, defender, move, battle) / 50;
 		int next3 = next2 / calcDefenseOrSpecialDefense(attacker, defender, move, battle);
 		int next4 = (next3 * calcMod1(attacker, defender, move, battle)) + 2;
-		int next5 = next4 * /*calcCritHit(attacker, defender)*/ calcMod2(attacker, move);
+		int next5 = (int) (next4 * /*calcCritHit(attacker, defender)*/ calcMod2(attacker, move));
 		int next6 = (int) (next5 * .85);
 		int next7 = (int) (next6 * stabDetermine(m_attackerType1, m_attackerType2, move.getType()));
-		long effectiveness = typeMath(move.getType(), m_defenderType1, m_defenderType2);
+		double effectiveness = typeMath(move.getType(), m_defenderType1, m_defenderType2);
 		
 		int next8 = (int) (next7 * effectiveness);
 		
@@ -604,14 +567,14 @@ public class GameFields {
 	}
 
 	private static int calcBasePower(Pokemon attacker, Pokemon defender, Move move, BattleStats stats) {
-		long hh = 1;
-		long bp = move.getBasePower();
-		long it = 1;
-		long chg = 1;
-		long ms = 1;
-		long ws = 1;
-		long ua = 1;
-		long fa = 1;
+		double hh = 1;
+		double bp = move.getBasePower();
+		double it = 1;
+		double chg = 1;
+		double ms = 1;
+		double ws = 1;
+		double ua = 1;
+		double fa = 1;
 		//BasePower = HH × BP × IT × CHG × MS × WS × UA × FA
 		
 		/**HH variable*/
@@ -625,13 +588,13 @@ public class GameFields {
 		switch(attacker.getHeldItem()) {
 		case Items.MUSCLE_BAND :
 			if(move.getKind() == MoveKinds.PHYSICAL) {
-				it = (long) 1.1;
+				it = 1.1;
 			}
 			break;
 		
 		case Items.WISE_GLASSES :
 			if(move.getKind() == MoveKinds.SPECIAL) {
-				it = (long) 1.1;
+				it = 1.1;
 			}
 			break;
 		
@@ -952,7 +915,7 @@ public class GameFields {
 		return generator.nextInt(16) + 85;
 	}
 	
-	private static long stabDetermine(Types attackerType1, Types attackerType2, Types moveType) {
+	private static double stabDetermine(Types attackerType1, Types attackerType2, Types moveType) {
 		long stab = 1;
 		if(moveType == attackerType1 || moveType == attackerType2) {
 			stab = (long) 1.5;
@@ -1002,42 +965,42 @@ public class GameFields {
 		return (int) calcMod;
 	}
 	
-	private static int calcMod2(Pokemon attacker, Move move) {
-		long mod2 = 1;
+	private static double calcMod2(Pokemon attacker, Move move) {
+		double mod2 = 1;
 		if(attacker.getHeldItem() == Items.LIFE_ORB) {
-			mod2 = (long) ((long) mod2 * 1.5);
+			mod2 = mod2 * 1.5;
 		}
 		if(attacker.getHeldItem() == Items.METRONOME) {
 			//TODO fuck if i know
 		}
 		if(move.getMove() == Moves.ME_FIRST) {
-			mod2 = (long) ((long) mod2 * 1.5);
+			mod2 = mod2 * 1.5;
 		}
 		return (int) mod2;
 	}
 	
-	private static long calcMod3(Pokemon attacker, Pokemon defender, long effectiveness) {
-		long mod3 = 1;
-		long srf = 1;
-		long eb = 1;
-		long tl = 1;
-		long trb = 1;
+	private static int calcMod3(Pokemon attacker, Pokemon defender, double effectiveness) {
+		double mod3 = 1;
+		double srf = 1;
+		double eb = 1;
+		double tl = 1;
+		double trb = 1;
 		//Mod3 = SRF × EB × TL × TRB
 		if(defender.getAbility() == Abilities.SOLID_ROCK || defender.getAbility() == Abilities.FILTER) {
-			srf = (long) 0.75;
+			srf = 0.75;
 		}
 		if(attacker.getHeldItem() == Items.EXPERT_BELT && (effectiveness >= 2)) {
-			eb = (long) 1.2;
+			eb = 1.2;
 		}
 		if(effectiveness < 1) { 
 			tl = 2;
 		}
 		if(defender.getHeldItem() <= 200 && defender.getHeldItem() >= 217) {
 			//TODO method to determine super effectiveness from type & berry held, if matches...
-			trb = (long) 0.5;
+			trb = 0.5;
 		}
 		mod3 = srf * eb * tl * trb;
-		return mod3;
+		return (int) mod3;
 	}
 
 	private static int calcCritHit(Pokemon attacker, Pokemon defender) {

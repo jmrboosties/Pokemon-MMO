@@ -14,7 +14,7 @@ public class MySquirtle extends Pokemon {
 	public static final String NICKNAME = "Mr. Turtle";
 	public static final int DEX_NUMBER = 7;
 	
-	public static final int LEVEL = 30;
+	public static final int LEVEL = 100;
 	public static final Genders GENDER = Genders.MALE;
 	public static final Abilities ABILITY = Abilities.TORRENT;
 	

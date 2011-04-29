@@ -41,9 +41,7 @@ public class Main {
 		
 		System.out.println("Squirtle's special defense is " + wildPokemon.getSpDefense());
 		
-		long damage = battleMath.damageCalc(myPokemon, wildPokemon, MoveFactory.getMove(Moves.EMBER), battle);
-		
-		
+		int damage = battleMath.damageCalc(myPokemon, wildPokemon, MoveFactory.getMove(Moves.EMBER), battle);
 		
 		System.out.println("Squirtle takes " + String.valueOf(damage) + "!");
 		
