@@ -17,8 +17,11 @@ public class GameFields {
 	private Types m_defenderType1;
 	private Types m_defenderType2;
 	
-	public GameFields() {
-		//TODO things like location and trainers in the battle?
+	public GameFields(Pokemon attacker, Pokemon defender) {
+		this.m_attackerType1 = attacker.getType1();
+		this.m_attackerType2 = attacker.getType2();
+		this.m_defenderType1 = defender.getType1();
+		this.m_defenderType2 = defender.getType2();
 	}
 	
 	public void setAttackerType1(Types type) {
@@ -545,24 +548,26 @@ public class GameFields {
 		
 		/**
 		 * I am doing it step by step because the game cuts off any decimals at each step.
+		 * 
+		 * Damage Formula = (((((((Level × 2 ÷ 5) + 2) × BasePower × [Sp]Atk ÷ 50) ÷ [Sp]Def) × Mod1) + 2) × 
+                 CH × Mod2 × R ÷ 100) × STAB × Type1 × Type2 × Mod3)
 		 */
 		
 		int levelVar = ((attacker.getLevel() * 2 / 5) + 2);
 		int next1 = levelVar * calcBasePower(attacker, defender, move, battle);
 		int next2 = next1 * calcAttackOrSpAttack(attacker, defender, move, battle) / 50;
-		int next3 = next2 / calcDefenseOrSpecialDefense(attacker, defender, move, battle);
+		int next3 = next2 / calcDefenseOrSpecialDefense(defender, attacker, move, battle);
 		int next4 = (next3 * calcMod1(attacker, defender, move, battle)) + 2;
 		int next5 = (int) (next4 * /*calcCritHit(attacker, defender)*/ calcMod2(attacker, move));
-		int next6 = (int) (next5 * .85);
+		int next6 = (int) (next5 * .9);
 		int next7 = (int) (next6 * stabDetermine(m_attackerType1, m_attackerType2, move.getType()));
+		
 		double effectiveness = typeMath(move.getType(), m_defenderType1, m_defenderType2);
 		
-		int next8 = (int) (next7 * effectiveness);
+		double next8 = (next7 * effectiveness);
 		
+		damageInt = (int) (next8 * calcMod3(attacker, defender, effectiveness));
 		
-		int next9 = (int) (next8 * calcMod3(attacker, defender, effectiveness));
-		
-		damageInt = next9;
 		return damageInt;
 	}
 
@@ -831,8 +836,8 @@ public class GameFields {
 		//[Sp]Def = Stat × SM × Mod
 		int defense = 1;
 		int stat = 1;
-		long sm = 1;
-		long mod = 1;
+		double sm = 1;
+		double mod = 1;
 		
 		switch(move.getKind()) {
 		case PHYSICAL :
@@ -851,18 +856,18 @@ public class GameFields {
 			//mod = ability x item x sandstorm for rock
 			
 			if(defender.getAbility() == Abilities.FLOWER_GIFT && stats.getWeather() == Weather.SUNNY_DAY /*TODO FLOWER GIFT*/) {
-				mod = (long) 1.5;
+				mod = 1.5;
 			}
 			
 			switch(defender.getHeldItem()) {
 			case Items.METAL_POWDER :
 				if(defender.getSpecies().getDexNumber() == 126 /*TODO DITTO*/) {
-					mod = (long) (mod * 1.5);
+					mod = (mod * 1.5);
 				}
 				break;
 			case Items.MARVEL_SCALE :
 				if(defender.isAffectedByStatusAilment()) {
-					mod = (long) (mod * 1.5);
+					mod = (mod * 1.5);
 				}
 				break;
 			}
@@ -882,27 +887,27 @@ public class GameFields {
 				sm = 1;
 			}
 			if(defender.getAbility() == Abilities.FLOWER_GIFT && stats.getWeather() == Weather.SUNNY_DAY /*TODO flower gift and sunny day*/) {
-				mod = (long) 1.5;
+				mod = 1.5;
 			}
 			switch(defender.getHeldItem()) {
 			case Items.METAL_POWDER :
 				if(defender.getSpecies().getDexNumber() == 120 /*TODO Ditto*/) {
-					mod = (long) (mod * 1.5);
+					mod = (mod * 1.5);
 				}
 				break;
 			case Items.SOUL_DEW :
 				if(defender.getSpecies().getDexNumber() == 340 || defender.getSpecies().getDexNumber() == 341 /*TODO latios and latias*/) {
-					mod = (long) (mod * 1.5);
+					mod = (mod * 1.5);
 				}
 				break;
 			case Items.DEEPSEASCALE :
 				if(defender.getSpecies().getDexNumber() == 320 /*TODO CLAMPERL*/) {
-					mod = (long) (mod * 1.5);
+					mod = (mod * 1.5);
 				}
 				break;
 			}
 			if(stats.getWeather() == Weather.SANDSTORM && (defender.getType1() == Types.ROCK || defender.getType1() == Types.ROCK)) {
-				mod = (long) (mod * 1.5);
+				mod = (mod * 1.5);
 			}			
 		}
 		defense = (int) (stat * sm * mod);
@@ -916,49 +921,49 @@ public class GameFields {
 	}
 	
 	private static double stabDetermine(Types attackerType1, Types attackerType2, Types moveType) {
-		long stab = 1;
+		double stab = 1;
 		if(moveType == attackerType1 || moveType == attackerType2) {
-			stab = (long) 1.5;
+			stab = 1.5;
 		}
 		return stab;
 	}
 
 	private static int calcMod1(Pokemon attacker, Pokemon defender, Move move, BattleStats battle) {
 		/*Mod1 = BRN × RL × TVT × SR × FF*/
-		long calcMod = 1;
-		long brn = 1;
-		long rl = 1;
-		long sr = 1;
-		long ff = 1;
+		double calcMod = 1;
+		double brn = 1;
+		double rl = 1;
+		double sr = 1;
+		double ff = 1;
 		
 		if(attacker.getStatus() ==  Status.BURN) {
-			brn = (long) 0.5;
+			brn = 0.5;
 		}
 		if((defender.hasReflect() && move.getKind() == MoveKinds.PHYSICAL )|| (defender.hasLightScreen() && move.getKind() == MoveKinds.SPECIAL)) {
-			rl = (long) 0.5;
+			rl = 0.5;
 		}
 		if(battle.getWeather() != Weather.NORMAL) {
 			switch(battle.getWeather()) {
 			case SUNNY_DAY :
 				if(move.getType() == Types.FIRE) {
-					sr = (long) 1.5;
+					sr = 1.5;
 				}
 				if(move.getType() == Types.WATER) {
-					sr = (long) 0.5;
+					sr = 0.5;
 				}
 				break;
 			case RAIN_DANCE :
 				if(move.getType() == Types.WATER) {
-					sr = (long) 1.5;
+					sr = 1.5;
 				}
 				if(move.getType() == Types.FIRE) {
-					sr = (long) 0.5;
+					sr = 0.5;
 				}
 				break;
 			}
 		}
 		if(attacker.hasFlashFire()/* TODO Flash fire*/) {
-			ff = (long) 1.5;
+			ff = 1.5;
 		}
 		
 		calcMod = brn * rl * sr * ff;
@@ -992,9 +997,9 @@ public class GameFields {
 		if(attacker.getHeldItem() == Items.EXPERT_BELT && (effectiveness >= 2)) {
 			eb = 1.2;
 		}
-		if(effectiveness < 1) { 
+		/*if(effectiveness < 1) { THIS IS A MESS FIGURE OUT TINTED LENS
 			tl = 2;
-		}
+		}*/
 		if(defender.getHeldItem() <= 200 && defender.getHeldItem() >= 217) {
 			//TODO method to determine super effectiveness from type & berry held, if matches...
 			trb = 0.5;

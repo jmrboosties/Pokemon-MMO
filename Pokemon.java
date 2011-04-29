@@ -1,5 +1,7 @@
 package com.pokemon.mmo;
 
+import java.util.Random;
+
 import com.pokemon.mmo.Enums.Abilities;
 import com.pokemon.mmo.Enums.Genders;
 import com.pokemon.mmo.Enums.Stats;
@@ -48,6 +50,22 @@ public class Pokemon {
 		this.mGender = Genders.GENDERLESS; //CHANGE THIS TO JUST DEFAULT TO RANDOM BETWEEN MALE AND FEMALE FOLLOWING GENDER RATIO
 		this.mType1 = species.getType1(); 
 		this.mType2 = species.getType2();
+		
+		Random generator = new Random();
+		
+		this.mHPIV = generator.nextInt(32);
+		this.mAttackIV = generator.nextInt(32);
+		this.mDefenseIV = generator.nextInt(32);
+		this.mSpAttackIV = generator.nextInt(32);
+		this.mSpDefenseIV = generator.nextInt(32);
+		this.mSpeedIV = generator.nextInt(32);
+		
+		this.mHPEVs = 0;
+		this.mAttackEVs = 0;
+		this.mDefenseEVs = 0;
+		this.mSpAttackEVs = 0;
+		this.mSpDefenseEVs = 0;
+		this.mSpeedEVs = 0;
 		
 		this.mTurnsInBattle = 0;
 	}

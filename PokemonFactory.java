@@ -4,6 +4,8 @@
 
 package com.pokemon.mmo;
 
+import com.pokemon.mmo.Enums.Abilities;
+import com.pokemon.mmo.Enums.Genders;
 import com.pokemon.mmo.Enums.Stats;
 
 public class PokemonFactory {
@@ -14,7 +16,6 @@ public class PokemonFactory {
 		if(species.getDexNumber() == 4) {
 			Pokemon charmander = new Pokemon(species);
 			
-			charmander.setNickName(MyCharmander.NICKNAME);
 			charmander.setLevel(MyCharmander.LEVEL);
 			charmander.setGender(MyCharmander.GENDER);
 			charmander.setAbility(MyCharmander.ABILITY);
@@ -72,8 +73,50 @@ public class PokemonFactory {
 			return squirtle;
 		}
 		
-		return null;
+		Pokemon pokemon = new Pokemon(species);
 		
+		pokemon.setLevel(8);
+		pokemon.setGender(Genders.MALE);
+		pokemon.setAbility(Abilities.OVERGROW);
+		
+		pokemon.setHPStat(setHPStat(pokemon, species));
+		for (Stats stat : Stats.values()) {
+			pokemon.setStats(setStat(pokemon, species, stat), stat);
+		}
+		pokemon.setCurrentHP(pokemon.getHPStat());
+		
+		return pokemon;
+		
+	}
+	
+	public static Pokemon getCharmander(PokemonSpecies species) {
+		Pokemon charmander = new Pokemon(species);
+		
+		charmander.setLevel(MyCharmander.LEVEL);
+		charmander.setGender(MyCharmander.GENDER);
+		charmander.setAbility(MyCharmander.ABILITY);
+		
+		charmander.setHPIV(MyCharmander.HP_IV);
+		charmander.setAttackIV(MyCharmander.ATTACK_IV);
+		charmander.setDefenseIV(MyCharmander.DEFENSE_IV);
+		charmander.setSpAttackIV(MyCharmander.SPECIAL_ATTACK_IV);
+		charmander.setSpDefenseIV(MyCharmander.SPECIAL_DEFENSE_IV);
+		charmander.setSpeedIV(MyCharmander.SPEED_IV);
+		
+		charmander.setHPEVs(MyCharmander.HP_EVS);
+		charmander.setAttackEVs(MyCharmander.ATTACK_EVS);
+		charmander.setDefenseEVs(MyCharmander.DEFENSE_EVS);
+		charmander.setSpAttackEVs(MyCharmander.SPECIAL_ATTACK_EVS);
+		charmander.setSpDefenseEVs(MyCharmander.SPECIAL_DEFENSE_EVS);
+		charmander.setSpeedEVs(MyCharmander.SPEED_EVS);
+		
+		charmander.setHPStat(setHPStat(charmander, species));
+		for (Stats stat : Stats.values()) {
+			charmander.setStats(setStat(charmander, species, stat), stat);
+		}
+		charmander.setCurrentHP(charmander.getHPStat()); //TODO GET THIS FROM DB
+		
+		return charmander;
 	}
 	
 	private static int setHPStat(Pokemon pokemon, PokemonSpecies species) {
@@ -91,8 +134,8 @@ public class PokemonFactory {
 	
 	private static int setStat(Pokemon pokemon, PokemonSpecies species, Stats stat) {
 		int totalStat = 1;
-		int iv = 0;
-		int ev = 0;
+		double iv = 0;
+		double ev = 0;
 		int base = 0;
 		
 		switch(stat) {
@@ -127,7 +170,7 @@ public class PokemonFactory {
 		 * Stat = ((((IV + (2 + base) + (EV/4) * Level) / 100) + 5) * Nature
 		 */
 		
-		totalStat = ((((iv + (2 + base) + (ev/4) + 100) * pokemon.getLevel()) / 100) + 5) /* * nature */;
+		totalStat = (int) ((((iv + (2 * base) + (ev/4)) * pokemon.getLevel()) / 100) + 5) /* * nature */;
 		
 		return totalStat;
 	}

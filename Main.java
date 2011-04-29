@@ -21,47 +21,41 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-    	PokemonSpecies mander = PokemonSpeciesFactory.getPokemonSpecies(4);
-    	PokemonSpecies squirtle = PokemonSpeciesFactory.getPokemonSpecies(7);
-    	System.out.println(mander.getSpeciesName() + " vs. " + squirtle.getSpeciesName() + "!");
-    	Pokemon myPokemon = PokemonFactory.getPokemon(mander);
-    	System.out.println(mander.getSpeciesName() + "'s" + " nickname is " + myPokemon.getNickName() + "!");
-		System.out.println(myPokemon.getNickName() + " is level " + String.valueOf(myPokemon.getLevel()) + ".");
-		System.out.println(myPokemon.getNickName() + " uses Ember!");
-		System.out.println("Charmander's special attack is " + myPokemon.getSpAttack());
-		
-		
-		BattleStats battle = new BattleStats();
-		GameFields battleMath = new GameFields();
-		Pokemon wildPokemon = PokemonFactory.getPokemon(squirtle);
-		battleMath.setAttackerType1(myPokemon.getType1());
-		battleMath.setAttackerType2(myPokemon.getType2());
-		battleMath.setDefenderType1(wildPokemon.getType1());
-		battleMath.setDefenderType2(wildPokemon.getType2());
-		
-		System.out.println("Squirtle's special defense is " + wildPokemon.getSpDefense());
-		
-		int damage = battleMath.damageCalc(myPokemon, wildPokemon, MoveFactory.getMove(Moves.EMBER), battle);
-		
-		System.out.println("Squirtle takes " + String.valueOf(damage) + "!");
-		
-		int currentHP = (int) (wildPokemon.getCurrentHP() - damage);
-		
-		System.out.println("Squirtle's HP goes from " + String.valueOf(wildPokemon.getCurrentHP()) + " to " + currentHP);
+    	
+    	System.out.println("IT'S ELF'S WORLD!!");
+    	System.out.println("Trainer, what is your name?");
+    	
+    	Trainer trainer = new Trainer();
     	
     	String input = "";
     	BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-    	System.out.println("Happy?");
     	
     	try {
     		input = reader.readLine();
-    		System.out.println(input);
+    		trainer.setName(input);
     	}
     	catch(IOException ioe) {
     		System.out.println("Exception.");
     	}
     	
+    	System.out.println(trainer.getName() + ", here is a Charmander. Give your Charmander a nickname?");
+    	PokemonSpecies mander = PokemonSpeciesFactory.getPokemonSpecies(4);
+    	Pokemon myPokemon = PokemonFactory.getPokemon(mander);
     	
+    	try {
+    		input = reader.readLine();
+    		myPokemon.setNickName(input);    		
+    	} catch(IOException e) {
+    		System.out.println("Failure.");
+    	}
+    	
+    	System.out.println("From now on this little guy is named " + myPokemon.getNickName() + "!");
+    	
+    	trainer.setPokemon1(myPokemon);
+    	
+    	System.out.println("Oh no! Here comes a wild one! This is a demo so just let your pokemon do the work.");
+    	
+    	BattleStats battle = new BattleStats(trainer);
     	
     }
 

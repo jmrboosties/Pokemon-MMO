@@ -5,6 +5,8 @@
 
 package com.pokemon.mmo;
 
+import com.pokemon.mmo.Enums.Types;
+
 /**
  *
  * @author robosllim
@@ -17,9 +19,9 @@ public class Mewtwo extends PokemonSpecies {
         setBaseSpecA(154);
         setBaseSpecD(90);
         setBaseSpeed(130);
-        genderRatio = GENDERLESS;
-        setType1(11);
-        setType2(0);
+        //genderRatio = GENDERLESS;
+        setType1(Types.PSYCHIC);
+        setType2(Types.NONE);
         String temp = GetSpeciesRow(150);
     }
 }

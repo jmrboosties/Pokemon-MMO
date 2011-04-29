@@ -9,10 +9,10 @@ public class MyCharmander extends Pokemon {
 	public MyCharmander(PokemonSpecies species) {
 		super(species);
 	}
-	public static final String NICKNAME = "Little Mander";
+	
 	public static final int DEX_NUMBER = 4;
 	
-	public static final int LEVEL = 100;
+	public static final int LEVEL = 12;
 	public static final Genders GENDER = Genders.MALE;
 	public static final Abilities ABILITY = Abilities.BLAZE;
 	
@@ -32,4 +32,13 @@ public class MyCharmander extends Pokemon {
 	
 	public static final Moves SLOT_1 = Moves.SCRATCH;
 	public static final Moves SLOT_2 = Moves.EMBER;
+	
+	public static int testMath() {
+		int iv = 12;
+		int base = 130;
+		int ev = 195;
+		double level = 78;
+		int totalStat = (int) (((((iv + (2 * base) + (ev/4)) * level) / 100) + 5)  * 1.1);
+		return totalStat;
+	}
 }
