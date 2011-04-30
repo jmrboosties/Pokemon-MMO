@@ -6,6 +6,7 @@ package com.pokemon.mmo;
 
 import com.pokemon.mmo.Enums.Abilities;
 import com.pokemon.mmo.Enums.Genders;
+import com.pokemon.mmo.Enums.Moves;
 import com.pokemon.mmo.Enums.Stats;
 
 public class PokemonFactory {
@@ -79,6 +80,8 @@ public class PokemonFactory {
 		pokemon.setGender(Genders.MALE);
 		pokemon.setAbility(Abilities.OVERGROW);
 		
+		pokemon.setSlot1(MoveFactory.getMove(Moves.TACKLE));
+		
 		pokemon.setHPStat(setHPStat(pokemon, species));
 		for (Stats stat : Stats.values()) {
 			pokemon.setStats(setStat(pokemon, species, stat), stat);
@@ -109,6 +112,9 @@ public class PokemonFactory {
 		charmander.setSpAttackEVs(MyCharmander.SPECIAL_ATTACK_EVS);
 		charmander.setSpDefenseEVs(MyCharmander.SPECIAL_DEFENSE_EVS);
 		charmander.setSpeedEVs(MyCharmander.SPEED_EVS);
+		
+		charmander.setSlot1(MoveFactory.getMove(MyCharmander.SLOT_1));
+		charmander.setSlot2(MoveFactory.getMove(MyCharmander.SLOT_2));
 		
 		charmander.setHPStat(setHPStat(charmander, species));
 		for (Stats stat : Stats.values()) {

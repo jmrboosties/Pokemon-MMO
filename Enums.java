@@ -16,7 +16,7 @@ public class Enums {
 	}
 	
 	public static enum Moves {
-		SCRATCH, EMBER, TACKLE, CHARGE, ME_FIRST
+		SCRATCH, EMBER, TACKLE, CHARGE, ME_FIRST, EMPTY
 	}
 	
 	public static enum Abilities {

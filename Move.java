@@ -12,15 +12,11 @@ public class Move {
 	private Types mType;
 	private int mPower;
 	private int mAccuracy;
+	private int mPriority;
 	private boolean mSecondary = false;
 	private int mSecondaryEffect;
 	private int mSecondaryChance;
-	private int mMoveKind;
 	private MoveKinds mKind;
-	
-	public static final int STATUS = 0;
-	public static final int PHYSICAL = 1;
-	public static final int SPECIAL = 2;
 	
 	public static final int NO_EFFECT = 0;
 	public static final int POISON_EFFECT = 1;
@@ -46,6 +42,7 @@ public class Move {
 		mType = Types.NONE;
 		mPower = 0;
 		mAccuracy = 0;
+		setPriority(0);
 		mSecondary = false;
 		
 		switch(move) {
@@ -55,11 +52,29 @@ public class Move {
 			mKind = MoveKinds.SPECIAL;
 			mPower = 40;
 			mAccuracy = 100;
-			mMoveKind = SPECIAL;
 			mSecondary = true;
 			mSecondaryChance = 10;
 			mSecondaryEffect = BURN_EFFECT;
 			break;
+			
+		case TACKLE :
+			mName = "Tackle";
+			mType = Types.NORMAL;
+			mKind = MoveKinds.PHYSICAL;
+			mPower = 50;
+			mAccuracy = 100;
+			mSecondary = false;
+			break;
+			
+		case SCRATCH :
+			mName = "Scratch";
+			mType = Types.NORMAL;
+			mKind = MoveKinds.PHYSICAL;
+			mPower = 40;
+			mAccuracy = 100;
+			mSecondary = false;
+			break;
+			
 		}
 		
 	}
@@ -92,6 +107,14 @@ public class Move {
 	
 	public Moves getMove() {
 		return mMove;
+	}
+
+	public void setPriority(int mPriority) {
+		this.mPriority = mPriority;
+	}
+
+	public int getPriority() {
+		return mPriority;
 	}
 
 }

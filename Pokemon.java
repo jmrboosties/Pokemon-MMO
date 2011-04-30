@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.pokemon.mmo.Enums.Abilities;
 import com.pokemon.mmo.Enums.Genders;
+import com.pokemon.mmo.Enums.Moves;
 import com.pokemon.mmo.Enums.Stats;
 import com.pokemon.mmo.Enums.Status;
 import com.pokemon.mmo.Enums.Types;
@@ -15,6 +16,7 @@ public class Pokemon {
 	private Types mType1;
 	private Types mType2;
 	
+	private Genders mGender;
 	private int mLevel;
 	
 	private int mHPIV;
@@ -37,7 +39,11 @@ public class Pokemon {
 	private int mSpAttack;
 	private int mSpDefense;
 	private int mSpeed;
-	private Genders mGender;
+	
+	private Move mSlot1;
+	private Move mSlot2;
+	private Move mSlot3;
+	private Move mSlot4;
 	
 	private int mCurrentHP;
 	private Status mStatus;
@@ -66,6 +72,11 @@ public class Pokemon {
 		this.mSpAttackEVs = 0;
 		this.mSpDefenseEVs = 0;
 		this.mSpeedEVs = 0;
+		
+		this.setSlot1(MoveFactory.getMove(Moves.EMPTY));
+		this.setSlot2(MoveFactory.getMove(Moves.EMPTY));
+		this.setSlot3(MoveFactory.getMove(Moves.EMPTY));
+		this.setSlot4(MoveFactory.getMove(Moves.EMPTY));
 		
 		this.mTurnsInBattle = 0;
 	}
@@ -335,6 +346,38 @@ public class Pokemon {
 	public boolean hasFlashFire() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	public void setSlot1(Move move) {
+		this.mSlot1 = move;
+	}
+
+	public Move getSlot1() {
+		return mSlot1;
+	}
+
+	public void setSlot2(Move move) {
+		this.mSlot2 = move;
+	}
+
+	public Move getSlot2() {
+		return mSlot2;
+	}
+
+	public void setSlot3(Move move) {
+		this.mSlot3 = move;
+	}
+
+	public Move getSlot3() {
+		return mSlot3;
+	}
+
+	public void setSlot4(Move move) {
+		this.mSlot4 = move;
+	}
+
+	public Move getSlot4() {
+		return mSlot4;
 	}
 	
 }
