@@ -33,12 +33,4 @@ public class MyCharmander extends Pokemon {
 	public static final Moves SLOT_1 = Moves.SCRATCH;
 	public static final Moves SLOT_2 = Moves.EMBER;
 	
-	public static int testMath() {
-		int iv = 12;
-		int base = 130;
-		int ev = 195;
-		double level = 78;
-		int totalStat = (int) (((((iv + (2 * base) + (ev/4)) * level) / 100) + 5)  * 1.1);
-		return totalStat;
-	}
 }

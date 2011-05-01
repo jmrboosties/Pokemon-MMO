@@ -65,6 +65,8 @@ public class PokemonFactory {
 			squirtle.setSpDefenseEVs(MySquirtle.SPECIAL_DEFENSE_EVS);
 			squirtle.setSpeedEVs(MySquirtle.SPEED_EVS);
 			
+			squirtle.setSlot1(MoveFactory.getMove(Moves.TACKLE));
+			
 			squirtle.setHPStat(setHPStat(squirtle, species));
 			for (Stats stat : Stats.values()) {
 				squirtle.setStats(setStat(squirtle, species, stat), stat);
@@ -77,8 +79,8 @@ public class PokemonFactory {
 		Pokemon pokemon = new Pokemon(species);
 		
 		pokemon.setLevel(8);
-		pokemon.setGender(Genders.MALE);
-		pokemon.setAbility(Abilities.OVERGROW);
+		pokemon.setGender(Genders.MALE); //TODO RANDOM TAKING RATIO INTO ACCOUNT
+		pokemon.setAbility(Abilities.OVERGROW); //TODO RANDOM FOR SPECIES
 		
 		pokemon.setSlot1(MoveFactory.getMove(Moves.TACKLE));
 		
@@ -145,6 +147,9 @@ public class PokemonFactory {
 		int base = 0;
 		
 		switch(stat) {
+		case HP:
+			//TODO NOTHING, OR COMBINE THIS WITH THE OTHER METHOD
+			break;
 		case ATTACK :
 			iv = pokemon.getAttackIV();
 			ev = pokemon.getAttackEVs();

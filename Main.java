@@ -39,8 +39,9 @@ public class Main {
     	}
     	
     	System.out.println(trainer.getName() + ", here is a Charmander. Give your Charmander a nickname?");
+    	
     	PokemonSpecies mander = PokemonSpeciesFactory.getPokemonSpecies(4);
-    	Pokemon myPokemon = PokemonFactory.getPokemon(mander);
+    	Pokemon myPokemon = PokemonFactory.getCharmander(mander);
     	
     	try {
     		input = reader.readLine();
@@ -55,7 +56,14 @@ public class Main {
     	
     	System.out.println("Oh no! Here comes a wild one! This is a demo so just let your pokemon do the work.");
     	
-    	BattleStats battle = new BattleStats(trainer);
+    	WildBattle battle = new WildBattle(trainer);
+    	boolean result = battle.wildBattleThread();
+    	if(result) {
+    		System.out.println("Congrats on the win!");
+    	}
+    	else {
+    		System.out.println("You suck.");
+    	}
     	
     }
 

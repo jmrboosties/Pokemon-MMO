@@ -5,7 +5,6 @@
 
 package com.pokemon.mmo;
 
-import com.pokemon.mmo.Enums.Genders;
 import com.pokemon.mmo.Enums.Types;
 
 /**
@@ -25,6 +24,8 @@ public class PokemonSpecies {
         setType1(Types.NONE);
         setType2(Types.NONE);
         pokeName = "Missingno.";
+        
+        
     }
 
     public String GetSpeciesRow(int dexNum){

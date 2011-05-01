@@ -4,7 +4,7 @@ public class Enums {
 
 	public static enum Types {
 		NONE, NORMAL, FIRE, WATER, ELECTRIC, GRASS, ICE, FIGHTING, POISON, GROUND, FLYING, PSYCHIC, BUG, 
-		ROCK, GHOST, DRAGON, DARK, STEEL  
+		ROCK, GHOST, DRAGON, DARK, STEEL;
 	}
 	
 	public static enum MoveKinds {
@@ -34,7 +34,7 @@ public class Enums {
 	}
 	
 	public static enum Status {
-		NONE, POISON, TOXIC, BURN, PARALYZE, FREEZE, SLEEP
+		NONE, POISON, TOXIC, BURN, PARALYZE, FREEZE, SLEEP, FAINTED
 	}
 	
 }

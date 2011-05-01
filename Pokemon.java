@@ -73,10 +73,10 @@ public class Pokemon {
 		this.mSpDefenseEVs = 0;
 		this.mSpeedEVs = 0;
 		
-		this.setSlot1(MoveFactory.getMove(Moves.EMPTY));
-		this.setSlot2(MoveFactory.getMove(Moves.EMPTY));
-		this.setSlot3(MoveFactory.getMove(Moves.EMPTY));
-		this.setSlot4(MoveFactory.getMove(Moves.EMPTY));
+		this.setSlot1(null);
+		this.setSlot2(null);
+		this.setSlot3(null);
+		this.setSlot4(null);
 		
 		this.mTurnsInBattle = 0;
 	}
@@ -378,6 +378,37 @@ public class Pokemon {
 
 	public Move getSlot4() {
 		return mSlot4;
+	}
+	
+	public Move getRandomMove() {
+		int moves = 0;
+		if(getSlot1() != null) {
+			moves++;
+		}
+		if(getSlot2() != null) {
+			moves++;
+		}
+		if(getSlot3() != null) {
+			moves++;
+		}
+		if(getSlot4() != null) {
+			moves++;
+		}
+		Random generator = new Random();
+		int gen = generator.nextInt(moves) + 1;
+		if(gen == 1) {
+			return mSlot1;
+		}
+		else if(gen == 2) {
+			return mSlot2;
+		}
+		else if(gen == 3) {
+			return mSlot3;
+		}
+		else if(gen == 4) {
+			return mSlot4;
+		}
+		return null;
 	}
 	
 }

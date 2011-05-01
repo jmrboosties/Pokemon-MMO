@@ -12,33 +12,7 @@ import com.pokemon.mmo.Enums.Weather;
 
 public class GameFields {
 	
-	private Types m_attackerType1;
-	private Types m_attackerType2;
-	private Types m_defenderType1;
-	private Types m_defenderType2;
 	
-	public GameFields(Pokemon attacker, Pokemon defender) {
-		this.m_attackerType1 = attacker.getType1();
-		this.m_attackerType2 = attacker.getType2();
-		this.m_defenderType1 = defender.getType1();
-		this.m_defenderType2 = defender.getType2();
-	}
-	
-	public void setAttackerType1(Types type) {
-		this.m_attackerType1 = type;
-	}
-	
-	public void setAttackerType2(Types type) {
-		this.m_attackerType2 = type;
-	}
-	
-	public void setDefenderType1(Types type) {
-		this.m_defenderType1 = type;
-	}
-	
-	public void setDefenderType2(Types type) {
-		this.m_defenderType2 = type;
-	}
 		
 	public static double typeMath(Types moveType, Types defenderType1, Types defenderType2) {
 		double multiplier = 1;
@@ -543,14 +517,14 @@ public class GameFields {
 		return multiplier;
 	}
 	
-	public int damageCalc(Pokemon attacker, Pokemon defender, Move move, BattleStats battle) {
+	public static int damageCalc(Pokemon attacker, Pokemon defender, Move move, BattleStats battle) {
 		int damageInt = 1;
 		
 		/**
 		 * I am doing it step by step because the game cuts off any decimals at each step.
 		 * 
 		 * Damage Formula = (((((((Level × 2 ÷ 5) + 2) × BasePower × [Sp]Atk ÷ 50) ÷ [Sp]Def) × Mod1) + 2) × 
-                 CH × Mod2 × R ÷ 100) × STAB × Type1 × Type2 × Mod3)
+         *       CH × Mod2 × R ÷ 100) × STAB × Type1 × Type2 × Mod3)
 		 */
 		
 		int levelVar = ((attacker.getLevel() * 2 / 5) + 2);
@@ -560,9 +534,9 @@ public class GameFields {
 		int next4 = (next3 * calcMod1(attacker, defender, move, battle)) + 2;
 		int next5 = (int) (next4 * /*calcCritHit(attacker, defender)*/ calcMod2(attacker, move));
 		int next6 = (int) (next5 * .9);
-		int next7 = (int) (next6 * stabDetermine(m_attackerType1, m_attackerType2, move.getType()));
+		int next7 = (int) (next6 * stabDetermine(attacker.getType1(), attacker.getType2(), move.getType()));
 		
-		double effectiveness = typeMath(move.getType(), m_defenderType1, m_defenderType2);
+		double effectiveness = typeMath(move.getType(), defender.getType1(), defender.getType2());
 		
 		double next8 = (next7 * effectiveness);
 		

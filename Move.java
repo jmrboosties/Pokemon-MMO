@@ -17,6 +17,7 @@ public class Move {
 	private int mSecondaryEffect;
 	private int mSecondaryChance;
 	private MoveKinds mKind;
+	private boolean mTargetsFoe = true;
 	
 	public static final int NO_EFFECT = 0;
 	public static final int POISON_EFFECT = 1;
@@ -74,7 +75,10 @@ public class Move {
 			mAccuracy = 100;
 			mSecondary = false;
 			break;
-			
+		
+		case EMPTY :
+			mName = "-----";
+			break;
 		}
 		
 	}
@@ -113,7 +117,7 @@ public class Move {
 		this.mPriority = mPriority;
 	}
 
-	public int getPriority() {
+	public int getPriority(Move move) {
 		return mPriority;
 	}
 
