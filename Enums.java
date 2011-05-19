@@ -3,13 +3,9 @@ package com.pokemon.mmo;
 public class Enums {
 
 	public static enum Types {
-		public static int id;
-		private Types(int id){
-			this.id = id;
-		}
-		NONE(-1), NORMAL(0), FIRE(1), WATER(2), ELECTRIC(3), GRASS(4), ICE(5),
-		FIGHTING(6), POISON(7), GROUND(8), FLYING(9), PSYCHIC(10), BUG(11),
-		ROCK(12), GHOST(13), DRAGON(14), DARK(15), STEEL(16);
+		NONE, NORMAL, FIRE, WATER, ELECTRIC, GRASS, ICE,
+		FIGHTING, POISON, GROUND, FLYING, PSYCHIC, BUG,
+		ROCK, GHOST, DRAGON, DARK, STEEL;
 	}
 	
 	public static enum MoveKinds {
