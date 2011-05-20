@@ -6,12 +6,16 @@ public class PokemonSpecies {
 	
 	private int[] mStats = new int[6]; //Use Enums.Stats to enter in specific values.
 	private Types[] mTypeArray = new Types[2];
+	private double[] mCharacteristics = new double[4]; //Height, weight, color, shape
 	private double mGenderRatio; //Chances of a male. 100 = all male, 0 = all female. -1 for genderless.
+	
 	private String mPokemonName;
+	private String mSpeciesClass;
 	private int mDexNum;
 	
 	public PokemonSpecies() {
 		mPokemonName = "Missingno.";
+		mSpeciesClass = "Hacker";
 		for (int i = 0; i < mStats.length; i++) {
 			mStats[i] = 120;
 		}
@@ -29,6 +33,14 @@ public class PokemonSpecies {
     public void setSpeciesName(String name) {
     	this.mPokemonName = name;
     }
+
+	public void setSpeciesClass(String speciesClass) {
+		this.mSpeciesClass = speciesClass;
+	}
+
+	public String getSpeciesClass() {
+		return mSpeciesClass;
+	}
 
 	public void setDexNumber(int dexNumber) {
 		this.mDexNum = dexNumber;
@@ -50,6 +62,20 @@ public class PokemonSpecies {
 	
 	public int[] getStatArray() {
 		return mStats;
+	}
+	
+	public void setCharacteristics(int[] chars) {
+		for (int i = 0; i < chars.length; i++) {
+			mCharacteristics[i] = chars[i];
+		}
+	}
+	
+	public double getSpecificChar(int charac) {
+		return mCharacteristics[charac];
+	}
+	
+	public double[] getCharArray() {
+		return mCharacteristics;
 	}
 	
 	public void setGenderRatio(double value) {
