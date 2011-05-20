@@ -1,127 +1,78 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.pokemon.mmo;
 
 import com.pokemon.mmo.Enums.Types;
 
-/**
- *
- * @author robosllim
- */
 public class PokemonSpecies {
-
-    public PokemonSpecies(){
-        setBaseHP(120);
-        setBaseAtk(120);
-        setBaseDef(120);
-        setBaseSpecA(120);
-        setBaseSpecD(120);
-        setBaseSpeed(120);
-        genderRatio = -1;
-        setType1(Types.NONE);
-        setType2(Types.NONE);
-        pokeName = "Missingno.";
-        
-        
-    }
-
-    public String GetSpeciesRow(int dexNum){
-        // get a row from the database
-        return "";
-    }
+	
+	private int[] mStats = new int[6]; //Use Enums.Stats to enter in specific values.
+	private Types[] mTypeArray = new Types[2];
+	private double mGenderRatio; //Chances of a male. 100 = all male, 0 = all female. -1 for genderless.
+	private String mPokemonName;
+	private int mDexNum;
+	
+	public PokemonSpecies() {
+		mPokemonName = "Missingno.";
+		for (int i = 0; i < mStats.length; i++) {
+			mStats[i] = 120;
+		}
+		for (int i = 0; i < mTypeArray.length; i++) {
+			mTypeArray[i] = Enums.Types.NONE;
+		}
+		mGenderRatio = -1;
+		mDexNum = 0;
+	}
     
     public String getSpeciesName() {
-    	return pokeName;
+    	return mPokemonName;
+    }
+    
+    public void setSpeciesName(String name) {
+    	this.mPokemonName = name;
     }
 
-    public void setBaseHP(int baseHP) {
-		this.baseHP = baseHP;
-	}
-
-	public int getBaseHP() {
-		return baseHP;
-	}
-
-	public void setBaseAtk(int baseAtk) {
-		this.baseAtk = baseAtk;
-	}
-
-	public int getBaseAtk() {
-		return baseAtk;
-	}
-
-	public void setBaseDef(int baseDef) {
-		this.baseDef = baseDef;
-	}
-
-	public int getBaseDef() {
-		return baseDef;
-	}
-
-	public void setBaseSpecA(int baseSpecA) {
-		this.baseSpecA = baseSpecA;
-	}
-
-	public int getBaseSpecA() {
-		return baseSpecA;
-	}
-
-	public void setBaseSpecD(int baseSpecD) {
-		this.baseSpecD = baseSpecD;
-	}
-
-	public int getBaseSpecD() {
-		return baseSpecD;
-	}
-
-	public void setBaseSpeed(int baseSpeed) {
-		this.baseSpeed = baseSpeed;
-	}
-
-	public int getBaseSpeed() {
-		return baseSpeed;
-	}
-
-	public void setType1(Types type1) {
-		this.type1 = type1;
-	}
-
-	public Types getType1() {
-		return type1;
-	}
-
-	public void setType2(Types type2) {
-		this.type2 = type2;
-	}
-
-	public Types getType2() {
-		return type2;
-	}
-
 	public void setDexNumber(int dexNumber) {
-		this.dexNumber = dexNumber;
+		this.mDexNum = dexNumber;
 	}
 
 	public int getDexNumber() {
-		return dexNumber;
+		return mDexNum;
+	}
+	
+	public void setStats(int[] stats) {
+		for (int i = 0; i < stats.length; i++) {
+			mStats[i] = stats[i];
+		}
+	}
+	
+	public int getSpecificStat(int stat) {
+		return mStats[stat];
+	}
+	
+	public int[] getStatArray() {
+		return mStats;
+	}
+	
+	public void setGenderRatio(double value) {
+		this.mGenderRatio = value;
+	}
+	
+	public double getGenderRatio() {
+		return mGenderRatio;
 	}
 
-	public String pokeName;
-    private int baseHP;
-    private int baseAtk;
-    private int baseDef;
-    private int baseSpecA;
-    private int baseSpecD;
-    private int baseSpeed;
-    private double genderRatio;
-    // Types are, in order, 0=none, normal, fire, water, elec, grass, ice, fight,
-    // poison, ground, flying, psychic, bug, rock, ghost, dragon, dark, steel=17
-    private Types type1;
-    private Types type2;
-    private int dexNumber;
+	
+	
+	public void clearValues() {
+		mPokemonName = "Missingno.";
+		for (int i = 0; i < mStats.length; i++) {
+			mStats[i] = 120;
+		}
+		for (int i = 0; i < mTypeArray.length; i++) {
+			mTypeArray[i] = Enums.Types.NONE;
+		}
+		mGenderRatio = -1;
+		mDexNum = 0;
+	}
 }
 
 /*

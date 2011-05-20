@@ -1,26 +1,14 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.pokemon.mmo;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-import com.pokemon.mmo.Enums.Moves;
-
-/**
- *
- * @author robosllim
- */
 public class Main {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
+	public static void main(String[] args) {
+		PokemonSpecies[] speciesArray = PokemonSpeciesFactory.createSpeciesArray();
+		System.out.println("Another test! Mew has base speed of " + speciesArray[151].getSpecificStat(5));
+	}
+	
+	
+	/*public static void main(String[] args) {    	    	
     	
     	System.out.println("IT'S ELF'S WORLD!!");
     	System.out.println("Trainer, what is your name?");
@@ -65,6 +53,6 @@ public class Main {
     		System.out.println("You suck.");
     	}
     	
-    }
+    }*/
 
 }

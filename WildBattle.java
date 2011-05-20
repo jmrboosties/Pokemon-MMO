@@ -1,8 +1,5 @@
 package com.pokemon.mmo;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Random;
 
 import com.pokemon.mmo.Enums.Status;
@@ -76,7 +73,7 @@ public class WildBattle extends BattleStats {
 	}
 	
 	private boolean round() {
-		Move trainerMove = getTrainerMove();
+		Move trainerMove = getTrainerMove(mActivePokemonTrainer);
 		Move wildMove = getWildMove();
 		int wildPriority = wildMove.getPriority(trainerMove);
 		int trainerPriority = trainerMove.getPriority(wildMove);
@@ -106,30 +103,4 @@ public class WildBattle extends BattleStats {
 	private Move getWildMove() {
 		return mWildPokemon.getRandomMove();
 	}
-
-	private Move getTrainerMove() {
-		System.out.println("Choose your move!");
-		System.out.println("Type either Scratch or Ember just how you see them.");
-		String input =  "";
-		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-		try {
-			input = reader.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println("Enter something jackass.");
-			getTrainerMove();
-		}
-		if(input.equals("Scratch")) {
-			return mActivePokemonTrainer.getSlot1();
-		}
-		else if(input.equals("Ember")) {
-			return mActivePokemonTrainer.getSlot2();
-		}
-		else {
-			System.out.println("Enter Scratch or Ember.");
-			return getTrainerMove();
-		}
-		
-	}
-
 }
