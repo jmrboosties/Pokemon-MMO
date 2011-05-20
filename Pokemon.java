@@ -379,7 +379,7 @@ public class Pokemon {
 	public Move getSlot4() {
 		return mSlot4;
 	}
-	
+
 	public Move getRandomMove() {
 		int moves = 0;
 		if(getSlot1() != null) {
@@ -410,5 +410,9 @@ public class Pokemon {
 		}
 		return null;
 	}
-	
+
+	public Move[] getSlots(){
+		Move[] moves = {mSlot1,mSlot2,mSlot3,mSlot4};
+		return moves;
+	}
 }
