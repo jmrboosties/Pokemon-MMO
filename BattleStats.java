@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Random;
+import java.util.Scanner;
 
 import com.pokemon.mmo.Enums.Status;
 import com.pokemon.mmo.Enums.Weather;
@@ -95,66 +96,25 @@ public class BattleStats {
 	}
 	
 	protected Move getTrainerMove(Pokemon pokemon) {
-		System.out.println("Choose your move!");
-		
-		Move slot1 = pokemon.getSlot1();
-		Move slot2 = pokemon.getSlot2();
-		Move slot3 = pokemon.getSlot3();
-		Move slot4 = pokemon.getSlot4();
-		
-		System.out.println("Enter the move you wish to select exactly how you see it.");
-		
-		String moveName1 = "";		
-		String moveName2 = "";
-		String moveName3 = "";
-		String moveName4 = "";
-		
-		if(slot1 != null) {
-			moveName1 = slot1.getMoveName();
-		}
-		if(slot2 != null) {
-			moveName2 = slot2.getMoveName();
-		}
-		if(slot3 != null) {
-			moveName3 = slot3.getMoveName();
-		}
-		if(slot4 != null) {
-			moveName4 = slot4.getMoveName();
-		}
-		
-		System.out.println("Your options:");
-		System.out.println(moveName1);
-		System.out.println(moveName2);
-		System.out.println(moveName3);
-		System.out.println(moveName4);
-		
-		String input =  "";
-		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-		try {
-			input = reader.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println("Enter something jackass.");
-			getTrainerMove(pokemon);
-		}
-		
-		if(slot1 != null && input.equals(moveName1)) {
-			return slot1;
-		}
-		else if(slot2 != null && input.equals(moveName2)) {
-			return slot2;
-		}
-		else if(slot3 != null && input.equals(moveName3)) {
-			return slot3;
-		}
-		else if(slot4 != null && input.equals(moveName4)) {
-			return slot4;
-		}
-		else {
-			System.out.println("Enter a valid move.");
-			
-			return getTrainerMove(pokemon);
-		}
+		Scanner scan = new Scanner(System.in);
+		int choice = -1;
+		Moves[] moves = pokemon.getSlots();
+		int cnt = 1;
+		do{
+			System.out.println("Available moves:");
+			for(Move move : moves){
+				if(move.getMoveName() != null){
+					System.out.println("("+cnt+") "+move.getMoveName());
+					cnt++;
+				}
+			}
+			System.out.print("Enter a number between 1 and "+cnt+": ");
+			String input = scan.nextLine();
+			if(input.matches("^[1-"+cnt+"]$")){
+				choice = Integer.parseInt(input);
+			}
+		}while(choice == -1);
+		return moves[choice-1];
 	}
 
 	public Weather getWeather() {
