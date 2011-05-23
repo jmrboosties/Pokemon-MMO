@@ -1,10 +1,23 @@
 package com.pokemon.mmo;
 
+import java.util.Random;
+
 public class Main {
+	
+	public static PokemonSpecies[] mSpeciesArray;
+	public static Move[] mMoveArray;
 
 	public static void main(String[] args) {
-		PokemonSpecies[] speciesArray = PokemonSpeciesFactory.createSpeciesArray();
-		System.out.println("Another test! Mew has base speed of " + speciesArray[151].getSpecificStat(5));
+		mSpeciesArray = PokemonSpeciesFactory.createSpeciesArray();
+		mMoveArray = MoveFactory.createMoveArray();
+		
+		Random generator = new Random();
+		int val = generator.nextInt(649) + 1;
+		PokemonSpecies species = Main.mSpeciesArray[val];
+		Pokemon wildPokemon = PokemonFactory.getPokemon(species);
+		Move move = mMoveArray[val];
+		System.out.println("Wild " + wildPokemon.getNickName() + " appeared!");
+		System.out.println(move.getMoveName() + " has a base power of " + move.getBasePower() + " and an accuracy of " + move.getAccuracy());
 	}
 	
 	

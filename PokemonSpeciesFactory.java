@@ -1,6 +1,7 @@
 package com.pokemon.mmo;
 
 import java.sql.ResultSet;
+import java.util.HashMap;
 
 public class PokemonSpeciesFactory {
 	
@@ -12,7 +13,6 @@ public class PokemonSpeciesFactory {
 		
 		try {
 			adapter = new DbAdapter();
-			System.out.println(speciesArray.length);
 			for (int i = 1; i < speciesArray.length; i++) {
 				PokemonSpecies species = new PokemonSpecies();
 				
@@ -33,13 +33,49 @@ public class PokemonSpeciesFactory {
 				}
 				
 				double[] chars = new double[4];
-				rs = adapter.makeQuery("SELECT * FROM pokemon WHERE pokemon_id = '" + String.valueOf(i) + "'");
+				rs = adapter.makeQuery("SELECT * FROM pokemon WHERE id = '" + String.valueOf(i) + "'");
 				while(rs.next()) {
 					chars[0] = (rs.getInt("height") / 10);
 					chars[1] = (rs.getInt("weight") / 10);
 					chars[2] = rs.getInt("color_id");
 					chars[3] = rs.getInt("pokemon_shape_id");
 				}
+				
+				HashMap<Integer, Integer> levelUpMoves = new HashMap<Integer, Integer>();
+				rs = adapter.makeQuery("SELECT * FROM pokemon_moves WHERE " +
+						"(pokemon_move_method_id = '1') AND " +
+						"(pokemon_id = '" + String.valueOf(i) + "')");
+				while(rs.next()) {
+					levelUpMoves.put(new Integer(rs.getInt("level")), new Integer(rs.getInt("move_id")));
+				}
+				species.setHashMap(0, levelUpMoves);
+				
+				HashMap<Integer, Boolean> eggMoves = new HashMap<Integer, Boolean>();
+				rs = adapter.makeQuery("SELECT * FROM pokemon_moves WHERE " +
+						"(pokemon_move_method_id = '2') AND " +
+						"(pokemon_id = '" + String.valueOf(i) + "')");
+				while(rs.next()) {
+					eggMoves.put(new Integer(rs.getInt("move_id")), new Boolean(true));
+				}
+				species.setHashMap(1, eggMoves);
+				
+				HashMap<Integer, Boolean> tutorMoves = new HashMap<Integer, Boolean>();
+				rs = adapter.makeQuery("SELECT * FROM pokemon_moves WHERE " +
+						"(pokemon_move_method_id = '3') AND " +
+						"(pokemon_id = '" + String.valueOf(i) + "')");
+				while(rs.next()) {
+					tutorMoves.put(new Integer(rs.getInt("move_id")), new Boolean(true));
+				}
+				species.setHashMap(2, tutorMoves);
+				
+				HashMap<Integer, Boolean> machineMoves = new HashMap<Integer, Boolean>();
+				rs = adapter.makeQuery("SELECT * FROM pokemon_moves WHERE " +
+						"(pokemon_move_method_id = '4') AND " +
+						"(pokemon_id = '" + String.valueOf(i) + "')");
+				while(rs.next()) {
+					machineMoves.put(new Integer(rs.getInt("move_id")), new Boolean(true));
+				}
+				species.setHashMap(3, machineMoves);
 				
 				speciesArray[i] = species;
 			}

@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.Random;
 import java.util.Scanner;
 
+import com.pokemon.mmo.Enums.Moves;
 import com.pokemon.mmo.Enums.Status;
 import com.pokemon.mmo.Enums.Weather;
 
@@ -98,7 +99,7 @@ public class BattleStats {
 	protected Move getTrainerMove(Pokemon pokemon) {
 		Scanner scan = new Scanner(System.in);
 		int choice = -1;
-		Moves[] moves = pokemon.getSlots();
+		Move[] moves = pokemon.getSlots();
 		int cnt = 1;
 		do{
 			System.out.println("Available moves:");

@@ -9,7 +9,7 @@ public class Enums {
 
 		public final int id;
 
-		private Type(int id) {
+		private Types(int id) {
 			this.id = id;
 		}
 	}
@@ -42,6 +42,22 @@ public class Enums {
 	
 	public static enum Status {
 		NONE, POISON, TOXIC, BURN, PARALYZE, FREEZE, SLEEP, FAINTED
+	}
+	
+	public static enum MoveEffectId {
+		DAMAGE, AILMENT, NET_GOOD_STATS, HEAL, DAMAGE_WITH_AILMENT, SWAGGER, DAMAGE_AND_RAISE, DAMAGE_AND_LOWER,
+		DAMAGE_AND_HEAL, OHKO, WHOLE_FIELD_EFFECT, FIELD_EFFECT, FORCE_SWITCH, UNIQUE
+	}
+	
+	public static enum MoveTargetId {
+		SPECIFIC_TO_MOVE(1), SELECTED(2), ALLY(3), USERS_FIELD(4), USER_OR_ALLY(5), OPPONENTS_FIELD(6), USER(7), RANDOM_OPPONENT(8),
+		ALL_OTHER_POKEMON(9), SELECTED_POKEMON(10), ALL_OPPONENTS(11), ENTIRE_FIELD(12);
+		
+		public final int id;
+		
+		private MoveTargetId(int i) {
+			this.id = i;
+		}
 	}
 	
 }

@@ -11,7 +11,7 @@ import com.pokemon.mmo.Enums.Stats;
 
 public class PokemonFactory {
 	
-	public static Pokemon getPokemon(PokemonSpecies species /*, int id*/) { //the commented param would be the id of the pokemon on the table*/
+	public static Pokemon getPokemon(PokemonSpecies species) { //the commented param would be the id of the pokemon on the table
 		//Would normally query online db for various stats, I included them in a class		
 		
 		if(species.getDexNumber() == 4) {
@@ -65,7 +65,7 @@ public class PokemonFactory {
 			squirtle.setSpDefenseEVs(MySquirtle.SPECIAL_DEFENSE_EVS);
 			squirtle.setSpeedEVs(MySquirtle.SPEED_EVS);
 			
-			squirtle.setSlot1(MoveFactory.getMove(Moves.TACKLE));
+			squirtle.setSlot1(Main.mMoveArray[1]);
 			
 			squirtle.setHPStat(setHPStat(squirtle, species));
 			for (Stats stat : Stats.values()) {
@@ -82,7 +82,7 @@ public class PokemonFactory {
 		pokemon.setGender(Genders.MALE); //TODO RANDOM TAKING RATIO INTO ACCOUNT
 		pokemon.setAbility(Abilities.OVERGROW); //TODO RANDOM FOR SPECIES
 		
-		pokemon.setSlot1(MoveFactory.getMove(Moves.TACKLE));
+		pokemon.setSlot1(Main.mMoveArray[1]);
 		
 		pokemon.setHPStat(setHPStat(pokemon, species));
 		for (Stats stat : Stats.values()) {
@@ -134,7 +134,7 @@ public class PokemonFactory {
 		 * HP = (((IV + (2 * base) + (EV/4) + 100) * Level)/100) + 10
 		 */
 		
-		maxHP = (((pokemon.getHPIV() + (2 * species.getBaseHP()) + 
+		maxHP = (((pokemon.getHPIV() + (2 * species.getSpecificStat(0)) + 
 				pokemon.getHPEVs()/4 + 100) * pokemon.getLevel()) / 100) + 10;		
 		
 		return maxHP;
@@ -153,27 +153,27 @@ public class PokemonFactory {
 		case ATTACK :
 			iv = pokemon.getAttackIV();
 			ev = pokemon.getAttackEVs();
-			base = species.getBaseAtk();
+			base = species.getSpecificStat(1);
 			break;
 		case DEFENSE :
 			iv = pokemon.getDefenseIV();
 			ev = pokemon.getDefenseEVs();
-			base = species.getBaseDef();
+			base = species.getSpecificStat(2);
 			break;
 		case SPECIAL_ATTACK :
 			iv = pokemon.getSpAttackIV();
 			ev = pokemon.getSpAttackEVs();
-			base = species.getBaseSpecA();
+			base = species.getSpecificStat(3);
 			break;
 		case SPECIAL_DEFENSE :
 			iv = pokemon.getSpDefenseIV();
 			ev = pokemon.getSpDefenseEVs();
-			base = species.getBaseSpecD();
+			base = species.getSpecificStat(4);
 			break;
 		case SPEED :
 			iv = pokemon.getSpeedIV();
 			ev = pokemon.getSpeedEVs();
-			base = species.getBaseSpeed();
+			base = species.getSpecificStat(5);;
 			break;
 		}
 		

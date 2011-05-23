@@ -1,5 +1,7 @@
 package com.pokemon.mmo;
 
+import java.util.HashMap;
+
 import com.pokemon.mmo.Enums.Types;
 
 public class PokemonSpecies {
@@ -12,6 +14,8 @@ public class PokemonSpecies {
 	private String mPokemonName;
 	private String mSpeciesClass;
 	private int mDexNum;
+	
+	private HashMap[] mMoveHashMaps = new HashMap[4]; //0 is level up, 1 is machines, 2 is egg moves, 3 tutor moves.
 	
 	public PokemonSpecies() {
 		mPokemonName = "Missingno.";
@@ -50,6 +54,20 @@ public class PokemonSpecies {
 		return mDexNum;
 	}
 	
+	public void setTypes(Types[] types) {
+		for (int i = 0; i < types.length; i++) {
+			mTypeArray[i] = types[i];
+		}
+	}
+	
+	public Types getType(int slot) {
+		return mTypeArray[slot];
+	}
+	
+	public Types[] getTypeArray() {
+		return mTypeArray;
+	}
+	
 	public void setStats(int[] stats) {
 		for (int i = 0; i < stats.length; i++) {
 			mStats[i] = stats[i];
@@ -85,8 +103,14 @@ public class PokemonSpecies {
 	public double getGenderRatio() {
 		return mGenderRatio;
 	}
-
 	
+	public void setHashMap(int hashMap, HashMap map) {
+		this.mMoveHashMaps[hashMap] = map;
+	}
+
+	public HashMap getHashMap(int hashMap) {
+		return mMoveHashMaps[hashMap];
+	}
 	
 	public void clearValues() {
 		mPokemonName = "Missingno.";

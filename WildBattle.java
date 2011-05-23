@@ -61,7 +61,8 @@ public class WildBattle extends BattleStats {
 		else if(dexNum == 3) {
 			dexNum = 7;
 		}
-		PokemonSpecies species = PokemonSpeciesFactory.getPokemonSpecies(1);
+		int val = generator.nextInt(649) + 1;
+		PokemonSpecies species = Main.mSpeciesArray[val];
 		mWildPokemon = PokemonFactory.getPokemon(species);
 		
 		System.out.println("Wild " + mWildPokemon.getNickName() + " appeared!");

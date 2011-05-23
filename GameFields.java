@@ -35,8 +35,8 @@ private static float[][] typeMatrix =
 	};
 		
 	public static double typeMath(Types moveType, Types defenderType1, Types defenderType2) {
-		return typeMatrix[moveType.id][defenderType1]*typeMatrix[moveType]		
-															[defenderType2];
+		return typeMatrix[moveType.id][defenderType1.id]*typeMatrix[moveType.id]		
+															[defenderType2.id];
 	}
 	
 	public static int damageCalc(Pokemon attacker, Pokemon defender, Move move, BattleStats battle) {
@@ -124,7 +124,7 @@ private static float[][] typeMatrix =
 		
 		/**CHG variable*/
 		
-		if(stats.getLastMove() == new Move(Moves.CHARGE) && move.getType() == Types.ELECTRIC) {
+		if(stats.getLastMove().getMoveEnum() == Moves.CHARGE && move.getType() == Types.ELECTRIC) {
 			chg = 2;
 		}
 		
@@ -474,7 +474,7 @@ private static float[][] typeMatrix =
 		if(attacker.getHeldItem() == Items.METRONOME) {
 			//TODO fuck if i know
 		}
-		if(move.getMove() == Moves.ME_FIRST) {
+		if(move.getMoveEnum() == Moves.ME_FIRST) {
 			mod2 = mod2 * 1.5;
 		}
 		return (int) mod2;
