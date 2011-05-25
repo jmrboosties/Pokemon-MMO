@@ -2,6 +2,8 @@ package com.pokemon.mmo;
 
 import java.util.Random;
 
+import com.pokemon.mmo.Enums.Types;
+
 public class Main {
 	
 	public static PokemonSpecies[] mSpeciesArray;
@@ -12,12 +14,30 @@ public class Main {
 		mMoveArray = MoveFactory.createMoveArray();
 		
 		Random generator = new Random();
-		int val = generator.nextInt(649) + 1;
-		PokemonSpecies species = Main.mSpeciesArray[val];
+		int val = generator.nextInt(559) + 1;
+		PokemonSpecies species = Main.mSpeciesArray[6];
 		Pokemon wildPokemon = PokemonFactory.getPokemon(species);
-		Move move = mMoveArray[val];
+		wildPokemon.setLevel(50);
+		Move move = mMoveArray[53];
+		move.setType(Types.FIRE);
 		System.out.println("Wild " + wildPokemon.getNickName() + " appeared!");
 		System.out.println(move.getMoveName() + " has a base power of " + move.getBasePower() + " and an accuracy of " + move.getAccuracy());
+		System.out.println(move.getMoveName() + " is a " + move.getType() + " move.");
+		PokemonSpecies mewtwo = mSpeciesArray[150];
+		Pokemon otherPoke = PokemonFactory.getPokemon(mewtwo);
+		otherPoke.setLevel(50);
+		
+		Trainer trainer = new Trainer();
+		trainer.setPokemon1(wildPokemon);
+		
+		wildPokemon.setType1(Types.FIRE);
+		wildPokemon.setType2(Types.FLYING);
+		
+		otherPoke.setType1(Types.PSYCHIC);
+		
+		WildBattle wildBattle = new WildBattle(trainer);
+		wildBattle.executeMoves(wildPokemon, move, otherPoke, mMoveArray[1]);
+		
 	}
 	
 	

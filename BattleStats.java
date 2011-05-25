@@ -1,12 +1,8 @@
 package com.pokemon.mmo;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Random;
 import java.util.Scanner;
 
-import com.pokemon.mmo.Enums.Moves;
 import com.pokemon.mmo.Enums.Status;
 import com.pokemon.mmo.Enums.Weather;
 
@@ -27,6 +23,7 @@ public class BattleStats {
 	
 	public BattleStats() {
 		mWeather = Weather.NORMAL;
+		mLastMove = Main.mMoveArray[0];
 	}
 	
 	public BattleStats(Trainer trainer) {

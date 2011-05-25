@@ -3,6 +3,8 @@ package com.pokemon.mmo;
 import java.sql.ResultSet;
 import java.util.HashMap;
 
+import com.pokemon.mmo.Enums.Abilities;
+
 public class PokemonSpeciesFactory {
 	
 	public static PokemonSpecies[] createSpeciesArray() {
@@ -76,6 +78,13 @@ public class PokemonSpeciesFactory {
 					machineMoves.put(new Integer(rs.getInt("move_id")), new Boolean(true));
 				}
 				species.setHashMap(3, machineMoves);
+				
+				/*Abilities[] abilities = new Abilities[3];
+				rs = adapter.makeQuery("SELECT * FROM pokemon_abilities WHERE " +
+						"(pokemon_id = '" + String.valueOf(i) + "'");
+				while(rs.next()) {
+					species.setSingleAbility(, rs.getInt("slot"));
+				}*/
 				
 				speciesArray[i] = species;
 			}

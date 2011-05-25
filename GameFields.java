@@ -35,8 +35,7 @@ private static float[][] typeMatrix =
 	};
 		
 	public static double typeMath(Types moveType, Types defenderType1, Types defenderType2) {
-		return typeMatrix[moveType.id][defenderType1.id]*typeMatrix[moveType.id]		
-															[defenderType2.id];
+		return typeMatrix[moveType.id][defenderType1.id]*typeMatrix[moveType.id][defenderType2.id];
 	}
 	
 	public static int damageCalc(Pokemon attacker, Pokemon defender, Move move, BattleStats battle) {

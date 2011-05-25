@@ -20,6 +20,7 @@ public class Move {
 	private MoveKinds mKind;
 	private MoveTargetId mTarget;
 	private int mPP;
+	private int mMoveId;
 	
 	public static enum MoveList {
 		CHARGE, ME_FIRST
@@ -27,12 +28,21 @@ public class Move {
 	
 	public Move() {
 		mName = "-----";
+		mMoveId = 0;
 		mMoveEnum = Moves.EMPTY;
 		mType = Types.NONE;
 		mPower = 0;
 		setAccuracy(0);
 		setPriority(0);
 		mEffectId = MoveEffectId.DAMAGE;
+	}
+	
+	public void setMoveId(int id) { 
+		this.mMoveId = id;
+	}
+	
+	public int getMoveId() {
+		return mMoveId;
 	}
 	
 	public void setMoveName(String name) {
@@ -121,8 +131,8 @@ public class Move {
 		return mMoveEnum;
 	}
 
-	public void setPriority(int mPriority) {
-		this.mPriority = mPriority;
+	public void setPriority(int priority) {
+		this.mPriority = priority;
 	}
 
 	public int getPriority(Move move) {

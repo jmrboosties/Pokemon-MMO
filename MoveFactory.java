@@ -24,6 +24,11 @@ public class MoveFactory {
 				while(rs.next()) {
 					move.setBasePower(rs.getInt("power"));
 					move.setAccuracy(rs.getInt("accuracy"));
+					move.setMoveId(rs.getInt("id"));
+					move.setPP(rs.getInt("pp"));
+					move.setPriority(rs.getInt("priority"));
+					move.setKind(Enums.getMoveKindFromInt(rs.getInt("damage_class_id")));
+					move.setType(Enums.getTypeFromInt(rs.getInt("type_id")));
 				}
 				
 				moveArray[i] = move;

@@ -2,6 +2,7 @@ package com.pokemon.mmo;
 
 import java.util.HashMap;
 
+import com.pokemon.mmo.Enums.Abilities;
 import com.pokemon.mmo.Enums.Types;
 
 public class PokemonSpecies {
@@ -16,6 +17,7 @@ public class PokemonSpecies {
 	private int mDexNum;
 	
 	private HashMap[] mMoveHashMaps = new HashMap[4]; //0 is level up, 1 is machines, 2 is egg moves, 3 tutor moves.
+	private Abilities[] mAbilities = new Abilities[3]; //0 and 1 are regular abilities, 2 is dream world.
 	
 	public PokemonSpecies() {
 		mPokemonName = "Missingno.";
@@ -82,6 +84,22 @@ public class PokemonSpecies {
 		return mStats;
 	}
 	
+	public void setAbilityArray(Abilities[] array) {
+		this.mAbilities = array;
+	}
+	
+	public void setSingleAbility(Abilities ability, int index) {
+		this.mAbilities[index] = ability;
+	}
+	
+	public Abilities getAbility(int index) {
+		return mAbilities[index];
+	}
+	
+	public Abilities[] getAbilityArray() {
+		return mAbilities;
+	}
+	
 	public void setCharacteristics(int[] chars) {
 		for (int i = 0; i < chars.length; i++) {
 			mCharacteristics[i] = chars[i];
@@ -110,6 +128,10 @@ public class PokemonSpecies {
 
 	public HashMap getHashMap(int hashMap) {
 		return mMoveHashMaps[hashMap];
+	}
+	
+	public HashMap[] getLearnableMoveArray() {
+		return mMoveHashMaps;
 	}
 	
 	public void clearValues() {

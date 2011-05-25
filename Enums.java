@@ -1,6 +1,60 @@
 package com.pokemon.mmo;
 
 public class Enums {
+	
+	public static MoveKinds getMoveKindFromInt(int i) {
+		switch(i) {
+		case 1: 
+			return MoveKinds.STATUS;
+		case 2:
+			return MoveKinds.PHYSICAL;
+		case 3:
+			return MoveKinds.SPECIAL;
+		default:
+			return null;
+		}
+	}
+	
+	public static Types getTypeFromInt(int i) {
+		switch(i) {
+		case 1:
+			return Types.NORMAL;
+		case 2:
+			return Types.FIGHTING;
+		case 3:
+			return Types.FLYING;
+		case 4:
+			return Types.POISON;
+		case 5:
+			return Types.GROUND;
+		case 6:
+			return Types.ROCK;
+		case 7:
+			return Types.BUG;
+		case 8:
+			return Types.GHOST;
+		case 9:
+			return Types.STEEL;
+		case 10:
+			return Types.FIRE;
+		case 11:
+			return Types.WATER;
+		case 12:
+			return Types.GRASS;
+		case 13:
+			return Types.ELECTRIC;
+		case 14:
+			return Types.PSYCHIC;
+		case 15:
+			return Types.ICE;
+		case 16:
+			return Types.DRAGON;
+		case 17:
+			return Types.DARK;
+		default:
+			return Types.NONE;
+		}
+	}
 
 	public static enum Types {
 		NONE(-1), NORMAL(0), FIRE(1), WATER(2), ELECTRIC(3), GRASS(4), ICE(5),
@@ -17,8 +71,9 @@ public class Enums {
 	public static enum MoveKinds {
 		PHYSICAL, SPECIAL, STATUS
 	}
+
 	
-	public static enum Genders {
+	public static enum Gender {
 		GENDERLESS, MALE, FEMALE
 	}
 	

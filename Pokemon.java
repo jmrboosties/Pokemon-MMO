@@ -3,8 +3,7 @@ package com.pokemon.mmo;
 import java.util.Random;
 
 import com.pokemon.mmo.Enums.Abilities;
-import com.pokemon.mmo.Enums.Genders;
-import com.pokemon.mmo.Enums.Moves;
+import com.pokemon.mmo.Enums.Gender;
 import com.pokemon.mmo.Enums.Stats;
 import com.pokemon.mmo.Enums.Status;
 import com.pokemon.mmo.Enums.Types;
@@ -16,7 +15,7 @@ public class Pokemon {
 	private Types mType1;
 	private Types mType2;
 	
-	private Genders mGender;
+	private Gender mGender;
 	private int mLevel;
 	
 	private int mHPIV;
@@ -53,7 +52,7 @@ public class Pokemon {
 	public Pokemon(PokemonSpecies species) {
 		this.mNickName = species.getSpeciesName();
 		this.mSpecies = species;
-		this.mGender = Genders.GENDERLESS; //CHANGE THIS TO JUST DEFAULT TO RANDOM BETWEEN MALE AND FEMALE FOLLOWING GENDER RATIO
+		this.mGender = Gender.GENDERLESS; //CHANGE THIS TO JUST DEFAULT TO RANDOM BETWEEN MALE AND FEMALE FOLLOWING GENDER RATIO
 		this.mType1 = species.getType(0); 
 		this.mType2 = species.getType(1);
 		
@@ -295,11 +294,11 @@ public class Pokemon {
 		return false;
 	}
 
-	public Genders getGender() {
+	public Gender getGender() {
 		return mGender;
 	}
 	
-	public void setGender(Genders gender) {
+	public void setGender(Gender gender) {
 		this.mGender = gender;
 	}
 
