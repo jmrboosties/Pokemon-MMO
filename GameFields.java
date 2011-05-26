@@ -50,7 +50,7 @@ private static float[][] typeMatrix =
 		}
 		return retValue;
 	}
-	
+
 	public static int damageCalc(Pokemon attacker, Pokemon defender, Move move, BattleStats battle) {
 		int damageInt = 1;
 		
