@@ -35,10 +35,22 @@ private static float[][] typeMatrix =
 	};
 		
 	public static double typeMath(Types moveType, Types defenderType1, Types defenderType2) {
-		return typeMatrix[moveType.id][defenderType1]*typeMatrix[moveType]		
-															[defenderType2];
+		if(defenderType1 == Types.NONE && defenderType2 == Types.NONE){
+			throw new IllegalArgumentException("Only one of the defender types may be Types.NONE.");
+		}
+		double retValue = 0.0;
+		if(defenderType2 == Types.NONE){
+			retValue = typeMatrix[moveType.id][defenderType1];
+		}
+		else if(defenderType1 == Types.NONE) {
+			retValue = typeMatrix[moveType.id][defenderType2];
+		}
+		else{
+			retValue = typeMatrix[moveType.id][defenderType1]*typeMatrix[moveType][defenderType2];
+		}
+		return retValue;
 	}
-	
+
 	public static int damageCalc(Pokemon attacker, Pokemon defender, Move move, BattleStats battle) {
 		int damageInt = 1;
 		
