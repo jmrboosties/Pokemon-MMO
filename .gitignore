@@ -1,4 +1,2 @@
 bin
-res
-options
-classes
+lib/*
