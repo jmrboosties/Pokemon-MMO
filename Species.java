@@ -36,24 +36,24 @@ public class Species {
 	mBaseStats[0] = 10;
 	//mAbilities = [-1,-1,-1];
 	for (int i = 0; i < 20; i++){
-	  levelMoves[i][0] = 0;
-	  levelMoves[i][1] = 0;
+	  mLevelMoves[i][0] = 0;
+	  mLevelMoves[i][1] = 0;
 	}
 	for (int i = 0; i < 110; i++){
-	  tmMoves[i] = 0;
+	  mTmMoves[i] = 0;
 	}
 	for (int i = 0; i < 30; i++){
-	  eggMoves[i] = 0;
+	  mEggMoves[i] = 0;
 	}
 	for (int i = 0; i < 30; i++){
-	  tutorMoves[i] = 0;
+	  mTutorMoves[i] = 0;
 	}
 	catchRate = 0;
 	eggSteps = 0;
 	growthRate = 0;
 	eggType = 0;
 	genderRatio = -1;
-	weight = 0.00;
+	weight = 0.00f;
 	// These should actually open some files, based on pre-defined data (ie open path/images/dexNum.png)
 	backSprite = "null";
 	frontSprite = "null";
