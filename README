@@ -21,3 +21,35 @@ PROGRESS:
   more info such as dex entries and stuff still required as of writing this.
 - Battle math is near-complete. (Requires some item implementation still)
 - PokemonFactory class complete. Inserting a species into the class along with EV/IV values will provide a pokemon with correct stats.
+
+STRUCTURE:
+----------
+
+The project's root directory contains following subdirectory and files:
+
+src/
+	This is where the source code is located. This directory has subdirectories structured in the standard java way with the directory structure representing the package structure.
+
+bin/
+	This is where the compiled class files can be found.
+
+res/
+	Everything that is not source-, class- and library files. This directory usually contains databases, images, sounds, etc.
+
+lib/
+	External libraries needed to compile this project.
+
+README
+	This readme file.
+
+.git
+	The git repository.
+
+.gitignore
+	The exclude file for git. Currently excludes the bin/ directory.
+
+options
+	Arg file for javac listing default options.
+
+classes
+	Arg file for javac listing all classes to be compiled.
