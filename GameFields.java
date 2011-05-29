@@ -35,17 +35,30 @@ private static float[][] typeMatrix =
 	};
 		
 	public static double typeMath(Types moveType, Types defenderType1, Types defenderType2) {
-		return typeMatrix[moveType.id][defenderType1.id]*typeMatrix[moveType.id][defenderType2.id];
+		if(defenderType1 == Types.NONE && defenderType2 == Types.NONE){
+			throw new IllegalArgumentException("Only one of the defender types may be Types.NONE.");
+		}
+		double retValue = 0.0;
+		if(defenderType2 == Types.NONE){
+			retValue = typeMatrix[moveType.id][defenderType1.id];
+		}
+		else if(defenderType1 == Types.NONE) {
+			retValue = typeMatrix[moveType.id][defenderType2.id];
+		}
+		else{
+			retValue = typeMatrix[moveType.id][defenderType1.id]*typeMatrix[moveType.id][defenderType2.id];
+		}
+		return retValue;
 	}
-	
+
 	public static int damageCalc(Pokemon attacker, Pokemon defender, Move move, BattleStats battle) {
 		int damageInt = 1;
 		
 		/**
 		 * I am doing it step by step because the game cuts off any decimals at each step.
 		 * 
-		 * Damage Formula = (((((((Level × 2 ÷ 5) + 2) × BasePower × [Sp]Atk ÷ 50) ÷ [Sp]Def) × Mod1) + 2) × 
-         *       CH × Mod2 × R ÷ 100) × STAB × Type1 × Type2 × Mod3)
+		 * Damage Formula = (((((((Level * 2 / 5) + 2) * BasePower * [Sp]Atk / 50) / [Sp]Def) * Mod1) + 2) * 
+         *       CH * Mod2 * R / 100) * STAB * Type1 * Type2 * Mod3)
 		 */
 		
 		int levelVar = ((attacker.getLevel() * 2 / 5) + 2);
@@ -75,7 +88,7 @@ private static float[][] typeMatrix =
 		double ws = 1;
 		double ua = 1;
 		double fa = 1;
-		//BasePower = HH × BP × IT × CHG × MS × WS × UA × FA
+		//BasePower = HH * BP * IT * CHG * MS * WS * UA * FA
 		
 		/**HH variable*/
 		
@@ -328,7 +341,7 @@ private static float[][] typeMatrix =
 	}
 	
 	private static int calcDefenseOrSpecialDefense(Pokemon defender, Pokemon attacker, Move move, BattleStats stats) {
-		//[Sp]Def = Stat × SM × Mod
+		//[Sp]Def = Stat * SM * Mod
 		int defense = 1;
 		int stat = 1;
 		double sm = 1;
@@ -424,7 +437,7 @@ private static float[][] typeMatrix =
 	}
 
 	private static int calcMod1(Pokemon attacker, Pokemon defender, Move move, BattleStats battle) {
-		/*Mod1 = BRN × RL × TVT × SR × FF*/
+		/*Mod1 = BRN * RL * TVT * SR * FF*/
 		double calcMod = 1;
 		double brn = 1;
 		double rl = 1;
@@ -485,7 +498,7 @@ private static float[][] typeMatrix =
 		double eb = 1;
 		double tl = 1;
 		double trb = 1;
-		//Mod3 = SRF × EB × TL × TRB
+		//Mod3 = SRF * EB * TL * TRB
 		if(defender.getAbility() == Abilities.SOLID_ROCK || defender.getAbility() == Abilities.FILTER) {
 			srf = 0.75;
 		}
