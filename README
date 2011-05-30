@@ -21,3 +21,5 @@ PROGRESS:
   more info such as dex entries and stuff still required as of writing this.
 - Battle math is near-complete. (Requires some item implementation still)
 - PokemonFactory class complete. Inserting a species into the class along with EV/IV values will provide a pokemon with correct stats.
+
+---
