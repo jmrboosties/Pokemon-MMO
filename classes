@@ -1,0 +1,29 @@
+# This file lists java classes that are passed as arguments to javac.
+# To pass this file to javac as an argument do the following:
+#	javac @classes
+# Classes that aren't up to date anymore are commented
+#
+src/com/pokemon/mmo/Battle.java
+src/com/pokemon/mmo/BattleStats.java
+#src/com/pokemon/mmo/Bulbasaur.java
+#src/com/pokemon/mmo/Charmander.java
+src/com/pokemon/mmo/DbAdapter.java
+src/com/pokemon/mmo/Enums.java
+src/com/pokemon/mmo/GameFields.java
+src/com/pokemon/mmo/Items.java
+src/com/pokemon/mmo/Main.java
+#src/com/pokemon/mmo/Mewtwo.java
+src/com/pokemon/mmo/MoveFactory.java
+src/com/pokemon/mmo/Move.java
+#src/com/pokemon/mmo/MyCharmander.java
+#src/com/pokemon/mmo/MySquirtle.java
+src/com/pokemon/mmo/PokemonFactory.java
+src/com/pokemon/mmo/Pokemon.java
+src/com/pokemon/mmo/PokemonSpeciesFactory.java
+src/com/pokemon/mmo/PokemonSpecies.java
+#src/com/pokemon/mmo/Pursuit.java
+src/com/pokemon/mmo/RandomForPokemon.java
+src/com/pokemon/mmo/Species.java
+#src/com/pokemon/mmo/Squirtle.java
+src/com/pokemon/mmo/Trainer.java
+src/com/pokemon/mmo/WildBattle.java
