@@ -39,6 +39,9 @@ public class Main {
 		otherPoke.setType1(Types.PSYCHIC);
 
 		WildBattle wildBattle = new WildBattle(trainer);
+		
+		System.out.println("Mewtwo has total HP of " + otherPoke.getHPStat() + " and current HP of " + otherPoke.getCurrentHP());
+		
 		wildBattle.executeMoves(wildPokemon, move, otherPoke, mMoveArray[1]);
 
 	}

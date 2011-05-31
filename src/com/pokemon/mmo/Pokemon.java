@@ -84,6 +84,7 @@ public class Pokemon {
 
 	public void setLevel(int level) {
 		this.mLevel = level;
+		PokemonFactory.respecStats(this, mSpecies);
 	}
 
 	public int getLevel() {
@@ -92,6 +93,7 @@ public class Pokemon {
 
 	public void setAbility(Abilities ability) {
 		this.mAbility = ability;
+		PokemonFactory.respecStats(this, mSpecies);
 	}
 
 	public Abilities getAbility() {
@@ -107,8 +109,9 @@ public class Pokemon {
 		return mSpecies;
 	}
 
-	public void setSpecies(PokemonSpecies mSpecies) {
-		this.mSpecies = mSpecies;
+	public void setSpecies(PokemonSpecies species) {
+		this.mSpecies = species;
+		PokemonFactory.respecStats(this, mSpecies);
 	}
 
 	public Types getType1() {
