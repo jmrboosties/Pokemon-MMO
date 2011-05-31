@@ -10,13 +10,26 @@ import com.pokemon.mmo.Enums.Stats;
 
 public class PokemonFactory {
 
-	public static Pokemon getPokemon(PokemonSpecies species) { // the commented
-																// param would
-																// be the id of
-																// the pokemon
-																// on the table
-		// Would normally query online db for various stats, I included them in
-		// a class
+	public static Pokemon getPokemon(PokemonSpecies species) {
+
+		Pokemon pokemon = new Pokemon(species);
+
+		pokemon.setLevel(1);
+		pokemon.setGender(Gender.MALE); // TODO RANDOM TAKING RATIO INTO ACCOUNT
+		pokemon.setAbility(Abilities.OVERGROW); // TODO RANDOM FOR SPECIES
+
+		pokemon.setSlot1(Main.mMoveArray[1]);
+
+		pokemon.setHPStat(setHPStat(pokemon, species));
+		for (Stats stat : Stats.values()) {
+			pokemon.setStats(setStat(pokemon, species, stat), stat);
+		}
+		pokemon.setCurrentHP(pokemon.getHPStat());
+		
+		return pokemon;
+	}
+	
+	public static Pokemon setPokemonStats(PokemonSpecies species, int level, Gender gender) {
 
 		Pokemon pokemon = new Pokemon(species);
 
@@ -27,6 +40,7 @@ public class PokemonFactory {
 		pokemon.setSlot1(Main.mMoveArray[1]);
 
 		pokemon.setHPStat(setHPStat(pokemon, species));
+		
 		for (Stats stat : Stats.values()) {
 			pokemon.setStats(setStat(pokemon, species, stat), stat);
 		}
@@ -41,9 +55,8 @@ public class PokemonFactory {
 		/**
 		 * HP = (((IV + (2 * base) + (EV/4) + 100) * Level)/100) + 10
 		 */
-
-		maxHP = (((pokemon.getHPIV() + (2 * species.getSpecificStat(0))
-				+ pokemon.getHPEVs() / 4 + 100) * pokemon.getLevel()) / 100) + 10;
+		
+		maxHP = (((pokemon.getHPIV() + (2 * species.getSpecificStat(0)) + (pokemon.getHPEVs()/4) + 100) * pokemon.getLevel()) / 100) + 10;
 
 		return maxHP;
 	}
@@ -97,6 +110,14 @@ public class PokemonFactory {
 																							 */;
 
 		return totalStat;
+	}
+	
+	public static void respecStats(Pokemon pokemon, PokemonSpecies species) {
+		pokemon.setHPStat(setHPStat(pokemon, species));
+		for (Stats stat : Stats.values()) {
+			pokemon.setStats(setStat(pokemon, species, stat), stat);
+		}
+		pokemon.setCurrentHP(pokemon.getHPStat());
 	}
 
 }

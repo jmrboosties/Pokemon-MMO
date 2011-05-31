@@ -57,14 +57,16 @@ public class Enums {
 	}
 
 	public static enum Types {
-		NONE(-1), NORMAL(0), FIRE(1), WATER(2), ELECTRIC(3), GRASS(4), ICE(5), FIGHTING(
-				6), POISON(7), GROUND(8), FLYING(9), PSYCHIC(10), BUG(11), ROCK(
-				12), GHOST(13), DRAGON(14), DARK(15), STEEL(16);
+		NONE(-1, "---"), NORMAL(0, "Normal"), FIRE(1, "Fire"), WATER(2, "Water"), ELECTRIC(3, "Electric"), GRASS(4, "Grass"), ICE(5, "Ice"), 
+				FIGHTING(6, "Fighting"), POISON(7, "Poison"), GROUND(8, "Ground"), FLYING(9, "Flying"), PSYCHIC(10, "Psychic"), BUG(11, "Bug"), 
+				ROCK(12, "Rock"), GHOST(13, "Ghost"), DRAGON(14, "Dragon"), DARK(15, "Dark"), STEEL(16, "Steel");
 
 		public final int id;
+		public final String name;
 
-		private Types(int id) {
+		private Types(int id, String name) {
 			this.id = id;
+			this.name = name;
 		}
 	}
 
