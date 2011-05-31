@@ -1,26 +1,34 @@
 ---
 This project is open source and open to any and all productive input. 
 
-It is a fan project designed with the hope of creating a free and enjoyable experience for fans of the games.
+It is a fan project designed with the hope of creating a free and enjoyable
+experience for fans of the games.
 
-All artwork, sounds, and game mechanics are sole property of GameFreak, The Pokemon Company, and Nintendo.
+All artwork, sounds, and game mechanics are sole property of GameFreak, The
+Pokemon Company, and Nintendo.
 
-Pokedex provided graciously by Veekun. All credit goes to him. Check out his website @ http://veekun.com/ to support him, and also to download the csvs for our db.
+Pokedex provided graciously by Veekun. All credit goes to him. Check out his
+website @ http://veekun.com/ to support him, and also to download the csvs for
+our db.
 
 Now that that's out of the way, time for to do list and progress!
 
 TODO:
-- Clean up the DB file for better access to information. This includes getting rid of all
-  pre-Gen V data in the pokemon_moves table, as well as all non-English data in all tables which
-  support multiple languages.
-- Work into the MoveFactory and PokemonSpeciesFactory classes, create arrays of both these objects for quick access in-game.
-- Our goal right now is to establish a working battle system that can handle any Pokemon with any moves, held items, etc.
+- Clean up the DB file for better access to information. This includes getting
+  rid of all pre-Gen V data in the pokemon_moves table, as well as all
+  non-English data in all tables which support multiple languages.
+- Work into the MoveFactory and PokemonSpeciesFactory classes, create arrays of
+  both these objects for quick access in-game.
+- Our goal right now is to establish a working battle system that can handle any
+  Pokemon with any moves, held items, etc.
 
 PROGRESS:
-- Database is successfully implemented. Species Array can be created, entering the dex number into the array returns base stats, 
-  more info such as dex entries and stuff still required as of writing this.
+- Database is successfully implemented. Species Array can be created, entering
+  the dex number into the array returns base stats, more info such as dex
+  entries and stuff still required as of writing this.
 - Battle math is near-complete. (Requires some item implementation still)
-- PokemonFactory class complete. Inserting a species into the class along with EV/IV values will provide a pokemon with correct stats.
+- PokemonFactory class complete. Inserting a species into the class along with
+  EV/IV values will provide a pokemon with correct stats.
 
 STRUCTURE:
 ----------
@@ -28,13 +36,16 @@ STRUCTURE:
 The project's root directory contains following subdirectory and files:
 
 src/
-	This is where the source code is located. This directory has subdirectories structured in the standard java way with the directory structure representing the package structure.
+	This is where the source code is located. This directory has subdirectories
+	structured in the standard java way with the directory structure
+	representing the package structure.
 
 bin/
 	This is where the compiled class files can be found.
 
 assets/
-	Everything that is not source-, class- and library files. This directory usually contains databases, images, sounds, etc.
+	Everything that is not source-, class- and library files. This directory
+	contains databases, images, sounds, etc.
 
 lib/
 	External libraries needed to compile this project.
@@ -62,4 +73,4 @@ From the root of this project execute the following:
 
 	javac @options @classes
 
-All compiles .class-files will be place under bin/.
+All compiled .class-files will be place under bin/.
