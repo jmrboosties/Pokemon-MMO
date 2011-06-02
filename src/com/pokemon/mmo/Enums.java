@@ -2,71 +2,34 @@ package com.pokemon.mmo;
 
 public class Enums {
 
-	public static MoveKinds getMoveKindFromInt(int i) {
-		switch (i) {
-		case 1:
-			return MoveKinds.STATUS;
-		case 2:
-			return MoveKinds.PHYSICAL;
-		case 3:
-			return MoveKinds.SPECIAL;
-		default:
-			return null;
-		}
-	}
-
-	public static Types getTypeFromInt(int i) {
-		switch (i) {
-		case 1:
-			return Types.NORMAL;
-		case 2:
-			return Types.FIGHTING;
-		case 3:
-			return Types.FLYING;
-		case 4:
-			return Types.POISON;
-		case 5:
-			return Types.GROUND;
-		case 6:
-			return Types.ROCK;
-		case 7:
-			return Types.BUG;
-		case 8:
-			return Types.GHOST;
-		case 9:
-			return Types.STEEL;
-		case 10:
-			return Types.FIRE;
-		case 11:
-			return Types.WATER;
-		case 12:
-			return Types.GRASS;
-		case 13:
-			return Types.ELECTRIC;
-		case 14:
-			return Types.PSYCHIC;
-		case 15:
-			return Types.ICE;
-		case 16:
-			return Types.DRAGON;
-		case 17:
-			return Types.DARK;
-		default:
-			return Types.NONE;
-		}
-	}
-
 	public static enum Types {
-		NONE(-1, "---"), NORMAL(0, "Normal"), FIRE(1, "Fire"), WATER(2, "Water"), ELECTRIC(3, "Electric"), GRASS(4, "Grass"), ICE(5, "Ice"), 
-				FIGHTING(6, "Fighting"), POISON(7, "Poison"), GROUND(8, "Ground"), FLYING(9, "Flying"), PSYCHIC(10, "Psychic"), BUG(11, "Bug"), 
-				ROCK(12, "Rock"), GHOST(13, "Ghost"), DRAGON(14, "Dragon"), DARK(15, "Dark"), STEEL(16, "Steel");
+		NONE(0, "---"), NORMAL(1, "Normal"), FIRE(10, "Fire"), WATER(11, "Water"), ELECTRIC(13, "Electric"), GRASS(12, "Grass"), ICE(15, "Ice"), 
+				FIGHTING(2, "Fighting"), POISON(4, "Poison"), GROUND(5, "Ground"), FLYING(3, "Flying"), PSYCHIC(14, "Psychic"), BUG(7, "Bug"), 
+				ROCK(6, "Rock"), GHOST(8, "Ghost"), DRAGON(16, "Dragon"), DARK(17, "Dark"), STEEL(9, "Steel");
 
-		public final int id;
-		public final String name;
+		private final int id;
+		private final String name;
 
 		private Types(int id, String name) {
 			this.id = id;
 			this.name = name;
+		}
+		
+		public static Types getType(int i) {
+			for (Types type : Types.values()) {
+				if(i == type.id) {
+					return type;
+				}
+			}
+			return NONE;
+		}
+		
+		public int getId() {
+			return id;
+		}
+		
+		public String getName() {
+			return name;
 		}
 	}
 	
@@ -103,18 +66,60 @@ public class Enums {
 		RATTLED(155, "Rattled"), MAGIC_BOUNCE(156, "Magic Bounce"), SAP_SIPPER(157, "Sap Sipper"), PRANKSTER(158, "Prankster"), SAND_FORCE(159, "Sand Force"), 
 		IRON_BARBS(160, "Iron Barbs"), ZEN_MODE(161, "Zen Mode"), VICTORY_STAR(162, "Victory Star"), TURBOBLAZE(163, "Turboblaze"), TERAVOLT(164, "Teravolt"); 
 		
-		public final int id;
-		public final String name;
+		private final int id;
+		private final String name;
 		
 		private Ability(int id, String name) {
 			this.id = id;
 			this.name = name;
 		}
 		
+		public static Ability getAbility(int i) {
+			for (Ability ability : Ability.values()) {
+				if(i == ability.id) {
+					return ability;
+				}
+			}
+			return NONE;
+		}
+		
+		public int getId() {
+			return id;
+		}
+		
+		public String getName() {
+			return name;
+		}
 	}
 
 	public static enum MoveKinds {
-		PHYSICAL, SPECIAL, STATUS
+		NONE(0, "None"), PHYSICAL(1, "Physical"), SPECIAL(2, "Special"), STATUS(3, "Status");
+		
+		private final int fId;
+		private final String fName;
+		
+		private MoveKinds(int i, String name) {
+			this.fId = i;
+			this.fName = name;
+		}
+		
+		public static MoveKinds getMoveKind(int i) {
+			for (MoveKinds kind : MoveKinds.values()) {
+				if(i == kind.fId) {
+					return kind;
+				}
+			}
+			return NONE;
+		}
+		
+		public int getId() {
+			return fId;
+		}
+		
+		public String getName() {
+			return fName;
+		}
+		
 	}
 
 	public static enum Gender {
@@ -135,6 +140,25 @@ public class Enums {
 
 	public static enum Status {
 		NONE, POISON, TOXIC, BURN, PARALYZE, FREEZE, SLEEP, FAINTED
+	}
+	
+	public static enum Day {
+		SUNDAY(1), MONDAY(2), TUESDAY(3), WEDNESDAY(4), THURSDAY(5), FRIDAY(6), SATURDAY(7);
+		
+		public final int fId;
+		
+		Day(int id) {
+			this.fId = id;
+		}
+		
+		public static Day getDay(int i) {
+			for(Day day : Day.values()) {
+				if(i == day.fId) {
+					return day;
+				}
+			}
+			throw new IllegalArgumentException("Bad int");
+		}
 	}
 
 	public static enum MoveEffectId {

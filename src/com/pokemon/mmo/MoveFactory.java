@@ -2,6 +2,9 @@ package com.pokemon.mmo;
 
 import java.sql.ResultSet;
 
+import com.pokemon.mmo.Enums.MoveKinds;
+import com.pokemon.mmo.Enums.Types;
+
 public class MoveFactory {
 
 	public static Move[] createMoveArray() {
@@ -30,9 +33,8 @@ public class MoveFactory {
 					move.setMoveId(rs.getInt("id"));
 					move.setPP(rs.getInt("pp"));
 					move.setPriority(rs.getInt("priority"));
-					move.setKind(Enums.getMoveKindFromInt(rs
-							.getInt("damage_class_id")));
-					move.setType(Enums.getTypeFromInt(rs.getInt("type_id")));
+					move.setKind(MoveKinds.getMoveKind(rs.getInt("damage_class_id")));
+					move.setType(Types.getType(rs.getInt("type_id")));
 				}
 
 				moveArray[i] = move;

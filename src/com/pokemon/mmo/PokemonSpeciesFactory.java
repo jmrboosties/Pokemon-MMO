@@ -3,13 +3,16 @@ package com.pokemon.mmo;
 import java.sql.ResultSet;
 import java.util.HashMap;
 
+import com.pokemon.mmo.Enums.Ability;
+import com.pokemon.mmo.Enums.Types;
+
 public class PokemonSpeciesFactory {
 
 	public static PokemonSpecies[] createSpeciesArray() {
 		PokemonSpecies[] speciesArray = new PokemonSpecies[669];
 		speciesArray[0] = new PokemonSpecies();
 		DbAdapter adapter;
-		ResultSet rs;
+		ResultSet rs = null;
 
 		try {
 			adapter = new DbAdapter();
@@ -47,6 +50,17 @@ public class PokemonSpeciesFactory {
 					chars[1] = (rs.getInt("weight") / 10);
 					chars[2] = rs.getInt("color_id");
 					chars[3] = rs.getInt("pokemon_shape_id");
+				}
+				
+				rs = adapter.makeQuery("SELECT * FROM pokemon_types WHERE pokemon_id = '" +
+						String.valueOf(i) + "' AND slot = '1'");
+				while (rs.next()) {
+					species.setTypeSlot1(Types.getType(rs.getInt("type_id")));
+				}
+				rs = adapter.makeQuery("SELECT * FROM pokemon_types WHERE pokemon_id = '" +
+						String.valueOf(i) + "' AND slot = '2'");
+				while (rs.next()) {
+					species.setTypeSlot2(Types.getType(rs.getInt("type_id")));
 				}
 
 				HashMap<Integer, Integer> levelUpMoves = new HashMap<Integer, Integer>();
@@ -89,14 +103,21 @@ public class PokemonSpeciesFactory {
 				}
 				species.setHashMap(3, machineMoves);
 				
-				//TODO PARSE FOR ABILITIES
+				for (int j = 1; j < 4; j++) {
+					rs = adapter.makeQuery("SELECT * FROM pokemon_abilities WHERE " +
+							"pokemon_id = '" + String.valueOf(i) + "' AND slot = '" + String.valueOf(j) + "'");
+					while (rs.next()) {
+						species.setSingleAbility(Ability.getAbility(rs.getInt("ability_id")), j-1);
+					}
+				}
 
 				speciesArray[i] = species;
 			}
+			rs.close();
+			adapter.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return speciesArray;
 	}
 

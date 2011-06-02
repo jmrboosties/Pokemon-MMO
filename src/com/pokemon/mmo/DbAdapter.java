@@ -25,7 +25,15 @@ public class DbAdapter {
 			e.printStackTrace();
 			System.out.println("Problem in query");
 		}
-
 		return rs;
+	}
+	
+	public void close() {
+		try {
+			mStat.close();
+			mConn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -5,6 +5,10 @@ import java.sql.ResultSet;
 public class AbilityDBParser {
 	
 	public static void main(String[] args) {
+		
+	}
+	
+	public static void enumCreator() {
 		String result = "NONE(0, '---'), ";
 		DbAdapter adapter;
 		ResultSet rs;

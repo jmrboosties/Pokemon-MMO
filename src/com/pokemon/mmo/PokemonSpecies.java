@@ -35,6 +35,9 @@ public class PokemonSpecies {
 		for (int i = 0; i < mTypeArray.length; i++) {
 			mTypeArray[i] = Enums.Types.NONE;
 		}
+		for (int i = 0; i < mAbilities.length; i++) {
+			mAbilities[i] = Enums.Ability.NONE;
+		}
 		mGenderRatio = -1;
 		mDexNum = 0;
 	}
@@ -64,13 +67,19 @@ public class PokemonSpecies {
 	}
 
 	public void setTypes(Types[] types) {
-		for (int i = 0; i < types.length; i++) {
-			mTypeArray[i] = types[i];
-		}
+		this.mTypeArray = types;
+	}
+	
+	public void setTypeSlot1(Types types) {
+		this.mTypeArray[0] = types;
+	}
+	
+	public void setTypeSlot2(Types types) {
+		this.mTypeArray[1] = types;
 	}
 
 	public Types getType(int slot) {
-		return mTypeArray[slot];
+		return mTypeArray[slot - 1];
 	}
 
 	public Types[] getTypeArray() {
