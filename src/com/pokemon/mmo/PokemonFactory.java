@@ -4,7 +4,7 @@
 
 package com.pokemon.mmo;
 
-import com.pokemon.mmo.Enums.Abilities;
+import com.pokemon.mmo.Enums.Ability;
 import com.pokemon.mmo.Enums.Gender;
 import com.pokemon.mmo.Enums.Stats;
 
@@ -15,8 +15,8 @@ public class PokemonFactory {
 		Pokemon pokemon = new Pokemon(species);
 
 		pokemon.setLevel(1);
-		pokemon.setGender(Gender.MALE); // TODO RANDOM TAKING RATIO INTO ACCOUNT
-		pokemon.setAbility(Abilities.OVERGROW); // TODO RANDOM FOR SPECIES
+		pokemon.setGender(Gender.GENDERLESS); // TODO RANDOM TAKING RATIO INTO ACCOUNT
+		pokemon.setAbility(Ability.NONE); // TODO RANDOM FOR SPECIES
 
 		pokemon.setSlot1(Main.mMoveArray[1]);
 
@@ -33,9 +33,9 @@ public class PokemonFactory {
 
 		Pokemon pokemon = new Pokemon(species);
 
-		pokemon.setLevel(8);
-		pokemon.setGender(Gender.MALE); // TODO RANDOM TAKING RATIO INTO ACCOUNT
-		pokemon.setAbility(Abilities.OVERGROW); // TODO RANDOM FOR SPECIES
+		pokemon.setLevel(1);
+		pokemon.setGender(Gender.GENDERLESS); // TODO RANDOM TAKING RATIO INTO ACCOUNT
+		pokemon.setAbility(Ability.NONE); // TODO RANDOM FOR SPECIES
 
 		pokemon.setSlot1(Main.mMoveArray[1]);
 

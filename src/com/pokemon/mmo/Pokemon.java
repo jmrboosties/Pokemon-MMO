@@ -2,7 +2,7 @@ package com.pokemon.mmo;
 
 import java.util.Random;
 
-import com.pokemon.mmo.Enums.Abilities;
+import com.pokemon.mmo.Enums.Ability;
 import com.pokemon.mmo.Enums.Gender;
 import com.pokemon.mmo.Enums.Stats;
 import com.pokemon.mmo.Enums.Status;
@@ -47,7 +47,7 @@ public class Pokemon {
 	private int mCurrentHP;
 	private Status mStatus;
 	private int mTurnsInBattle;
-	private Abilities mAbility;
+	private Ability mAbility;
 
 	public Pokemon(PokemonSpecies species) {
 		this.mNickName = species.getSpeciesName();
@@ -91,12 +91,12 @@ public class Pokemon {
 		return mLevel;
 	}
 
-	public void setAbility(Abilities ability) {
+	public void setAbility(Ability ability) {
 		this.mAbility = ability;
 		PokemonFactory.respecStats(this, mSpecies);
 	}
 
-	public Abilities getAbility() {
+	public Ability getAbility() {
 		return mAbility;
 	}
 

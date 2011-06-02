@@ -3,7 +3,7 @@ package com.pokemon.mmo;
 import java.util.Random;
 
 import com.pokemon.mmo.BattleStats.Sport;
-import com.pokemon.mmo.Enums.Abilities;
+import com.pokemon.mmo.Enums.Ability;
 import com.pokemon.mmo.Enums.MoveKinds;
 import com.pokemon.mmo.Enums.Moves;
 import com.pokemon.mmo.Enums.Status;
@@ -122,13 +122,11 @@ public class GameFields {
 			}
 			break;
 
-		// TODO ITEMS LIKE MAGNET, EARTH PLATE, ROSE INCENSE, ETC. BONUS IS 1.2
+		// TODO ITEMS LIKE MAGNET, EARTH PLATE, ROSE INCENSE, ETC. BONUS IS 1.2. Do this once items are in.
+			//PERHAPS DO THIS WHOLE THING IN A SEPARATE CLASS OR METHOD, ITS KIND OF BIG.
 
 		case Items.ADAMANT_ORB:
-			if (attacker.getSpecies().getDexNumber() == 487 /*
-															 * DIGALA, FIX THE
-															 * INT
-															 */) {
+			if (attacker.getSpecies().getDexNumber() == 483) {
 				if (move.getType() == Types.STEEL
 						|| move.getType() == Types.DRAGON) {
 					it = (long) 1.2;
@@ -137,10 +135,7 @@ public class GameFields {
 			break;
 
 		case Items.LUSTROUS_ORB:
-			if (attacker.getSpecies().getDexNumber() == 470 /*
-															 * PALKIA, FIX THE
-															 * INT
-															 */
+			if (attacker.getSpecies().getDexNumber() == 484
 					&& (move.getType() == Types.WATER || move.getType() == Types.DRAGON)) {
 				it = (long) 1.2;
 			}
@@ -181,7 +176,7 @@ public class GameFields {
 		/** UA variable */
 
 		switch (attacker.getAbility()) {
-		case RIVALRY: /* TODO Rivalry Ability */
+		case RIVALRY :
 			if (attacker.getGender() == defender.getGender()) {
 				ua = (long) 1.25;
 			} else if (attacker.getGender() != defender.getGender()) {
@@ -190,41 +185,41 @@ public class GameFields {
 				ua = 1;
 			}
 			break;
-		case RECKLESS: // TODO RECKLESS ABILITY
+		case RECKLESS:
 			if (move.isRecoil()) {
 				ua = (long) 1.2;
 			}
 			break;
-		case IRON_FIST: // TODO IRON FIST ABILITY
+		case IRON_FIST: 
 			if (move.isPunching()) {
 				ua = (long) 1.2;
 			}
 			break;
-		case BLAZE: // TODO BLAZE ABILITY
+		case BLAZE:
 			if (attacker.getCurrentHealthRatio() < 0.3
 					&& move.getType() == Types.FIRE) {
 				ua = (long) 1.5;
 			}
 			break;
-		case TORRENT: // TODO TORRENT ABILITY
+		case TORRENT:
 			if (attacker.getCurrentHealthRatio() < 0.3
 					&& move.getType() == Types.WATER) {
 				ua = (long) 1.5;
 			}
 			break;
-		case OVERGROW: // TODO OVERGROW ABILITY
+		case OVERGROW:
 			if (attacker.getCurrentHealthRatio() < 0.3
 					&& move.getType() == Types.GRASS) {
 				ua = (long) 1.5;
 			}
 			break;
-		case SWARM: // TODO SWARM ABILITY
+		case SWARM: 
 			if (attacker.getCurrentHealthRatio() < 0.3
 					&& move.getType() == Types.BUG) {
 				ua = (long) 1.5;
 			}
 			break;
-		case TECHNICIAN: // TODO TECHNICIAN ABILITY
+		case TECHNICIAN: 
 			if (move.getBasePower() <= 60) {
 				ua = (long) 1.5;
 			}
@@ -234,17 +229,17 @@ public class GameFields {
 		/** FA variable */
 
 		switch (defender.getAbility()) {
-		case THICK_FAT: // TODO THICKFAT ABILITY
+		case THICK_FAT: 
 			if (move.getType() == Types.FIRE || move.getType() == Types.ICE) {
 				fa = (long) 0.5;
 			}
 			break;
-		case HEATPROOF: // TODO HEATPROOF ABILITY
+		case HEATPROOF: 
 			if (move.getType() == Types.FIRE) {
 				fa = (long) 0.5;
 			}
 			break;
-		case DRY_SKIN: // TODO DRY SKIN ABILITY
+		case DRY_SKIN: 
 			if (move.getType() == Types.FIRE) {
 				fa = (long) 1.25;
 			}
@@ -274,22 +269,22 @@ public class GameFields {
 				sm = 2 / (attacker.getStatChanges(1) + 2);
 			}
 
-			if (defender.getAbility() == Abilities.UNAWARE
-					&& attacker.getStatChanges(1) > 0/* TODO UNAWARE ABILITY */) {
+			if (defender.getAbility() == Ability.UNAWARE
+					&& attacker.getStatChanges(1) > 0) {
 				sm = 1;
 			}
 
 			switch (attacker.getAbility()) {
-			case PURE_POWER: // TODO PURE POWER ABILITY
-			case HUGE_POWER: // TODO HUGE POWER ABILITY
+			case PURE_POWER:
+			case HUGE_POWER:
 				am = 2;
 				break;
-			case FLOWER_GIFT: // TODO FLOWER GIFT
+			case FLOWER_GIFT:
 				if (stats.getWeather() == Weather.SUNNY_DAY) {
 					am = (long) 1.5;
 				}
 				break;
-			case GUTS: // TODO GUTS
+			case GUTS:
 				if (attacker.isAffectedByStatusAilment() /*
 														 * TODO THIS IS SUPPOSED
 														 * TO BE BURN, SLEEP,
@@ -298,10 +293,10 @@ public class GameFields {
 					am = (long) 1.5;
 				}
 				break;
-			case HUSTLE: // TODO HUSTLE
+			case HUSTLE:
 				am = (long) 1.5;
 				break;
-			case SLOW_START: // TODO SLOW START
+			case SLOW_START:
 				if (attacker.getTurnsInBattle() < 5) {
 					am = (long) 0.5;
 				}
@@ -313,17 +308,13 @@ public class GameFields {
 				im = (long) 1.5;
 				break;
 			case Items.LIGHT_BALL:
-				if (attacker.getSpecies().getDexNumber() == 25 /* TODO Pikachu */) {
+				if (attacker.getSpecies().getDexNumber() == 25) {
 					im = 2;
 				}
 				break;
 			case Items.THICK_CLUB:
-				if (attacker.getSpecies().getDexNumber() == 40
-						|| attacker.getSpecies().getDexNumber() == 41 /*
-																	 * TODO
-																	 * CUBONE OR
-																	 * MAROWAK
-																	 */) {
+				if (attacker.getSpecies().getDexNumber() == 104
+						|| attacker.getSpecies().getDexNumber() == 105) {
 					im = 2;
 				}
 				break;
@@ -338,13 +329,13 @@ public class GameFields {
 				sm = 2 / (attacker.getStatChanges(3) + 2);
 			}
 
-			if (defender.getAbility() == Abilities.UNAWARE
-					&& attacker.getStatChanges(3) > 0/* TODO UNAWARE ABILITY */) {
+			if (defender.getAbility() == Ability.UNAWARE
+					&& attacker.getStatChanges(3) > 0) {
 				sm = 1;
 			}
 
 			switch (attacker.getAbility()) {
-			case SOLAR_POWER: // TODO SOLAR POWER ABILITY
+			case SOLAR_POWER:
 				if (stats.getWeather() == Weather.SUNNY_DAY) {
 					am = (long) 1.5;
 				}
@@ -355,23 +346,18 @@ public class GameFields {
 				im = (long) 1.5;
 				break;
 			case Items.LIGHT_BALL:
-				if (attacker.getSpecies().getDexNumber() == 25 /* TODO PIKACHU */) {
+				if (attacker.getSpecies().getDexNumber() == 25) {
 					im = 2;
 				}
 				break;
 			case Items.SOUL_DEW:
-				if (attacker.getSpecies().getDexNumber() == 367
-						|| attacker.getSpecies().getDexNumber() == 368 /*
-																		 * TODO
-																		 * LATIOS
-																		 * AND
-																		 * LATIAS
-																		 */) {
+				if (attacker.getSpecies().getDexNumber() == 380
+						|| attacker.getSpecies().getDexNumber() == 381) {
 					im = (long) 1.5;
 				}
 				break;
 			case Items.DEEPSEATOOTH:
-				if (attacker.getSpecies().getDexNumber() == 300 /* TODO CLAMPERL */) {
+				if (attacker.getSpecies().getDexNumber() == 366) {
 					im = 2;
 				}
 				break;
@@ -401,23 +387,20 @@ public class GameFields {
 				sm = 2 / (defender.getStatChanges(2) + 2);
 			}
 
-			if (attacker.getAbility() == Abilities.UNAWARE
-					&& defender.getStatChanges(2) > 0/* TODO UNAWARE ABILITY */) {
+			if (attacker.getAbility() == Ability.UNAWARE
+					&& defender.getStatChanges(2) > 0) {
 				sm = 1;
 			}
 			// mod = ability x item x sandstorm for rock
 
-			if (defender.getAbility() == Abilities.FLOWER_GIFT
-					&& stats.getWeather() == Weather.SUNNY_DAY /*
-																 * TODO FLOWER
-																 * GIFT
-																 */) {
+			if (defender.getAbility() == Ability.FLOWER_GIFT
+					&& stats.getWeather() == Weather.SUNNY_DAY) {
 				mod = 1.5;
 			}
 
 			switch (defender.getHeldItem()) {
 			case Items.METAL_POWDER:
-				if (defender.getSpecies().getDexNumber() == 126 /* TODO DITTO */) {
+				if (defender.getSpecies().getDexNumber() == 132) {
 					mod = (mod * 1.5);
 				}
 				break;
@@ -433,44 +416,33 @@ public class GameFields {
 			stat = defender.getSpDefense();
 
 			if (defender.getStatChanges(4) > 0) {
-				sm = (defender.getStatChanges(4) + 2) / 2; // TODO 4 IS THE
-															// SPECIAL DEFENSE
-															// COLUMN, FOR NOW
+				sm = (defender.getStatChanges(4) + 2) / 2;
 			} else if (defender.getStatChanges(4) < 0) {
 				sm = 2 / (defender.getStatChanges(4) + 2);
 			}
 
-			if (attacker.getAbility() == Abilities.UNAWARE
-					&& defender.getStatChanges(4) > 0/* TODO UNAWARE ABILITY */) {
+			if (attacker.getAbility() == Ability.UNAWARE
+					&& defender.getStatChanges(4) > 0) {
 				sm = 1;
 			}
-			if (defender.getAbility() == Abilities.FLOWER_GIFT
-					&& stats.getWeather() == Weather.SUNNY_DAY /*
-																 * TODO flower
-																 * gift and
-																 * sunny day
-																 */) {
+			if (defender.getAbility() == Ability.FLOWER_GIFT
+					&& stats.getWeather() == Weather.SUNNY_DAY) {
 				mod = 1.5;
 			}
 			switch (defender.getHeldItem()) {
 			case Items.METAL_POWDER:
-				if (defender.getSpecies().getDexNumber() == 120 /* TODO Ditto */) {
+				if (defender.getSpecies().getDexNumber() == 132) {
 					mod = (mod * 1.5);
 				}
 				break;
 			case Items.SOUL_DEW:
-				if (defender.getSpecies().getDexNumber() == 340
-						|| defender.getSpecies().getDexNumber() == 341 /*
-																		 * TODO
-																		 * latios
-																		 * and
-																		 * latias
-																		 */) {
+				if (defender.getSpecies().getDexNumber() == 380
+						|| defender.getSpecies().getDexNumber() == 381) {
 					mod = (mod * 1.5);
 				}
 				break;
 			case Items.DEEPSEASCALE:
-				if (defender.getSpecies().getDexNumber() == 320 /* TODO CLAMPERL */) {
+				if (defender.getSpecies().getDexNumber() == 366) {
 					mod = (mod * 1.5);
 				}
 				break;
@@ -486,7 +458,8 @@ public class GameFields {
 	}
 
 	private static int calcRandom() {
-		// TODO NOT UNIFORM READ UP ON THIS
+		// TODO NOT UNIFORM READ UP ON THIS. There is a chart showing the spread of the R varaible in the formula.
+		// IT RANGES FROM .85 - 1 BUT MORE LIKELY TO OCCUR IN CENTER...
 		Random generator = new Random();
 		return generator.nextInt(16) + 85;
 	}
@@ -536,7 +509,9 @@ public class GameFields {
 				break;
 			}
 		}
-		if (attacker.hasFlashFire()/* TODO Flash fire */) {
+		if (attacker.hasFlashFire() /*TODO create a buff system in the pokemon class which returns 
+		 								an array of buffs (we could do the buffs as enums) This is useful
+		 								all over our code.*/) {
 			ff = 1.5;
 		}
 
@@ -550,7 +525,7 @@ public class GameFields {
 			mod2 = mod2 * 1.5;
 		}
 		if (attacker.getHeldItem() == Items.METRONOME) {
-			// TODO fuck if i know
+			// TODO fuck if i know, will have to keep track of move history I guess. save this for later lol
 		}
 		if (move.getMoveEnum() == Moves.ME_FIRST) {
 			mod2 = mod2 * 1.5;
@@ -566,17 +541,16 @@ public class GameFields {
 		double tl = 1;
 		double trb = 1;
 		// Mod3 = SRF × EB × TL × TRB
-		if (defender.getAbility() == Abilities.SOLID_ROCK
-				|| defender.getAbility() == Abilities.FILTER) {
+		if (defender.getAbility() == Ability.SOLID_ROCK
+				|| defender.getAbility() == Ability.FILTER) {
 			srf = 0.75;
 		}
 		if (attacker.getHeldItem() == Items.EXPERT_BELT && (effectiveness >= 2)) {
 			eb = 1.2;
 		}
-		/*
-		 * if(effectiveness < 1) { THIS IS A MESS FIGURE OUT TINTED LENS tl = 2;
-		 * }
-		 */
+		if(effectiveness > 1 && attacker.getAbility() == Ability.TINTED_LENS) {
+			tl = 2;
+		}
 		if (defender.getHeldItem() <= 200 && defender.getHeldItem() >= 217) {
 			// TODO method to determine super effectiveness from type & berry
 			// held, if matches...
@@ -588,21 +562,15 @@ public class GameFields {
 
 	private static int calcCritHit(Pokemon attacker, Pokemon defender) {
 		int critMult = 1;
-		if (defender.getAbility() == Abilities.BATTLE_ARMOR /*
-															 * 50 is arbitrary,
-															 * ability int for
-															 * Battle Armor
-															 */) {
+		if (defender.getAbility() == Ability.BATTLE_ARMOR) {
 			return critMult;
 		}
 		Random generator = new Random();
-		long ran = (long) generator.nextFloat() * 100;
-		if (ran < 6.25) {
+		double ran = (double) generator.nextDouble() * 100;
+		//TODO ability super luck and other crit chance modifiers
+		if (ran <= 6.25) {
 			critMult = 2;
-			if (attacker.getAbility() == Abilities.SNIPER /*
-														 * 100 is arbitrary, int
-														 * for ability Sniper
-														 */) {
+			if (attacker.getAbility() == Ability.SNIPER) {
 				critMult = 3;
 			}
 		}

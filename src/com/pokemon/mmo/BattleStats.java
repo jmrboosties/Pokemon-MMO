@@ -146,22 +146,26 @@ public class BattleStats {
 
 	protected static double getSpeedAbilityMod(Pokemon pokemon) {
 		double sm = 1;
-
+		//TODO use Bulbapedia to find abilities which affect pokemon speed, code accordingly.
 		return sm;
 	}
 
 	protected static double getSpeedItemMod(Pokemon pokemon) {
-		// TODO Auto-generated method stub
+		// TODO Work on this later, we don't have items yet.
 		return 1;
 	}
 
 	protected static double getPayalyzeMod(Pokemon pokemon) {
-		// TODO Auto-generated method stub
-		return 1;
+		if(pokemon.getStatus() == Status.PARALYZE) {
+			return 0.5;
+		}
+		else {
+			return 1;
+		}
 	}
 
 	protected int getTailwindMod(Pokemon pokemon) {
-		// TODO Auto-generated method stub
+		// TODO Need to work in Tailwind into battle, for later.
 		return 1;
 	}
 

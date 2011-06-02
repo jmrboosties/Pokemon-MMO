@@ -2,7 +2,7 @@ package com.pokemon.mmo;
 
 import java.util.HashMap;
 
-import com.pokemon.mmo.Enums.Abilities;
+import com.pokemon.mmo.Enums.Ability;
 import com.pokemon.mmo.Enums.Types;
 
 public class PokemonSpecies {
@@ -22,7 +22,7 @@ public class PokemonSpecies {
 	private HashMap[] mMoveHashMaps = new HashMap[4]; // 0 is level up, 1 is
 														// machines, 2 is egg
 														// moves, 3 tutor moves.
-	private Abilities[] mAbilities = new Abilities[3]; // 0 and 1 are regular
+	private Ability[] mAbilities = new Ability[3]; // 0 and 1 are regular
 														// abilities, 2 is dream
 														// world.
 
@@ -91,19 +91,19 @@ public class PokemonSpecies {
 		return mStats;
 	}
 
-	public void setAbilityArray(Abilities[] array) {
+	public void setAbilityArray(Ability[] array) {
 		this.mAbilities = array;
 	}
 
-	public void setSingleAbility(Abilities ability, int index) {
+	public void setSingleAbility(Ability ability, int index) {
 		this.mAbilities[index] = ability;
 	}
 
-	public Abilities getAbility(int index) {
+	public Ability getAbility(int index) {
 		return mAbilities[index];
 	}
 
-	public Abilities[] getAbilityArray() {
+	public Ability[] getAbilityArray() {
 		return mAbilities;
 	}
 
