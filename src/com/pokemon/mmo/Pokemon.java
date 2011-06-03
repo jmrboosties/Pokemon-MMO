@@ -46,6 +46,7 @@ public class Pokemon {
 
 	private int mCurrentHP;
 	private Status mStatus;
+	//private SecondaryStatus[] mSecondaryStatus;
 	private int mTurnsInBattle;
 	private Ability mAbility;
 

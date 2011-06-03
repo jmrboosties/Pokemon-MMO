@@ -25,7 +25,7 @@ public class Main {
 			}
 			int dexNum = Integer.parseInt(input);
 			if(!(0<dexNum) || !(dexNum<650)) {
-				System.out.println("Try again, don't fuck around. Pokedex goes to 650.");
+				System.out.println("Try again, don't fuck around. Pokedex goes to 649.");
 			}
 			else {
 				dexCheck(dexNum);
@@ -35,7 +35,12 @@ public class Main {
 	
 	private static void dexCheck(int dexNum) {
 		PokemonSpecies species = mSpeciesArray[dexNum];
-		System.out.println(species.getSpeciesName() + " is a " + species.getType(1).getName() + " and " + species.getType(2).getName() + " pokemon.");
+		if(!species.isDualType()) {
+			System.out.println(species.getSpeciesName() + " is a " + species.getType(1).getName() + " pokemon.");
+		}
+		else {
+			System.out.println(species.getSpeciesName() + " is a " + species.getType(1).getName() + " and " + species.getType(2).getName() + " pokemon.");
+		}
 		String abilityMsg = species.getSpeciesName() + " has the following abilities: ";
 		for (Ability ability : species.getAbilityArray()) {
 			if(ability != Ability.NONE) {

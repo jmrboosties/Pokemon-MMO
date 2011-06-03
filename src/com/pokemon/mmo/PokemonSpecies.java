@@ -85,6 +85,13 @@ public class PokemonSpecies {
 	public Types[] getTypeArray() {
 		return mTypeArray;
 	}
+	
+	public boolean isDualType() {
+		if(mTypeArray[1] == Types.NONE) {
+			return true;
+		}
+		return false;
+	}
 
 	public void setStats(int[] stats) {
 		for (int i = 0; i < stats.length; i++) {
