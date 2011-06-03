@@ -50,6 +50,7 @@ public class PokemonSpeciesFactory {
 					chars[1] = (rs.getInt("weight") / 10);
 					chars[2] = rs.getInt("color_id");
 					chars[3] = rs.getInt("pokemon_shape_id");
+					species.setGenderRatio(parseGenderRatioCode(rs.getInt("gender_rate")));
 				}
 				
 				rs = adapter.makeQuery("SELECT * FROM pokemon_types WHERE pokemon_id = '" +
@@ -107,7 +108,12 @@ public class PokemonSpeciesFactory {
 					rs = adapter.makeQuery("SELECT * FROM pokemon_abilities WHERE " +
 							"pokemon_id = '" + String.valueOf(i) + "' AND slot = '" + String.valueOf(j) + "'");
 					while (rs.next()) {
-						species.setSingleAbility(Ability.getAbility(rs.getInt("ability_id")), j-1);
+						if(rs.getInt("is_dream") == 1) {
+							species.setDreamAbility(Ability.getAbility(rs.getInt("ability_id")));
+						}
+						else {
+							species.setSingleAbility(Ability.getAbility(rs.getInt("ability_id")), j-1);
+						}
 					}
 				}
 
@@ -119,6 +125,26 @@ public class PokemonSpeciesFactory {
 			e.printStackTrace();
 		}
 		return speciesArray;
+	}
+	
+	private static double parseGenderRatioCode(int i) {
+		switch(i) {
+		case -1 :
+			return -1;
+		case 0 :
+			return 100;
+		case 1 :
+			return 87.5;
+		case 2 :
+			return 75;
+		case 4 :
+			return 50;
+		case 6 :
+			return 25;
+		case 8 :
+			return 0;
+		}
+		throw new IllegalArgumentException("Invalid int code, you really shouldn't see this.");
 	}
 
 }

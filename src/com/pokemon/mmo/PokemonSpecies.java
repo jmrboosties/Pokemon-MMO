@@ -22,9 +22,8 @@ public class PokemonSpecies {
 	private HashMap[] mMoveHashMaps = new HashMap[4]; // 0 is level up, 1 is
 														// machines, 2 is egg
 														// moves, 3 tutor moves.
-	private Ability[] mAbilities = new Ability[3]; // 0 and 1 are regular
-														// abilities, 2 is dream
-														// world.
+	private Ability[] mAbilities = new Ability[2];
+	private Ability mDreamWorldAbility;
 
 	public PokemonSpecies() {
 		mPokemonName = "Missingno.";
@@ -38,6 +37,7 @@ public class PokemonSpecies {
 		for (int i = 0; i < mAbilities.length; i++) {
 			mAbilities[i] = Enums.Ability.NONE;
 		}
+		mDreamWorldAbility = Ability.NONE;
 		mGenderRatio = -1;
 		mDexNum = 0;
 	}
@@ -114,6 +114,21 @@ public class PokemonSpecies {
 
 	public Ability[] getAbilityArray() {
 		return mAbilities;
+	}
+	
+	public void setDreamAbility(Ability ability) {
+		this.mDreamWorldAbility = ability;
+	}
+	
+	public Ability getDreamAbility() {
+		return mDreamWorldAbility;
+	}
+	
+	public boolean hasDreamAbility() {
+		if(mDreamWorldAbility != Ability.NONE) {
+			return true;
+		}
+		return false;
 	}
 
 	public void setCharacteristics(int[] chars) {

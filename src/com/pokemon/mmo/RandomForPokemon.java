@@ -14,5 +14,4 @@ public class RandomForPokemon extends Random {
 			return false;
 		}
 	}
-
 }

@@ -4,6 +4,8 @@
 
 package com.pokemon.mmo;
 
+import java.util.Random;
+
 import com.pokemon.mmo.Enums.Ability;
 import com.pokemon.mmo.Enums.Gender;
 import com.pokemon.mmo.Enums.Stats;
@@ -15,8 +17,8 @@ public class PokemonFactory {
 		Pokemon pokemon = new Pokemon(species);
 
 		pokemon.setLevel(1);
-		pokemon.setGender(Gender.GENDERLESS); // TODO RANDOM TAKING RATIO INTO ACCOUNT
-		pokemon.setAbility(Ability.NONE); // TODO RANDOM FOR SPECIES
+		pokemon.setGender(determineGender(species));
+		pokemon.setAbility(determineAbility(species));		
 
 		pokemon.setSlot1(Main.mMoveArray[1]);
 
@@ -118,6 +120,58 @@ public class PokemonFactory {
 			pokemon.setStats(setStat(pokemon, species, stat), stat);
 		}
 		pokemon.setCurrentHP(pokemon.getHPStat());
+	}
+	
+	private static Ability determineAbility(PokemonSpecies species) {
+		Random generator = new Random();
+		int numOfAbilities = 0;
+		Ability[] abilities = species.getAbilityArray();
+		for (int i = 0; i < abilities.length; i++) {
+			if(abilities[i] != Ability.NONE) {
+				numOfAbilities++;
+			}
+		}
+		boolean hasDream = species.hasDreamAbility();
+		if(!hasDream) {
+			int odds = 100 / numOfAbilities;
+			int r = generator.nextInt(100) + 1;
+			if(r <= odds) {
+				return abilities[0];
+			}
+			else {
+				return abilities[1];
+			}
+		}
+		else {
+			int odds = 90 / numOfAbilities;
+			int r = generator.nextInt(100) + 1;
+			if(r <= 10) {
+				return species.getDreamAbility();
+			}
+			else if(r <= odds + 10) {
+				return abilities[0];
+			}
+			else {
+				return abilities[1];
+			}
+		}
+	}
+	
+	private static Gender determineGender(PokemonSpecies species) {
+		double ratio = species.getGenderRatio();
+		if(ratio == -1) {
+			return Gender.GENDERLESS;
+		}
+		else {
+			Random generator = new Random();
+			double r = generator.nextInt(100) + 1;
+			if(r <= ratio) {
+				return Gender.MALE;
+			}
+			else {
+				return Gender.FEMALE;
+			}
+		}
 	}
 
 }

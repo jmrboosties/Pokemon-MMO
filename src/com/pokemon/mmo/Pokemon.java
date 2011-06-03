@@ -55,8 +55,8 @@ public class Pokemon {
 		this.mGender = Gender.GENDERLESS; // CHANGE THIS TO JUST DEFAULT TO
 											// RANDOM BETWEEN MALE AND FEMALE
 											// FOLLOWING GENDER RATIO
-		this.mType1 = species.getType(0);
-		this.mType2 = species.getType(1);
+		this.mType1 = species.getType(1);
+		this.mType2 = species.getType(2);
 
 		Random generator = new Random();
 

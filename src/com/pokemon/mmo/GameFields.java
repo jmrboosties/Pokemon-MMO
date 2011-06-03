@@ -42,13 +42,13 @@ public class GameFields {
 		}
 		double retValue = 0.0;
 		if(defenderType2 == Types.NONE){
-			retValue = typeMatrix[moveType.id][defenderType1.id];
+			retValue = typeMatrix[moveType.getId()][defenderType1.getId()];
 		}
 		else if(defenderType1 == Types.NONE) {
-			retValue = typeMatrix[moveType.id][defenderType2.id];
+			retValue = typeMatrix[moveType.getId()][defenderType2.getId()];
 		}
 		else{
-			retValue = typeMatrix[moveType.id][defenderType1.id]*typeMatrix[moveType.id][defenderType2.id];
+			retValue = typeMatrix[moveType.getId()][defenderType1.getId()]*typeMatrix[moveType.getId()][defenderType2.getId()];
 		}
 		return retValue;
 	}

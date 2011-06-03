@@ -123,7 +123,17 @@ public class Enums {
 	}
 
 	public static enum Gender {
-		GENDERLESS, MALE, FEMALE
+		GENDERLESS("Genderless"), MALE("Male"), FEMALE("Female");
+		
+		private final String fName;
+		
+		private Gender(String name) {
+			this.fName = name;
+		}
+		
+		public String getName() {
+			return fName;
+		}
 	}
 
 	public static enum Moves {

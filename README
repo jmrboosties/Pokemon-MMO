@@ -14,11 +14,6 @@ our db.
 Now that that's out of the way, time for to do list and progress!
 
 TODO:
-- Clean up the DB file for better access to information. This includes getting
-  rid of all pre-Gen V data in the pokemon_moves table, as well as all
-  non-English data in all tables which support multiple languages.
-- Work into the MoveFactory and PokemonSpeciesFactory classes, create arrays of
-  both these objects for quick access in-game.
 - Our goal right now is to establish a working battle system that can handle any
   Pokemon with any moves, held items, etc.
 
@@ -29,6 +24,23 @@ PROGRESS:
 - Battle math is near-complete. (Requires some item implementation still)
 - PokemonFactory class complete. Inserting a species into the class along with
   EV/IV values will provide a pokemon with correct stats.
+  
+DATABASE STRUCTURE FOR GENDER RATIOS:
+-------------------------------------
+Unfortunatley, veekun's pokedex db does not include a table detailing the meaning
+behind the values for gender ratios in the 'pokemon' table. The following is what I
+found to be correct, if there is any discrepency please adjust accordingly, but this
+should be right:
+
+-1 = Genderless
+0 = Always male
+1 = 87.5% male
+2 = 75% male
+4 = 50% - 50%
+6 = 75% female
+8 = Always female
+
+Note that there is no 87.5% female, I checked and this is not a mistake.
 
 STRUCTURE:
 ----------
