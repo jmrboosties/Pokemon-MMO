@@ -1,8 +1,11 @@
 package com.pokemon.mmo;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import com.pokemon.mmo.Enums.Ability;
+import com.pokemon.mmo.Enums.EggGroup;
 import com.pokemon.mmo.Enums.Types;
 
 public class PokemonSpecies {
@@ -24,6 +27,8 @@ public class PokemonSpecies {
 														// moves, 3 tutor moves.
 	private Ability[] mAbilities = new Ability[2];
 	private Ability mDreamWorldAbility;
+	
+	private List<EggGroup> mEggGroups = new LinkedList<EggGroup>();
 
 	public PokemonSpecies() {
 		mPokemonName = "Missingno.";
@@ -88,9 +93,9 @@ public class PokemonSpecies {
 	
 	public boolean isDualType() {
 		if(mTypeArray[1] == Types.NONE) {
-			return true;
+			return false;
 		}
-		return false;
+		return true;
 	}
 
 	public void setStats(int[] stats) {
@@ -136,6 +141,14 @@ public class PokemonSpecies {
 			return true;
 		}
 		return false;
+	}
+	
+	public void addEggGroup(EggGroup group) {
+		mEggGroups.add(group);
+	}
+	
+	public List<EggGroup> getEggGroupList() {
+		return mEggGroups;
 	}
 
 	public void setCharacteristics(int[] chars) {

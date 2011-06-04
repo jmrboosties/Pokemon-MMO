@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 
 import com.pokemon.mmo.Enums.Ability;
+import com.pokemon.mmo.Enums.EggGroup;
 import com.pokemon.mmo.Enums.Types;
 
 public class PokemonSpeciesFactory {
@@ -116,7 +117,13 @@ public class PokemonSpeciesFactory {
 						}
 					}
 				}
-
+				
+				rs = adapter.makeQuery("SELECT * FROM pokemon_egg_groups WHERE pokemon_id = '" + 
+						String.valueOf(i) + "'");
+				while(rs.next()) {
+					species.addEggGroup(EggGroup.getEggGroup(rs.getInt("egg_group_id")));
+				}
+				
 				speciesArray[i] = species;
 			}
 			rs.close();

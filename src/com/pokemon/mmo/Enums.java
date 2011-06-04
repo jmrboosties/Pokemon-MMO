@@ -91,6 +91,39 @@ public class Enums {
 			return name;
 		}
 	}
+	
+	public static enum EggGroup {
+		MONSTER(1, "Monster"), WATER_1(2, "Water 1"), BUG(3, "Bug"), FLYING(4, "Flying"), GROUND(5, "Ground"), 
+		FAIRY(6, "Fairy"), PLANT(7, "Plant"), HUMANSHAPE(8, "Humanshape"), WATER_3(9, "Water 3"), MINERAL(10, "Mineral"), 
+		INDETERMINATE(11, "Indeterminate"), WATER_2(12, "Water 2"), DITTO(13, "Ditto"), DRAGON(14, "Dragon"), 
+		NO_EGGS(15, "No Eggs");
+		
+		private final int fId;
+		private final String fName;
+		
+		private EggGroup(int id, String name) {
+			this.fId = id;
+			this.fName = name;
+		}
+		
+		public int getId() {
+			return fId;
+		}
+		
+		public String getName() {
+			return fName;
+		}
+		
+		public static EggGroup getEggGroup(int id) {
+			for (EggGroup group : EggGroup.values()) {
+				if(id == group.fId) {
+					return group;
+				}
+			}
+			return NO_EGGS;
+		}
+
+	}
 
 	public static enum MoveKinds {
 		NONE(0, "None"), PHYSICAL(1, "Physical"), SPECIAL(2, "Special"), STATUS(3, "Status");

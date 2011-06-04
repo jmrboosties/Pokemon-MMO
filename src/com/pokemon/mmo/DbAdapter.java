@@ -12,7 +12,7 @@ public class DbAdapter {
 
 	public DbAdapter() throws Exception {
 		Class.forName("org.sqlite.JDBC").newInstance();
-		mConn = DriverManager.getConnection("jdbc:sqlite:pokemon.db");
+		mConn = DriverManager.getConnection("jdbc:sqlite:assets/pokemon.db");
 		mStat = mConn.createStatement();
 	}
 

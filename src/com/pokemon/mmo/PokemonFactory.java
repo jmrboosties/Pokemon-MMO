@@ -4,6 +4,7 @@
 
 package com.pokemon.mmo;
 
+import java.util.HashMap;
 import java.util.Random;
 
 import com.pokemon.mmo.Enums.Ability;
@@ -19,9 +20,7 @@ public class PokemonFactory {
 		pokemon.setLevel(1);
 		pokemon.setGender(determineGender(species));
 		pokemon.setAbility(determineAbility(species));		
-
-		pokemon.setSlot1(Main.mMoveArray[1]);
-
+		
 		pokemon.setHPStat(setHPStat(pokemon, species));
 		for (Stats stat : Stats.values()) {
 			pokemon.setStats(setStat(pokemon, species, stat), stat);
@@ -31,15 +30,13 @@ public class PokemonFactory {
 		return pokemon;
 	}
 	
-	public static Pokemon setPokemonStats(PokemonSpecies species, int level, Gender gender) {
+	public static Pokemon setPokemonStats(PokemonSpecies species, int level, Gender gender, Ability ability) {
 
 		Pokemon pokemon = new Pokemon(species);
 
-		pokemon.setLevel(1);
-		pokemon.setGender(Gender.GENDERLESS); // TODO RANDOM TAKING RATIO INTO ACCOUNT
-		pokemon.setAbility(Ability.NONE); // TODO RANDOM FOR SPECIES
-
-		pokemon.setSlot1(Main.mMoveArray[1]);
+		pokemon.setLevel(level);
+		pokemon.setGender(gender);
+		pokemon.setAbility(ability);
 
 		pokemon.setHPStat(setHPStat(pokemon, species));
 		
@@ -120,6 +117,7 @@ public class PokemonFactory {
 			pokemon.setStats(setStat(pokemon, species, stat), stat);
 		}
 		pokemon.setCurrentHP(pokemon.getHPStat());
+		determineMoves(pokemon);
 	}
 	
 	private static Ability determineAbility(PokemonSpecies species) {
@@ -170,6 +168,18 @@ public class PokemonFactory {
 			}
 			else {
 				return Gender.FEMALE;
+			}
+		}
+	}
+	
+	private static void determineMoves(Pokemon pokemon) {
+		HashMap map = pokemon.getSpecies().getHashMap(0);
+		int level = pokemon.getLevel();
+		int j = 1;
+		for (int i = level; i > 0 || j == 4; i--) {
+			Integer moveId = (Integer) map.get(i);
+			if(moveId != null) {
+				pokemon.setMoveSlot(j, Main.mMoveArray[moveId]);
 			}
 		}
 	}

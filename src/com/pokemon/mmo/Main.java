@@ -2,6 +2,8 @@ package com.pokemon.mmo;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Random;
 
 import com.pokemon.mmo.Enums.Ability;
 
@@ -54,12 +56,39 @@ public class Main {
 			abilityMsg += "with no dream ability.";
 		}
 		System.out.println(abilityMsg);
-		System.out.println(species.getSpeciesName() + " is male " + species.getGenderRatio() + "% of the time.");
+		
+		if(species.getGenderRatio() == -1) {
+			System.out.println(species.getSpeciesName() + " is Genderless.");
+		}
+		else {
+			System.out.println(species.getSpeciesName() + " is male " + species.getGenderRatio() + "% of the time.");
+		}
+		
+		System.out.println(species.getSpeciesName() + " learns the following moves:");
+		HashMap map = species.getHashMap(0);
+		for (int i = 1; i < 101; i++) {
+			Integer moveId = (Integer) map.get(i);
+			if(moveId != null) {
+				Move move = mMoveArray[moveId];
+				System.out.println(move.getMoveName() + " at level " + i);
+			}
+		}
 		
 		Pokemon pokemon = PokemonFactory.getPokemon(species);
 		System.out.println("A wild " + species.getSpeciesName() + " appeared!");
 		System.out.println(pokemon.getNickName() + " has ability " + pokemon.getAbility().getName());
 		System.out.println(pokemon.getNickName() + " is " + pokemon.getGender().getName());
+		Random generator = new Random();
+		int level = generator.nextInt(100) + 1;
+		pokemon.setLevel(level);
+		System.out.println(pokemon.getNickName() + " is level " + pokemon.getLevel());
+		System.out.println(pokemon.getNickName() + " has the following moves:");
+		Move[] moves = pokemon.getMoveArray();
+		for (int i = 0; i < moves.length; i++) {
+			if(moves[i] != mMoveArray[0]) {
+				System.out.println(moves[i].getMoveName());
+			}
+		}
 	}
 
 	/*
