@@ -44,6 +44,7 @@ public class PokemonFactory {
 			pokemon.setStats(setStat(pokemon, species, stat), stat);
 		}
 		pokemon.setCurrentHP(pokemon.getHPStat());
+		determineMoves(pokemon);
 
 		return pokemon;
 	}
@@ -175,11 +176,16 @@ public class PokemonFactory {
 	private static void determineMoves(Pokemon pokemon) {
 		HashMap map = pokemon.getSpecies().getHashMap(0);
 		int level = pokemon.getLevel();
+		System.out.println(level);
 		int j = 1;
-		for (int i = level; i > 0 || j == 4; i--) {
+		for (int i = level; i > 0; i--) {
 			Integer moveId = (Integer) map.get(i);
 			if(moveId != null) {
 				pokemon.setMoveSlot(j, Main.mMoveArray[moveId]);
+				j++;
+				if(j > 4) {
+					return;
+				}
 			}
 		}
 	}

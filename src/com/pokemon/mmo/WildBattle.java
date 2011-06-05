@@ -5,7 +5,7 @@ import java.util.Random;
 import com.pokemon.mmo.Enums.Status;
 import com.pokemon.mmo.Enums.Weather;
 
-public class WildBattle extends BattleStats {
+public class WildBattle extends Battle {
 
 	private Trainer mTrainer;
 	private Pokemon mActivePokemonTrainer;
@@ -26,19 +26,19 @@ public class WildBattle extends BattleStats {
 	public boolean wildBattleThread() {
 		onWildBattleStart();
 		newPokemonIn(mActivePokemonTrainer);
-		while (isBattleContinue()) {
+		while (mBattleContinues) {
 			if (round()) {
 				postRound();
 			} else {
 				if (mWildPokemon.getStatus() == Status.FAINTED) {
-					setBattleContinue(false);
+					mBattleContinues = false;
 					return true;
 				} else if (mActivePokemonTrainer.getStatus() == Status.FAINTED) {
 					if (openSwitchDialog()) {
 						newPokemonIn(mActivePokemonTrainer);
 						postRound();
 					} else {
-						setBattleContinue(false);
+						mBattleContinues = false;
 						return false;
 					}
 				}
@@ -71,6 +71,7 @@ public class WildBattle extends BattleStats {
 		// TODO ABILITY AND ITEM HANDLING GOES HERE
 	}
 
+	@Override
 	private boolean round() {
 		Move trainerMove = getTrainerMove(mActivePokemonTrainer);
 		Move wildMove = getWildMove();
@@ -90,10 +91,6 @@ public class WildBattle extends BattleStats {
 			return executeMoves(mWildPokemon, wildMove, mActivePokemonTrainer,
 					trainerMove);
 		}
-	}
-
-	private void postRound() {
-		// HANDLE THINGS LIKE WEATHER COUNTDOWN
 	}
 
 	private boolean openSwitchDialog() {

@@ -349,7 +349,7 @@ public class Pokemon {
 	}
 	
 	public void setMoveSlot(int i, Move move) {
-		i = i + 1;
+		i = i - 1;
 		mMoves[i] = move;
 	}
 	

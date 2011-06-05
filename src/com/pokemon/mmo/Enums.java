@@ -180,6 +180,14 @@ public class Enums {
 	public static enum Weather {
 		NORMAL, SUNNY_DAY, RAIN_DANCE, SANDSTORM, HAIL
 	}
+	
+	public static enum TeamBuff {
+		
+	}
+	
+	public static enum VolatileStatus {
+		NONE,
+	}
 
 	public static enum Status {
 		NONE, POISON, TOXIC, BURN, PARALYZE, FREEZE, SLEEP, FAINTED

@@ -80,7 +80,7 @@ public class Main {
 		System.out.println(pokemon.getNickName() + " is " + pokemon.getGender().getName());
 		Random generator = new Random();
 		int level = generator.nextInt(100) + 1;
-		pokemon.setLevel(level);
+		pokemon.setLevel(30);
 		System.out.println(pokemon.getNickName() + " is level " + pokemon.getLevel());
 		System.out.println(pokemon.getNickName() + " has the following moves:");
 		Move[] moves = pokemon.getMoveArray();

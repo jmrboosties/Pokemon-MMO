@@ -2,7 +2,7 @@ package com.pokemon.mmo;
 
 import java.util.Random;
 
-import com.pokemon.mmo.BattleStats.Sport;
+import com.pokemon.mmo.Battle.Sport;
 import com.pokemon.mmo.Enums.Ability;
 import com.pokemon.mmo.Enums.MoveKinds;
 import com.pokemon.mmo.Enums.Moves;
@@ -54,7 +54,7 @@ public class GameFields {
 	}
 
 	public static int damageCalc(Pokemon attacker, Pokemon defender, Move move,
-			BattleStats battle) {
+			Battle battle) {
 		int damageInt = 1;
 
 		/**
@@ -90,7 +90,7 @@ public class GameFields {
 	}
 
 	private static int calcBasePower(Pokemon attacker, Pokemon defender,
-			Move move, BattleStats stats) {
+			Move move, Battle stats) {
 		double hh = 1;
 		double bp = move.getBasePower();
 		double it = 1;
@@ -253,7 +253,7 @@ public class GameFields {
 	}
 
 	private static int calcAttackOrSpAttack(Pokemon attacker, Pokemon defender,
-			Move move, BattleStats stats) {
+			Move move, Battle stats) {
 		int attack = 1;
 		int stat = 1;
 		long sm = 1;
@@ -370,7 +370,7 @@ public class GameFields {
 	}
 
 	private static int calcDefenseOrSpecialDefense(Pokemon defender,
-			Pokemon attacker, Move move, BattleStats stats) {
+			Pokemon attacker, Move move, Battle stats) {
 		// [Sp]Def = Stat × SM × Mod
 		int defense = 1;
 		int stat = 1;
@@ -474,7 +474,7 @@ public class GameFields {
 	}
 
 	private static int calcMod1(Pokemon attacker, Pokemon defender, Move move,
-			BattleStats battle) {
+			Battle battle) {
 		/* Mod1 = BRN × RL × TVT × SR × FF */
 		double calcMod = 1;
 		double brn = 1;
