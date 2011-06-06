@@ -2,10 +2,34 @@ package com.pokemon.mmo;
 
 import java.sql.ResultSet;
 
+import com.pokemon.mmo.Enums.Stats;
+
 public class DBParser {
 	
 	public static void main(String[] args) {
-		eggGroupEnumCreator();
+		natureEnumCreator();
+	}
+	
+	public static void natureEnumCreator() {
+		String result = "NONE(0, 'Natureless', Stats.HP, Stats.HP), ";
+		DbAdapter adapter;
+		ResultSet rs;
+		
+		try {
+			adapter = new DbAdapter();
+			rs = adapter.makeQuery("SELECT * FROM natures");
+			while(rs.next()) {
+				result += rs.getString("identifier").toUpperCase() + "(" + rs.getInt("id") + ", '" + 
+					rs.getString("identifier") + "', " + "Stats." + String.valueOf(Stats.getStat(rs.getInt("decreased_stat_id") - 1)) +
+					", " + "Stats." + String.valueOf(Stats.getStat(rs.getInt("increased_stat_id") - 1)) + "), ";			
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		result = result.replace((char)39, (char)34);
+		
+		System.out.println(result);
 	}
 	
 	public static void abilityEnumCreator() {

@@ -20,6 +20,8 @@ public class Move {
 	private MoveTargetId mTarget;
 	private int mPP;
 	private int mMoveId;
+	
+	private int mMoveCode;
 
 	public static enum MoveList {
 		CHARGE, ME_FIRST
@@ -136,6 +138,19 @@ public class Move {
 
 	public int getPriority(Move move) {
 		return mPriority;
+	}
+	
+	public void setMoveCode(int i) {
+		this.mMoveCode = i;
+	}
+	
+	public int getMoveCode() {
+		return mMoveCode;
+	}
+	
+	
+	public void executeMove(Battle battle) {
+		
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import com.pokemon.mmo.Enums.Status;
 import com.pokemon.mmo.Enums.TeamBuff;
+import com.pokemon.mmo.Enums.VolatileStatus;
 import com.pokemon.mmo.Enums.Weather;
 
 public class Battle {
@@ -17,6 +18,9 @@ public class Battle {
 
 	protected Pokemon mUserPokemon;
 	protected Pokemon mOtherPokemon;
+	
+	protected Trainer mUserTrainer;
+	protected Trainer mOtherTrainer;
 	
 	protected VolatileStatus mUserPokemonVolatile;
 
@@ -32,6 +36,7 @@ public class Battle {
 	}
 
 	public Battle(Trainer trainer) {
+		mUserTrainer = trainer;
 		mWeather = Weather.NORMAL;
 	}
 	
@@ -54,6 +59,12 @@ public class Battle {
 	}
 	
 	protected void round(boolean b) {
+		if(b) {
+			
+		}
+		else {
+			
+		}
 		return; //when someone faints
 	}
 	
@@ -69,12 +80,11 @@ public class Battle {
 		} else if (speed2 > speed1) {
 			return pokemon2;
 		} else {
-			Random generator = new Random();
-			int random = generator.nextInt(2);
-			if (random == 0) {
-				return mPokemon1;
-			} else {
-				return mPokemon2;
+			if(mUserTrainer.getTrainerId() > mOtherTrainer.getTrainerId()) {
+				return pokemon1;
+			}
+			else {
+				return pokemon2;
 			}
 		}
 	}

@@ -57,12 +57,12 @@ public class PokemonSpeciesFactory {
 				rs = adapter.makeQuery("SELECT * FROM pokemon_types WHERE pokemon_id = '" +
 						String.valueOf(i) + "' AND slot = '1'");
 				while (rs.next()) {
-					species.setTypeSlot1(Types.getType(rs.getInt("type_id")));
+					species.setType(1, Types.getType(rs.getInt("type_id")));
 				}
 				rs = adapter.makeQuery("SELECT * FROM pokemon_types WHERE pokemon_id = '" +
 						String.valueOf(i) + "' AND slot = '2'");
 				while (rs.next()) {
-					species.setTypeSlot2(Types.getType(rs.getInt("type_id")));
+					species.setType(2, Types.getType(rs.getInt("type_id")));
 				}
 
 				HashMap<Integer, Integer> levelUpMoves = new HashMap<Integer, Integer>();

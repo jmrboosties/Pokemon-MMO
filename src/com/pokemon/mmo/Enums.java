@@ -174,7 +174,69 @@ public class Enums {
 	}
 
 	public static enum Stats {
-		HP, ATTACK, DEFENSE, SPECIAL_ATTACK, SPECIAL_DEFENSE, SPEED
+		HP, ATTACK, DEFENSE, SPECIAL_ATTACK, SPECIAL_DEFENSE, SPEED;
+		
+		public static Stats getStat(int i) {
+			for (Stats stat : Stats.values()) {
+				if(i == stat.ordinal()) {
+					return stat;
+				}
+			}
+			return null;
+		}
+	}
+	
+	public static enum Nature {
+		NONE(0, "Natureless", Stats.HP, Stats.HP), HARDY(1, "Hardy", Stats.ATTACK, Stats.ATTACK), 
+		BOLD(2, "Bold", Stats.ATTACK, Stats.DEFENSE), MODEST(3, "Modest", Stats.ATTACK, Stats.SPECIAL_ATTACK), 
+		CALM(4, "Calm", Stats.ATTACK, Stats.SPECIAL_DEFENSE), TIMID(5, "Timid", Stats.ATTACK, Stats.SPEED), 
+		LONELY(6, "Lonely", Stats.DEFENSE, Stats.ATTACK), DOCILE(7, "Docile", Stats.DEFENSE, Stats.DEFENSE), 
+		MILD(8, "Mild", Stats.DEFENSE, Stats.SPECIAL_ATTACK), GENTLE(9, "Gentle", Stats.DEFENSE, Stats.SPECIAL_DEFENSE), 
+		HASTY(10, "Hasty", Stats.DEFENSE, Stats.SPEED), ADAMANT(11, "Adamant", Stats.SPECIAL_ATTACK, Stats.ATTACK), 
+		IMPISH(12, "Impish", Stats.SPECIAL_ATTACK, Stats.DEFENSE), BASHFUL(13, "Bashful", Stats.SPECIAL_ATTACK, Stats.SPECIAL_ATTACK), 
+		CAREFUL(14, "Careful", Stats.SPECIAL_ATTACK, Stats.SPECIAL_DEFENSE), RASH(15, "Rash", Stats.SPECIAL_DEFENSE, Stats.SPECIAL_ATTACK), 
+		JOLLY(16, "Jolly", Stats.SPECIAL_ATTACK, Stats.SPEED), NAUGHTY(17, "Naughty", Stats.SPECIAL_DEFENSE, Stats.ATTACK), 
+		LAX(18, "Lax", Stats.SPECIAL_DEFENSE, Stats.DEFENSE), QUIRKY(19, "Quirky", Stats.SPECIAL_DEFENSE, Stats.SPECIAL_DEFENSE), 
+		NAIVE(20, "Naive", Stats.SPECIAL_DEFENSE, Stats.SPEED), BRAVE(21, "Brave", Stats.SPEED, Stats.ATTACK), 
+		RELAXED(22, "Relaxed", Stats.SPEED, Stats.DEFENSE), QUIET(23, "Quiet", Stats.SPEED, Stats.SPECIAL_ATTACK), 
+		SASSY(24, "Sassy", Stats.SPEED, Stats.SPECIAL_DEFENSE), SERIOUS(25, "Serious", Stats.SPEED, Stats.SPEED);
+
+		private final int fId;
+		private final String fName;
+		private final Stats fDecreased;
+		private final Stats fIncreased;
+		
+		private Nature(int id, String name, Stats decreased, Stats increased) {
+			this.fId = id;
+			this.fName = name;
+			this.fDecreased = decreased;
+			this.fIncreased = increased;
+		}
+		
+		public int getId() {
+			return fId;
+		}
+		
+		public String getName() {
+			return fName;
+		}
+		
+		public Stats getDecreased() {
+			return fDecreased;
+		}
+		
+		public Stats getIncreased() {
+			return fIncreased;
+		}
+		
+		public static Nature getNature(int id) {
+			for (Nature nature : Nature.values()) {
+				if(id == nature.fId) {
+					return nature;
+				}
+			}
+			return NONE;
+		}
 	}
 
 	public static enum Weather {

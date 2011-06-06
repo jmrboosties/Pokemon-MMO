@@ -6,6 +6,7 @@ import com.pokemon.mmo.Battle.Sport;
 import com.pokemon.mmo.Enums.Ability;
 import com.pokemon.mmo.Enums.MoveKinds;
 import com.pokemon.mmo.Enums.Moves;
+import com.pokemon.mmo.Enums.Stats;
 import com.pokemon.mmo.Enums.Status;
 import com.pokemon.mmo.Enums.Types;
 import com.pokemon.mmo.Enums.Weather;
@@ -76,11 +77,11 @@ public class GameFields {
 		int next5 = (int) (next4 * /* calcCritHit(attacker, defender) */calcMod2(
 				attacker, move));
 		int next6 = (int) (next5 * .9);
-		int next7 = (int) (next6 * stabDetermine(attacker.getType1(),
-				attacker.getType2(), move.getType()));
+		int next7 = (int) (next6 * stabDetermine(attacker.getType(1),
+				attacker.getType(2), move.getType()));
 
-		double effectiveness = typeMath(move.getType(), defender.getType1(),
-				defender.getType2());
+		double effectiveness = typeMath(move.getType(), defender.getType(1),
+				defender.getType(2));
 
 		double next8 = (next7 * effectiveness);
 
@@ -261,7 +262,7 @@ public class GameFields {
 		long im = 1;
 		// [Sp]Attack = stat * sm * am * im
 		if (move.getKind() == MoveKinds.PHYSICAL) {
-			stat = attacker.getAttack();
+			stat = attacker.getStat(Stats.ATTACK);
 
 			if (attacker.getStatChanges(1) > 0) {
 				sm = (attacker.getStatChanges(1) + 2) / 2;
@@ -321,7 +322,7 @@ public class GameFields {
 			}
 
 		} else if (move.getKind() == MoveKinds.SPECIAL) {
-			stat = attacker.getSpAttack();
+			stat = attacker.getStat(Stats.SPECIAL_ATTACK);
 
 			if (attacker.getStatChanges(3) > 0) {
 				sm = (attacker.getStatChanges(3) + 2) / 2;
@@ -379,7 +380,7 @@ public class GameFields {
 
 		switch (move.getKind()) {
 		case PHYSICAL:
-			stat = defender.getDefense();
+			stat = defender.getStat(Stats.DEFENSE);
 
 			if (defender.getStatChanges(2) > 0) {
 				sm = (defender.getStatChanges(2) + 2) / 2;
@@ -413,7 +414,7 @@ public class GameFields {
 			break;
 
 		case SPECIAL:
-			stat = defender.getSpDefense();
+			stat = defender.getStat(Stats.SPECIAL_DEFENSE);
 
 			if (defender.getStatChanges(4) > 0) {
 				sm = (defender.getStatChanges(4) + 2) / 2;
@@ -448,8 +449,8 @@ public class GameFields {
 				break;
 			}
 			if (stats.getWeather() == Weather.SANDSTORM
-					&& (defender.getType1() == Types.ROCK || defender
-							.getType1() == Types.ROCK)) {
+					&& (defender.getType(1) == Types.ROCK || defender
+							.getType(2) == Types.ROCK)) {
 				mod = (mod * 1.5);
 			}
 		}

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.pokemon.mmo.Enums.Ability;
 import com.pokemon.mmo.Enums.EggGroup;
+import com.pokemon.mmo.Enums.Stats;
 import com.pokemon.mmo.Enums.Types;
 
 public class PokemonSpecies {
@@ -75,12 +76,8 @@ public class PokemonSpecies {
 		this.mTypeArray = types;
 	}
 	
-	public void setTypeSlot1(Types types) {
-		this.mTypeArray[0] = types;
-	}
-	
-	public void setTypeSlot2(Types types) {
-		this.mTypeArray[1] = types;
+	public void setType(int slot, Types types) {
+		this.mTypeArray[slot-1] = types;
 	}
 
 	public Types getType(int slot) {
@@ -104,8 +101,8 @@ public class PokemonSpecies {
 		}
 	}
 
-	public int getSpecificStat(int stat) {
-		return mStats[stat];
+	public int getSpecificStat(Stats stat) {
+		return mStats[stat.ordinal()];
 	}
 
 	public int[] getStatArray() {

@@ -9,6 +9,7 @@ import java.util.Random;
 
 import com.pokemon.mmo.Enums.Ability;
 import com.pokemon.mmo.Enums.Gender;
+import com.pokemon.mmo.Enums.Nature;
 import com.pokemon.mmo.Enums.Stats;
 
 public class PokemonFactory {
@@ -21,11 +22,11 @@ public class PokemonFactory {
 		pokemon.setGender(determineGender(species));
 		pokemon.setAbility(determineAbility(species));		
 		
-		pokemon.setHPStat(setHPStat(pokemon, species));
+		pokemon.setStat(Stats.HP, setHPStat(pokemon, species));
 		for (Stats stat : Stats.values()) {
-			pokemon.setStats(setStat(pokemon, species, stat), stat);
+			pokemon.setStat(stat, setStat(pokemon, species, stat));
 		}
-		pokemon.setCurrentHP(pokemon.getHPStat());
+		pokemon.setCurrentHP(pokemon.getStat(Stats.HP));
 		
 		return pokemon;
 	}
@@ -38,12 +39,12 @@ public class PokemonFactory {
 		pokemon.setGender(gender);
 		pokemon.setAbility(ability);
 
-		pokemon.setHPStat(setHPStat(pokemon, species));
+		pokemon.setStat(Stats.HP, setHPStat(pokemon, species));
 		
 		for (Stats stat : Stats.values()) {
-			pokemon.setStats(setStat(pokemon, species, stat), stat);
+			pokemon.setStat(stat, setStat(pokemon, species, stat));
 		}
-		pokemon.setCurrentHP(pokemon.getHPStat());
+		pokemon.setCurrentHP(pokemon.getStat(Stats.HP));
 		determineMoves(pokemon);
 
 		return pokemon;
@@ -56,7 +57,7 @@ public class PokemonFactory {
 		 * HP = (((IV + (2 * base) + (EV/4) + 100) * Level)/100) + 10
 		 */
 		
-		maxHP = (((pokemon.getHPIV() + (2 * species.getSpecificStat(0)) + (pokemon.getHPEVs()/4) + 100) * pokemon.getLevel()) / 100) + 10;
+		maxHP = (((pokemon.getIV(Stats.HP) + (2 * species.getSpecificStat(Stats.HP)) + (pokemon.getEV(Stats.HP)/4) + 100) * pokemon.getLevel()) / 100) + 10;
 
 		return maxHP;
 	}
@@ -70,54 +71,35 @@ public class PokemonFactory {
 
 		switch (stat) {
 		case HP:
-			// TODO NOTHING, OR COMBINE THIS WITH THE OTHER METHOD
-			break;
-		case ATTACK:
-			iv = pokemon.getAttackIV();
-			ev = pokemon.getAttackEVs();
-			base = species.getSpecificStat(1);
-			break;
-		case DEFENSE:
-			iv = pokemon.getDefenseIV();
-			ev = pokemon.getDefenseEVs();
-			base = species.getSpecificStat(2);
-			break;
-		case SPECIAL_ATTACK:
-			iv = pokemon.getSpAttackIV();
-			ev = pokemon.getSpAttackEVs();
-			base = species.getSpecificStat(3);
-			break;
-		case SPECIAL_DEFENSE:
-			iv = pokemon.getSpDefenseIV();
-			ev = pokemon.getSpDefenseEVs();
-			base = species.getSpecificStat(4);
-			break;
-		case SPEED:
-			iv = pokemon.getSpeedIV();
-			ev = pokemon.getSpeedEVs();
-			base = species.getSpecificStat(5);
-			;
-			break;
+			return setHPStat(pokemon, species);
+		default :
+			iv = pokemon.getIV(stat);
+			ev = pokemon.getEV(stat);
+			base = species.getSpecificStat(stat);
+			totalStat = (int) ((int) ((((iv + (2 * base) + (ev / 4)) * pokemon.getLevel()) / 100) + 5) * getNatureMod(pokemon.getNature(), stat));
+			return totalStat;
 		}
-
-		/**
-		 * Stat = ((((IV + (2 + base) + (EV/4) * Level) / 100) + 5) * Nature
-		 */
-
-		totalStat = (int) ((((iv + (2 * base) + (ev / 4)) * pokemon.getLevel()) / 100) + 5) /*
-																							 *  *
-																							 * nature
-																							 */;
-
-		return totalStat;
+	}
+	
+	private static double getNatureMod(Nature nature, Stats stat) {
+		double mod = 1;
+		
+		if(nature.getDecreased() == stat) {
+			mod = mod - 0.1;
+		}
+		if(nature.getIncreased() == stat) {
+			mod = mod + 0.1;
+		}
+		
+		return mod;
 	}
 	
 	public static void respecStats(Pokemon pokemon, PokemonSpecies species) {
-		pokemon.setHPStat(setHPStat(pokemon, species));
+		pokemon.setStat(Stats.HP, setHPStat(pokemon, species));
 		for (Stats stat : Stats.values()) {
-			pokemon.setStats(setStat(pokemon, species, stat), stat);
+			pokemon.setStat(stat, setStat(pokemon, species, stat));
 		}
-		pokemon.setCurrentHP(pokemon.getHPStat());
+		pokemon.setCurrentHP(pokemon.getStat(Stats.HP));
 		determineMoves(pokemon);
 	}
 	

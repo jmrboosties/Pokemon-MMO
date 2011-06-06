@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.pokemon.mmo.Enums.Ability;
 import com.pokemon.mmo.Enums.Gender;
+import com.pokemon.mmo.Enums.Nature;
 import com.pokemon.mmo.Enums.Stats;
 import com.pokemon.mmo.Enums.Status;
 import com.pokemon.mmo.Enums.Types;
@@ -12,32 +13,21 @@ public class Pokemon {
 
 	private String mNickName;
 	private PokemonSpecies mSpecies;
-	private Types mType1;
-	private Types mType2;
+	private Types[] mTypes = new Types[2];
 
 	private Gender mGender;
 	private int mLevel;
-
-	private int mHPIV;
-	private int mAttackIV;
-	private int mDefenseIV;
-	private int mSpAttackIV;
-	private int mSpDefenseIV;
-	private int mSpeedIV;
-
-	private int mHPEVs;
-	private int mAttackEVs;
-	private int mDefenseEVs;
-	private int mSpAttackEVs;
-	private int mSpDefenseEVs;
-	private int mSpeedEVs;
-
-	private int mMaxHP;
-	private int mAttack;
-	private int mDefense;
-	private int mSpAttack;
-	private int mSpDefense;
-	private int mSpeed;
+	private Ability mAbility;
+	private Nature mNature;
+	
+	/**
+	 * The following arrays are structed like so: 
+	 * 0 = HP, 1 = Attack, 2 = Defense, 3 = Sp. Attack, 4 = Sp. Defense, 5 = Speed
+	 * Use Stats enumerator ordinal for use (stat.ordinal()).
+	 */
+	private int[] mRealStats =  new int[6];
+	private int[] mIVs = new int[6];
+	private int[] mEVs = new int[6];
 	
 	private Move[] mMoves = new Move[4];
 
@@ -45,7 +35,6 @@ public class Pokemon {
 	private Status mStatus;
 	//private SecondaryStatus[] mSecondaryStatus;
 	private int mTurnsInBattle;
-	private Ability mAbility;
 
 	public Pokemon(PokemonSpecies species) {
 		this.mNickName = species.getSpeciesName();
@@ -53,24 +42,18 @@ public class Pokemon {
 		this.mGender = Gender.GENDERLESS; // CHANGE THIS TO JUST DEFAULT TO
 											// RANDOM BETWEEN MALE AND FEMALE
 											// FOLLOWING GENDER RATIO
-		this.mType1 = species.getType(1);
-		this.mType2 = species.getType(2);
+		mTypes[0] = species.getType(1);
+		mTypes[1] = species.getType(2);
 
 		Random generator = new Random();
 
-		this.mHPIV = generator.nextInt(32);
-		this.mAttackIV = generator.nextInt(32);
-		this.mDefenseIV = generator.nextInt(32);
-		this.mSpAttackIV = generator.nextInt(32);
-		this.mSpDefenseIV = generator.nextInt(32);
-		this.mSpeedIV = generator.nextInt(32);
+		for (int i = 0; i < mIVs.length; i++) {
+			mIVs[i] = generator.nextInt(32);
+		}
 
-		this.mHPEVs = 0;
-		this.mAttackEVs = 0;
-		this.mDefenseEVs = 0;
-		this.mSpAttackEVs = 0;
-		this.mSpDefenseEVs = 0;
-		this.mSpeedEVs = 0;
+		for (int i = 0; i < mEVs.length; i++) {
+			mEVs[i] = 0;
+		}
 		
 		for (int i = 0; i < mMoves.length; i++) {
 			mMoves[i] = Main.mMoveArray[0];
@@ -96,6 +79,15 @@ public class Pokemon {
 	public Ability getAbility() {
 		return mAbility;
 	}
+	
+	public void setNature(Nature nature) {
+		this.mNature = nature;
+		PokemonFactory.respecStats(this, mSpecies);
+	}
+	
+	public Nature getNature() {
+		return mNature;
+	}
 
 	public int getHeldItem() {
 		// TODO Auto-generated method stub
@@ -111,144 +103,64 @@ public class Pokemon {
 		PokemonFactory.respecStats(this, mSpecies);
 	}
 
-	public Types getType1() {
-		return mType1;
+	public void setType(int slot, Types type) {
+		mTypes[slot-1] = type;
 	}
-
-	public void setType1(Types type) {
-		this.mType1 = type;
+	
+	public Types[] getTypeArray() {
+		return mTypes;
 	}
-
-	public Types getType2() {
-		return mType2;
+	
+	public Types getType(int slot) {
+		return mTypes[slot-1];
 	}
-
-	public void setType2(Types type) {
-		this.mType2 = type;
+	
+	public void setStat(Stats stat, int val) {
+		mRealStats[stat.ordinal()] = val;
 	}
-
-	public int getStatChanges(int column) {
-		// TODO Auto-generated method stub
-		return 0;
+	
+	public void setStatsArray(int[] statVals) {
+		this.mRealStats = statVals;
 	}
-
-	public void setHPIV(int mHPIV) {
-		this.mHPIV = mHPIV;
+	
+	public int getStat(Stats stat) {
+		return mRealStats[stat.ordinal()];
 	}
-
-	public int getHPIV() {
-		return mHPIV;
+	
+	public int[] getStatsArray() {
+		return mRealStats;
 	}
-
-	public void setAttackIV(int mAttackIV) {
-		this.mAttackIV = mAttackIV;
+	
+	public void setIV(Stats stat, int iv) {
+		mIVs[stat.ordinal()] = iv;
 	}
-
-	public int getAttackIV() {
-		return mAttackIV;
+	
+	public void setIVArray(int[] ivVals) {
+		this.mIVs = ivVals;
 	}
-
-	public void setDefenseIV(int mDefenseIV) {
-		this.mDefenseIV = mDefenseIV;
+	
+	public int getIV(Stats stat) {
+		return mIVs[stat.ordinal()];
 	}
-
-	public int getDefenseIV() {
-		return mDefenseIV;
+	
+	public int[] getIVArray() {
+		return mIVs;
 	}
-
-	public void setSpAttackIV(int mSpAttackIV) {
-		this.mSpAttackIV = mSpAttackIV;
+	
+	public void setEV(Stats stat, int ev) {
+		mEVs[stat.ordinal()] = ev;
 	}
-
-	public int getSpAttackIV() {
-		return mSpAttackIV;
+	
+	public void setEVArray(int[] evs) {
+		this.mEVs = evs;
 	}
-
-	public void setSpDefenseIV(int mSpDefenseIV) {
-		this.mSpDefenseIV = mSpDefenseIV;
+	
+	public int getEV(Stats stat) {
+		return mEVs[stat.ordinal()];
 	}
-
-	public int getSpDefenseIV() {
-		return mSpDefenseIV;
-	}
-
-	public void setSpeedIV(int mSpeedIV) {
-		this.mSpeedIV = mSpeedIV;
-	}
-
-	public int getSpeedIV() {
-		return mSpeedIV;
-	}
-
-	public int getHPEVs() {
-		return mHPEVs;
-	}
-
-	public int getAttackEVs() {
-		return mAttackEVs;
-	}
-
-	public int getDefenseEVs() {
-		return mDefenseEVs;
-	}
-
-	public int getSpAttackEVs() {
-		return mSpAttackEVs;
-	}
-
-	public int getSpDefenseEVs() {
-		return mSpDefenseEVs;
-	}
-
-	public int getSpeedEVs() {
-		return mSpeedEVs;
-	}
-
-	public void setHPStat(int setHPStat) {
-		this.mMaxHP = setHPStat;
-	}
-
-	public int getHPStat() {
-		return mMaxHP;
-	}
-
-	public void setStats(int value, Stats stat) {
-		switch (stat) {
-		case ATTACK:
-			this.mAttack = value;
-			break;
-		case DEFENSE:
-			this.mDefense = value;
-			break;
-		case SPECIAL_ATTACK:
-			this.mSpAttack = value;
-			break;
-		case SPECIAL_DEFENSE:
-			this.mSpDefense = value;
-			break;
-		case SPEED:
-			this.mSpeed = value;
-		}
-	}
-
-	public int getAttack() {
-		return mAttack;
-	}
-
-	public int getDefense() {
-		return mDefense;
-	}
-
-	public int getSpAttack() {
-		return mSpAttack;
-	}
-
-	public int getSpDefense() {
-		return mSpDefense;
-	}
-
-	public int getSpeed() {
-		return mSpeed;
+	
+	public int[] getEVArray() {
+		return mEVs;
 	}
 
 	public void setNickName(String mNickName) {
@@ -257,30 +169,6 @@ public class Pokemon {
 
 	public String getNickName() {
 		return mNickName;
-	}
-
-	public void setHPEVs(int HPEVs) {
-		mHPEVs = HPEVs;
-	}
-
-	public void setAttackEVs(int AttackEVs) {
-		mAttackEVs = AttackEVs;
-	}
-
-	public void setDefenseEVs(int defenseEVs) {
-		mDefenseEVs = defenseEVs;
-	}
-
-	public void setSpAttackEVs(int spAttackEVs) {
-		mSpAttackEVs = spAttackEVs;
-	}
-
-	public void setSpDefenseEVs(int spDefenseEVs) {
-		mSpDefenseEVs = spDefenseEVs;
-	}
-
-	public void setSpeedEVs(int speedEVs) {
-		mSpeedEVs = speedEVs;
 	}
 
 	public void setCurrentHP(int hp) {
@@ -305,7 +193,7 @@ public class Pokemon {
 	}
 
 	public double getCurrentHealthRatio() {
-		double ratio = mCurrentHP / mMaxHP;
+		double ratio = mCurrentHP / mRealStats[0];
 		return ratio;
 	}
 
