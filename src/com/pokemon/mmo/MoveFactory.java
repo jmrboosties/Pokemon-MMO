@@ -1,7 +1,9 @@
 package com.pokemon.mmo;
 
 import java.sql.ResultSet;
+import java.util.List;
 
+import com.pokemon.mmo.Enums.MoveEffectGroup;
 import com.pokemon.mmo.Enums.MoveKinds;
 import com.pokemon.mmo.Enums.Types;
 
@@ -45,6 +47,21 @@ public class MoveFactory {
 		}
 
 		return moveArray;
+	}
+	
+	private static List<Integer> getMoveEffectIdList(MoveEffectGroup group) {
+		
+	}
+	
+	public static MoveEffectGroup getMoveEffectGroup(Move move) {
+		int effectId = move.getMoveCode();
+		switch(effectId) {
+		case 1 : 
+			
+			return MoveEffectGroup.REGULAR;
+		case 2 :
+			
+		}
 	}
 
 }

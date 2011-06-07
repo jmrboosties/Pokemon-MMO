@@ -1,6 +1,6 @@
 package com.pokemon.mmo;
 
-import com.pokemon.mmo.Enums.MoveEffectId;
+import com.pokemon.mmo.Enums.MoveEffectGroup;
 import com.pokemon.mmo.Enums.MoveKinds;
 import com.pokemon.mmo.Enums.MoveTargetId;
 import com.pokemon.mmo.Enums.Moves;
@@ -14,7 +14,7 @@ public class Move {
 	private int mPower;
 	private int mAccuracy;
 	private int mPriority;
-	private MoveEffectId mEffectId;
+	private MoveEffectGroup mEffectGroup;
 	private int mSecondaryChance;
 	private MoveKinds mKind;
 	private MoveTargetId mTarget;
@@ -35,7 +35,7 @@ public class Move {
 		mPower = 0;
 		setAccuracy(0);
 		setPriority(0);
-		mEffectId = MoveEffectId.DAMAGE;
+		mEffectGroup = MoveEffectGroup.NULL;
 	}
 
 	public void setMoveId(int id) {
@@ -62,12 +62,12 @@ public class Move {
 		return mType;
 	}
 
-	public void setEffectId(MoveEffectId effect) {
-		this.mEffectId = effect;
+	public void setEffectId(MoveEffectGroup effect) {
+		this.mEffectGroup = effect;
 	}
 
-	public MoveEffectId getEffectId() {
-		return mEffectId;
+	public MoveEffectGroup getEffectId() {
+		return mEffectGroup;
 	}
 
 	public void setSecondaryEffectChance(int chance) {
@@ -149,7 +149,7 @@ public class Move {
 	}
 	
 	
-	public void executeMove(Battle battle) {
+	public void executeMove(Battle battle, Pokemon attacker, Pokemon defender/*Consider list of moves to record history and then just pick the most recent?*/) {
 		
 	}
 
