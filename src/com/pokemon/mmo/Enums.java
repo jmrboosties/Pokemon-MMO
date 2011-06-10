@@ -295,5 +295,22 @@ public class Enums {
 			this.id = i;
 		}
 	}
+	
+	public static enum MoveSecondaryNonVolatileEffect {
+		NONE, POISONS, BADLY_POISONS, BURNS, PARALYZES, FREEZES, SLEEPS, TRI_ATTACK
+	}
+	
+	public static enum MoveSecondaryVolatileEffect {
+		NONE, CONFUSES, CURSES, ENCORES, FLINCHES, IDENTIFIES, ATTRACTS, LEECH_SEEDS, LOCKS_ON, NIGHTMARES,
+		PARTIALLY_TRAPS, PERISH_SONG, TAUNTS, TORMENTS, YAWNS
+	}
+	
+	public static enum PokemonVolatileBattleStatus {
+		DEFENSE_CURL, FOCUS_ENERGY, FOLLOWED, MINIMIZED, SUBSTITUTE, TRAPPED
+	}
+	
+	public static enum ModdableBattleStats {
+		ATTACK, DEFENSE, SPECIAL_ATTACK, SPECIAL_DEFENSE, SPEED, ACCURACY, EVASION
+	}
 
 }

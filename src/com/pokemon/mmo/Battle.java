@@ -3,6 +3,7 @@ package com.pokemon.mmo;
 import java.util.Random;
 import java.util.Scanner;
 
+import com.pokemon.mmo.Enums.Stats;
 import com.pokemon.mmo.Enums.Status;
 import com.pokemon.mmo.Enums.TeamBuff;
 import com.pokemon.mmo.Enums.VolatileStatus;
@@ -92,7 +93,7 @@ public class Battle {
 	protected int battleAdjustedSpeed(Pokemon pokemon) {
 		// Speed = Stat * Stat Modifier * Speed Ability Modifier * Speed Item
 		// Modifier
-		int pokemonSpeed = (int) (pokemon.getSpeed() * getSpeedAbilityMod(pokemon));
+		int pokemonSpeed = (int) (pokemon.getStat(Stats.SPEED) * getSpeedAbilityMod(pokemon));
 		pokemonSpeed = (int) (pokemonSpeed * getSpeedItemMod(pokemon));
 		pokemonSpeed = (int) (pokemonSpeed * getPayalyzeMod(pokemon));
 		pokemonSpeed = pokemonSpeed * getTailwindMod(pokemon);

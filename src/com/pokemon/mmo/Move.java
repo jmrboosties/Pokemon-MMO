@@ -1,7 +1,10 @@
 package com.pokemon.mmo;
 
+import com.pokemon.mmo.Enums.ModdableBattleStats;
 import com.pokemon.mmo.Enums.MoveEffectGroup;
 import com.pokemon.mmo.Enums.MoveKinds;
+import com.pokemon.mmo.Enums.MoveSecondaryNonVolatileEffect;
+import com.pokemon.mmo.Enums.MoveSecondaryVolatileEffect;
 import com.pokemon.mmo.Enums.MoveTargetId;
 import com.pokemon.mmo.Enums.Moves;
 import com.pokemon.mmo.Enums.Types;
@@ -15,17 +18,15 @@ public class Move {
 	private int mAccuracy;
 	private int mPriority;
 	private MoveEffectGroup mEffectGroup;
+	private MoveSecondaryVolatileEffect mVolatileEffect;
+	private MoveSecondaryNonVolatileEffect mNonVolatileEffect;
+	private int[] mMoveStatChanges = new int[7];
 	private int mSecondaryChance;
 	private MoveKinds mKind;
 	private MoveTargetId mTarget;
 	private int mPP;
-	private int mMoveId;
-	
+	private int mMoveId;	
 	private int mMoveCode;
-
-	public static enum MoveList {
-		CHARGE, ME_FIRST
-	}
 
 	public Move() {
 		mName = "-----";
@@ -33,9 +34,12 @@ public class Move {
 		mMoveEnum = Moves.EMPTY;
 		mType = Types.NONE;
 		mPower = 0;
-		setAccuracy(0);
-		setPriority(0);
+		mAccuracy = 0;
+		mPriority = 0;
+		setVolatileEffect(MoveSecondaryVolatileEffect.NONE);
+		setNonVolatileEffect(MoveSecondaryNonVolatileEffect.NONE);
 		mEffectGroup = MoveEffectGroup.NULL;
+		
 	}
 
 	public void setMoveId(int id) {
@@ -118,6 +122,22 @@ public class Move {
 		this.mKind = kind;
 	}
 
+	public void setVolatileEffect(MoveSecondaryVolatileEffect volatileEffect) {
+		this.mVolatileEffect = volatileEffect;
+	}
+
+	public MoveSecondaryVolatileEffect getVolatileEffect() {
+		return mVolatileEffect;
+	}
+
+	public void setNonVolatileEffect(MoveSecondaryNonVolatileEffect nonVolatileEffect) {
+		this.mNonVolatileEffect = nonVolatileEffect;
+	}
+
+	public MoveSecondaryNonVolatileEffect getNonVolatileEffect() {
+		return mNonVolatileEffect;
+	}
+
 	public boolean isRecoil() {
 		// TODO ALL OF THIS
 		return false;
@@ -151,6 +171,18 @@ public class Move {
 	
 	public void executeMove(Battle battle, Pokemon attacker, Pokemon defender/*Consider list of moves to record history and then just pick the most recent?*/) {
 		
+	}
+
+	public void setMoveStatChangesArray(int[] moveStatChanges) {
+		this.mMoveStatChanges = moveStatChanges;
+	}
+	
+	public void setMoveStatChanges(ModdableBattleStats stat, int i) {
+		this.mMoveStatChanges[stat.ordinal()] = i;
+	}
+
+	public int[] getMoveStatChanges() {
+		return mMoveStatChanges;
 	}
 
 }
