@@ -48,7 +48,10 @@ public class Pokemon {
 		mTypes[1] = species.getType(2);
 
 		Random generator = new Random();
+		int natureInt = generator.nextInt(25) + 1; 
 
+		mNature = Nature.getNature(natureInt);
+		
 		for (int i = 0; i < mIVs.length; i++) {
 			mIVs[i] = generator.nextInt(32);
 		}

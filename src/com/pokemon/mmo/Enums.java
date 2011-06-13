@@ -302,7 +302,7 @@ public class Enums {
 	
 	public static enum MoveSecondaryVolatileEffect {
 		NONE, CONFUSES, CURSES, ENCORES, FLINCHES, IDENTIFIES, ATTRACTS, LEECH_SEEDS, LOCKS_ON, NIGHTMARES,
-		PARTIALLY_TRAPS, PERISH_SONG, TAUNTS, TORMENTS, YAWNS
+		PARTIALLY_TRAPS, PERISH_SONG, TAUNTS, TORMENTS, YAWNS, TELEKINESIS, KNOCKED_DOWN
 	}
 	
 	public static enum PokemonVolatileBattleStatus {
@@ -310,7 +310,16 @@ public class Enums {
 	}
 	
 	public static enum ModdableBattleStats {
-		ATTACK, DEFENSE, SPECIAL_ATTACK, SPECIAL_DEFENSE, SPEED, ACCURACY, EVASION
+		ATTACK, DEFENSE, SPECIAL_ATTACK, SPECIAL_DEFENSE, SPEED, ACCURACY, EVASION;
+		
+		public static ModdableBattleStats getStat(int i) {
+			for (ModdableBattleStats stat : ModdableBattleStats.values()) {
+				if(i == stat.ordinal()) {
+					return stat;
+				}
+			}
+			return ATTACK;
+		}
 	}
 
 }

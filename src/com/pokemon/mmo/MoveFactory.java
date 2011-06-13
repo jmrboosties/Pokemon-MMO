@@ -3,7 +3,9 @@ package com.pokemon.mmo;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Random;
 
+import com.pokemon.mmo.Battle.Sport;
 import com.pokemon.mmo.Enums.ModdableBattleStats;
 import com.pokemon.mmo.Enums.MoveEffectGroup;
 import com.pokemon.mmo.Enums.MoveKinds;
@@ -96,14 +98,20 @@ public class MoveFactory {
 		case 126 :
 		case 168 :
 		case 201 :
+		case 254 :
+		case 274 :
 			move.setNonVolatileEffect(MoveSecondaryNonVolatileEffect.BURNS);
 			break;
 		case 6 :
+		case 261 :
+		case 275 :
 			move.setNonVolatileEffect(MoveSecondaryNonVolatileEffect.FREEZES);
 			break;
 		case 7 :
 		case 68 :
 		case 153 :
+		case 263 :
+		case 276 :
 			move.setNonVolatileEffect(MoveSecondaryNonVolatileEffect.PARALYZES);
 			break;
 		case 37 :
@@ -112,19 +120,22 @@ public class MoveFactory {
 			
 		/**Positive Stat Changes*/
 		case 11 :
-		case 140 :
+		case 140 : //This is not like howl... I need to change this around.
 			move.setMoveStatChanges(ModdableBattleStats.ATTACK, 1);
 			break;
 		case 12 :
-		case 139 :
-		case 146 :
-		case 157 :
+		case 139 : //Steel wing, you attack target and own stat goes up. Maybe need a diff stat mod thing for user. good idea actually.
+		case 146 : //Same
+		case 157 : //defense curl, diff cause its a battle stat thing for rollout but belongs here.
 			move.setMoveStatChanges(ModdableBattleStats.DEFENSE, 1);
 			break;
-		case 14 :
-		case 167 :
+		case 14 : //dead, used to be growth but that now does both attacks, leave it though
+		case 167 : //for flatter, works leave it here
+		case 277 : //TODO hit target raises user stats, like steel wing
 			move.setMoveStatChanges(ModdableBattleStats.SPECIAL_ATTACK, 1);
 			break;
+		case 175 : //user, is fine
+			move.setMoveStatChanges(ModdableBattleStats.SPECIAL_DEFENSE, 1);
 		case 17 :
 			move.setMoveStatChanges(ModdableBattleStats.EVASION, 1);
 			break;
@@ -136,26 +147,26 @@ public class MoveFactory {
 			move.setMoveStatChanges(ModdableBattleStats.DEFENSE, 2);
 			break;
 		case 53 :
+		case 285 :
 			move.setMoveStatChanges(ModdableBattleStats.SPEED, 2);
 			break;
 		case 54 :
 			move.setMoveStatChanges(ModdableBattleStats.SPECIAL_ATTACK, 2);
 			break;
 		case 55 :
-		case 175 :
 			move.setMoveStatChanges(ModdableBattleStats.SPECIAL_DEFENSE, 2);
 			break;
 		case 109 :
 			move.setMoveStatChanges(ModdableBattleStats.EVASION, 2);
 			break;
-		case 141 :
+		case 141 : //ancient power, hits target helps user
 			int[] ancientPower = {1,1,1,1,1,0,0};
 			move.setMoveStatChangesArray(ancientPower);
 			break;
 		case 143 :
 			move.setMoveStatChanges(ModdableBattleStats.ATTACK, 6);
 			break;
-		case 207 :
+		case 207 : //OK
 			move.setMoveStatChanges(ModdableBattleStats.DEFENSE, 1);
 			move.setMoveStatChanges(ModdableBattleStats.SPECIAL_DEFENSE, 1);
 			break;
@@ -171,6 +182,23 @@ public class MoveFactory {
 			move.setMoveStatChanges(ModdableBattleStats.ATTACK, 1);
 			move.setMoveStatChanges(ModdableBattleStats.SPEED, 1);
 			break;
+		case 227 : //Acupressure
+			Random generator = new Random();
+			int i = generator.nextInt(7);
+			ModdableBattleStats stat = ModdableBattleStats.getStat(i);
+			move.setMoveStatChanges(stat, 2);
+			break;
+		case 278 :
+			move.setMoveStatChanges(ModdableBattleStats.ATTACK, 1);
+			move.setMoveStatChanges(ModdableBattleStats.ACCURACY, 1);
+			break;
+		case 291 :
+			move.setMoveStatChanges(ModdableBattleStats.SPECIAL_ATTACK, 1);
+			move.setMoveStatChanges(ModdableBattleStats.SPECIAL_DEFENSE, 1);
+			move.setMoveStatChanges(ModdableBattleStats.SPEED, 1);
+			break;
+		case 296 : //TODO hit target raise user speed
+			move.setMoveStatChanges(ModdableBattleStats.SPEED, 1);
 			
 		/**Negative Stat Changes*/
 		case 19 : 
@@ -189,6 +217,7 @@ public class MoveFactory {
 			break;
 		case 21 :
 		case 71 :
+		case 219 : //TODO hits target affects user, group diff
 			move.setMoveStatChanges(ModdableBattleStats.SPEED, -1);
 			break;
 		case 24 :
@@ -208,15 +237,30 @@ public class MoveFactory {
 			move.setMoveStatChanges(ModdableBattleStats.SPEED, -2);
 			break;
 		case 63 :
+		case 272 :
+		case 297 :
 			move.setMoveStatChanges(ModdableBattleStats.SPECIAL_DEFENSE, -2);
 			break;
-		case 169 :
+		case 169 : //prob do sep case
 			move.setMoveStatChanges(ModdableBattleStats.ATTACK, -2);
 			move.setMoveStatChanges(ModdableBattleStats.SPECIAL_ATTACK, -2);
 			break;
 		case 206 :
 			move.setMoveStatChanges(ModdableBattleStats.ATTACK, -1);
 			move.setMoveStatChanges(ModdableBattleStats.DEFENSE, -1);
+			break;
+		case 217 :
+			move.setMoveStatChanges(ModdableBattleStats.EVASION, -6);
+			break;
+		case 230 : //TODO hits target affects user
+			move.setMoveStatChanges(ModdableBattleStats.DEFENSE, -1);
+			move.setMoveStatChanges(ModdableBattleStats.SPECIAL_DEFENSE, -1);
+			break;
+		case 259 :
+			move.setMoveStatChanges(ModdableBattleStats.EVASION, -1);
+			break;
+		case 266 :
+			move.setMoveStatChanges(ModdableBattleStats.SPECIAL_ATTACK, -2);
 			break;
 		
 		/**Volatile Status Effects*/
@@ -226,6 +270,9 @@ public class MoveFactory {
 		case 147 :
 		case 151 :
 		case 159 :
+		case 274 :
+		case 275 :
+		case 276 :
 			move.setVolatileEffect(MoveSecondaryVolatileEffect.FLINCHES);
 			break;
 		case 50 :
@@ -256,6 +303,15 @@ public class MoveFactory {
 			break;
 		case 188 :
 			move.setVolatileEffect(MoveSecondaryVolatileEffect.YAWNS);
+			break;
+		case 262 :
+			move.setVolatileEffect(MoveSecondaryVolatileEffect.PARTIALLY_TRAPS);
+			break;
+		case 286 :
+			move.setVolatileEffect(MoveSecondaryVolatileEffect.TELEKINESIS);
+			break;
+		case 288 :
+			move.setVolatileEffect(MoveSecondaryVolatileEffect.KNOCKED_DOWN);
 		}
 	}
 
