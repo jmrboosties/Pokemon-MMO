@@ -42,8 +42,64 @@ should be right:
 
 Note that there is no 87.5% female, I checked and this is not a mistake.
 
-STRUCTURE:
-----------
+DATABASE STRUCTURE FOR STATUS EFFECTS:
+--------------------------------------
+Veekun's pokedex also doesn't store data for secondary effects like poison and stat stages.
+Instead, a table titled move_effects_prose exists which explains what each "move class" does.
+This table includes moves which have a 10% chance of burn, causing flinch, always lower the 
+target's speed, as well as more complicated moves like Trick Room and Whirlwind. For moves like
+Flamethrower and Sand-Attack, despite having an effect other than "do damage" (like Tackle
+for instance, which is the simplest move) we can still group them into a common move class.
+In order to do this, I've created a table titled move_secondary_effects. This table contains an
+primary id column along with 5 other pertinent columns of data. These are:
+
+move_id: ties the data in the row to the move's id which all other move tables refer to.
+
+non_volatile_status_effects: int which corresponds to non-volatile status effects the move can
+	induce. these are status effects which appear on the pokemon's status bar in-game, and remain
+	after battle. Poison, Paralyze, Burn, Sleep, and Paralysis. While nearly all non-volatile status
+	inducing moves can only induce 1 effect, a select few (such as Tri-Attack) have a chance of
+	inflicting more than one. We need to account for this, I've come up with the following integer-based
+	setup:
+	
+0 none
+1 poison
+2 bad poison (toxic)
+3 sleep
+4 burn
+5 paralyze
+6 freeze
+33 triattack (10% chance of burn paralyze or freeze)
+//More if necessary, I don't think there are any other strange combos like tri-attack's
+
+volatile_status_effects: int which corresponds to the volatile effects moves can inflict. these status
+	effects do not appear in the pokemon's status bar, do not stay after battle ends, and can stack. There
+	are a lot more of these, including confusion, attract, mean look, etc. Setup:
+	
+//TODO still, will update README when i get a structure for these, it won't be hard i just dont have the
+time to work it all out at the time of updating this.
+
+user_stat_changes: moves can change the user's stats by a stage. For instance, using steel wing has a chance
+	of raising the user's attack by one stage. This is stored in a different column than the stat changes
+	the target experiences. It should also be noted that for stat stage changing moves which are not just secondary
+	effects (moves like Growth, Harden, etc) can either affect the user or target, depending on the move. What
+	I mean by this is some stat-affecting moves can target allies as well as the user, in which case the effect 
+	would be target-specific not user-specific.
+	
+	The structure of this column is a JSON object. For those unfamiliar this is a grouping of key/value
+	pairs which can be parsed to extract data. It's more conveinient than having a bunch of columns for data that
+	is never changed and will be stored in an array anyhow.
+	
+	EXAMPLE: {"attack":"0","defense":"0","special_attack":"1","special_defense":"0","speed":"1"}
+	
+	This example would raise the user's special attack and speed by one stage each.
+
+target_stat_changes: same as above, only it affects the target instead. This is for moves like Psychic, which
+	have a chance (0-100%, this value is already accounted for in the moves table) of inflicting a stat stage 
+	change on hit.
+
+PROJECT STRUCTURE:
+------------------
 
 The project's root directory contains following subdirectory and files:
 

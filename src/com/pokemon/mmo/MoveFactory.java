@@ -262,6 +262,11 @@ public class MoveFactory {
 		case 266 :
 			move.setMoveStatChanges(ModdableBattleStats.SPECIAL_ATTACK, -2);
 			break;
+		case 309 : //SHELL SMASH HITS USER
+			move.setMoveStatChanges(ModdableBattleStats.SPECIAL_DEFENSE, -1);
+			move.setMoveStatChanges(ModdableBattleStats.DEFENSE, -1);
+			break;
+			
 		
 		/**Volatile Status Effects*/
 		case 32 :

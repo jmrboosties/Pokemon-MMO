@@ -3,6 +3,7 @@ package com.pokemon.mmo;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DbAdapter {
@@ -26,6 +27,14 @@ public class DbAdapter {
 			System.out.println("Problem in query");
 		}
 		return rs;
+	}
+	
+	public void insertValues(String query) {
+		try {
+			mStat.executeUpdate(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void close() {

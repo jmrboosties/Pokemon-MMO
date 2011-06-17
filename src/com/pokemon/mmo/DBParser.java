@@ -1,5 +1,7 @@
 package com.pokemon.mmo;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.sql.ResultSet;
 
 import com.pokemon.mmo.Enums.Stats;
@@ -7,7 +9,7 @@ import com.pokemon.mmo.Enums.Stats;
 public class DBParser {
 	
 	public static void main(String[] args) {
-		natureEnumCreator();
+		insertValsIntoSecondary();
 	}
 	
 	public static void natureEnumCreator() {
@@ -75,4 +77,100 @@ public class DBParser {
 		System.out.println(result);
 	}
 	
+	public static void insertValsIntoSecondary() {
+		int i = 1;
+		
+		System.out.println("New row. Insert values.");
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));;
+		String input = "";
+		
+		System.out.println("Enter row to start from");
+		int rowId = Integer.valueOf(doIt(reader, input));
+		rowId = rowId - 1;
+		
+		while(i == 1) {
+			
+			rowId = rowId + 1;
+			
+			String id;
+			String nonVol;
+			String vol;
+			
+			String userAtt;
+			String userDef;
+			String userspecAtt;
+			String userspecDef;
+			String userSpe;
+			
+			String targetAtt;
+			String targetDef;
+			String targetSpecAtt;
+			String targetSpecDef;
+			String targetSpe;			
+			
+			System.out.println("Enter id");
+			id = doIt(reader, input);
+			System.out.println("Enter nonVol");
+			nonVol = doIt(reader, input);
+			System.out.println("Enter vol");
+			vol = doIt(reader, input);
+			System.out.println("Enter userAtt");
+			userAtt = doIt(reader, input);
+			System.out.println("Enter userDef");
+			userDef = doIt(reader, input);
+			System.out.println("Enter userSpecAtt");
+			userspecAtt = doIt(reader, input);
+			System.out.println("Enter userSpecDef");
+			userspecDef = doIt(reader, input);
+			System.out.println("Enter userSpe");
+			userSpe = doIt(reader, input);
+			System.out.println("Enter targetAtt");
+			targetAtt = doIt(reader, input);
+			System.out.println("Enter targetDef");
+			targetDef = doIt(reader, input);
+			System.out.println("Enter targetSpecAtt");
+			targetSpecAtt = doIt(reader, input);
+			System.out.println("Enter targetSpecDef");
+			targetSpecDef = doIt(reader, input);
+			System.out.println("Enter targetSpe");
+			targetSpe = doIt(reader, input);
+			
+			DbAdapter adapter;
+			ResultSet rs;
+			
+			String userStatChange = "{'attack':'"+userAtt+"','defense':'"+userDef+"','special_attack':'"+
+				userspecAtt+"','special_defense':'"+userspecDef+"','speed':'"+userSpe+"'}";
+			
+			userStatChange = userStatChange.replace((char)39, (char)34);
+			
+			String targetStatChange = "{'attack':'"+targetAtt+"','defense':'"+targetDef+"','special_attack':'"+
+				targetSpecAtt+"','special_defense':'"+targetSpecDef+"','speed':'"+targetSpe+"'}";
+			
+			targetStatChange = targetStatChange.replace((char)39, (char)34);
+			
+			try {
+				adapter = new DbAdapter();
+				adapter.insertValues("INSERT INTO move_secondary_effects VALUES " +
+						"('"+rowId+"','"+id+"','"+nonVol+"','"+vol+"','"+userStatChange+"','"+targetStatChange+"')");
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			System.out.println("Continue? (y/n)");
+			String answer = doIt(reader, input);
+			if(!answer.equals("y")) {
+				i = 2;
+			}
+		}
+		System.out.println("Done inserting.");
+	}	
+	
+	private static String doIt(BufferedReader reader, String input) {
+		try {
+			input = reader.readLine();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return input;
+	}
 }

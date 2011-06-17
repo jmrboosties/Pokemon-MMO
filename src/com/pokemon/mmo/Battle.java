@@ -199,7 +199,7 @@ public class Battle {
 
 	protected static double getPayalyzeMod(Pokemon pokemon) {
 		if(pokemon.getStatus() == Status.PARALYZE) {
-			return 0.5;
+			return 0.25;
 		}
 		else {
 			return 1;
