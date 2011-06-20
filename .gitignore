@@ -1,2 +1,1 @@
-bin/
-*.class
+bin/com/pokemon/mmo/*.class
