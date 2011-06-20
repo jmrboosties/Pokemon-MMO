@@ -169,9 +169,9 @@ public class Move {
 	}
 	
 	
-	public void executeMove(Battle battle, Pokemon attacker, Pokemon defender/*Consider list of moves to record history and then just pick the most recent?*/) {
-		
-	}
+//	public void executeMove(Battle battle, Pokemon attacker, Pokemon defender/*Consider list of moves to record history and then just pick the most recent?*/) {
+//		
+//	}
 
 	public void setMoveStatChangesArray(int[] moveStatChanges) {
 		this.mMoveStatChanges = moveStatChanges;
