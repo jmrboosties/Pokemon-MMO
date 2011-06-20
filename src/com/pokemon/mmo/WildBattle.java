@@ -72,7 +72,7 @@ public class WildBattle extends Battle {
 	}
 
 	@Override
-	private boolean round() {
+	protected boolean round() {
 		Move trainerMove = getTrainerMove(mActivePokemonTrainer);
 		Move wildMove = getWildMove();
 		int wildPriority = wildMove.getPriority(trainerMove);
