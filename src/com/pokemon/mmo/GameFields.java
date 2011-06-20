@@ -62,9 +62,9 @@ public class GameFields {
 		 * I am doing it step by step because the game cuts off any decimals at
 		 * each step.
 		 * 
-		 * Damage Formula = (((((((Level × 2 ÷ 5) + 2) × BasePower × [Sp]Atk ÷
-		 * 50) ÷ [Sp]Def) × Mod1) + 2) × CH × Mod2 × R ÷ 100) × STAB × Type1 ×
-		 * Type2 × Mod3)
+		 * Damage Formula = (((((((Level * 2 / 5) + 2) * BasePower * [Sp]Atk /
+		 * 50) / [Sp]Def) * Mod1) + 2) * CH * Mod2 * R / 100) * STAB * Type1 *
+		 * Type2 * Mod3)
 		 */
 
 		int levelVar = ((attacker.getLevel() * 2 / 5) + 2);
@@ -100,7 +100,7 @@ public class GameFields {
 		double ws = 1;
 		double ua = 1;
 		double fa = 1;
-		// BasePower = HH × BP × IT × CHG × MS × WS × UA × FA
+		// BasePower = HH * BP * IT * CHG * MS * WS * UA * FA
 
 		/** HH variable */
 
@@ -372,7 +372,7 @@ public class GameFields {
 
 	private static int calcDefenseOrSpecialDefense(Pokemon defender,
 			Pokemon attacker, Move move, Battle stats) {
-		// [Sp]Def = Stat × SM × Mod
+		// [Sp]Def = Stat * SM * Mod
 		int defense = 1;
 		int stat = 1;
 		double sm = 1;
@@ -476,7 +476,7 @@ public class GameFields {
 
 	private static int calcMod1(Pokemon attacker, Pokemon defender, Move move,
 			Battle battle) {
-		/* Mod1 = BRN × RL × TVT × SR × FF */
+		/* Mod1 = BRN * RL * TVT * SR * FF */
 		double calcMod = 1;
 		double brn = 1;
 		double rl = 1;
@@ -541,7 +541,7 @@ public class GameFields {
 		double eb = 1;
 		double tl = 1;
 		double trb = 1;
-		// Mod3 = SRF × EB × TL × TRB
+		// Mod3 = SRF * EB * TL * TRB
 		if (defender.getAbility() == Ability.SOLID_ROCK
 				|| defender.getAbility() == Ability.FILTER) {
 			srf = 0.75;
