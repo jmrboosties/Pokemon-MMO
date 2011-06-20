@@ -1,0 +1,47 @@
+BEGIN TRANSACTION;
+CREATE TABLE poke_abilities AS SELECT pokemon_abilities.pokemon_id AS "pokemon_id", slot1.ability_id AS "ability1", slot2.ability_id AS "ability2", slot3.ability_id AS "ability3"
+	FROM pokemon_abilities
+	LEFT OUTER JOIN (SELECT pokemon_id, ability_id FROM pokemon_abilities WHERE slot='1') slot1 ON slot1.pokemon_id=pokemon_abilities.pokemon_id
+	LEFT OUTER JOIN (SELECT pokemon_id, ability_id FROM pokemon_abilities WHERE slot='2') slot2 ON slot2.pokemon_id=pokemon_abilities.pokemon_id
+	LEFT OUTER JOIN (SELECT pokemon_id, ability_id FROM pokemon_abilities WHERE slot='3') slot3 ON slot3.pokemon_id=pokemon_abilities.pokemon_id
+	GROUP BY pokemon_abilities.pokemon_id;
+
+CREATE TABLE poke_egg_groups AS SELECT pokemon_id, MIN(egg_group_id) as "egggroup1", MAX(egg_group_id) as "egggroup2" FROM pokemon_egg_groups GROUP BY pokemon_id;
+
+CREATE TABLE poke_stats AS SELECT pokemon_stats.pokemon_id AS "pokemon_id", hpstats.base_stat AS "base_hp", attackstats.base_stat AS "base_attack", defensestats.base_stat AS "base_defense", speedstats.base_stat AS "base_speed", spattackstats.base_stat AS "base_spattack", spdefensestats.base_stat AS "base_spdefense", hpstats.effort AS "effort_hp", attackstats.effort AS "effort_attack", defensestats.effort AS "effort_defense", speedstats.effort AS "effort_speed", spattackstats.effort AS "effort_spattack", spdefensestats.effort AS "effort_spdefense"
+	FROM pokemon_stats
+	LEFT OUTER JOIN (SELECT pokemon_id, base_stat, effort FROM pokemon_stats WHERE stat_id='1') hpstats ON hpstats.pokemon_id=pokemon_stats.pokemon_id
+	LEFT OUTER JOIN (SELECT pokemon_id, base_stat, effort FROM pokemon_stats WHERE stat_id='2') attackstats ON attackstats.pokemon_id=pokemon_stats.pokemon_id
+	LEFT OUTER JOIN (SELECT pokemon_id, base_stat, effort FROM pokemon_stats WHERE stat_id='3') defensestats ON defensestats.pokemon_id=pokemon_stats.pokemon_id
+	LEFT OUTER JOIN (SELECT pokemon_id, base_stat, effort FROM pokemon_stats WHERE stat_id='4') spattackstats ON spattackstats.pokemon_id=pokemon_stats.pokemon_id
+	LEFT OUTER JOIN (SELECT pokemon_id, base_stat, effort FROM pokemon_stats WHERE stat_id='5') spdefensestats ON spdefensestats.pokemon_id=pokemon_stats.pokemon_id
+	LEFT OUTER JOIN (SELECT pokemon_id, base_stat, effort FROM pokemon_stats WHERE stat_id='6') speedstats ON speedstats.pokemon_id=pokemon_stats.pokemon_id
+	GROUP BY pokemon_stats.pokemon_id;
+
+CREATE TABLE poke_types AS SELECT pokemon_types.pokemon_id AS "pokemon_id", slot1.type_id AS "type1", slot2.type_id AS "type2"
+	FROM pokemon_types
+	LEFT OUTER JOIN (SELECT pokemon_id, type_id FROM pokemon_types WHERE slot='1') slot1 ON slot1.pokemon_id=pokemon_types.pokemon_id
+	LEFT OUTER JOIN (SELECT pokemon_id, type_id FROM pokemon_types WHERE slot='2') slot2 ON slot2.pokemon_id=pokemon_types.pokemon_id
+	GROUP BY pokemon_types.pokemon_id;
+
+CREATE TABLE poke AS SELECT * FROM pokemon;
+DROP TABLE pokemon;
+
+CREATE TABLE pokemon AS SELECT poke.*, pokemon_names.name, pokemon_names.species, poke_abilities.ability1, poke_abilities.ability2, poke_abilities.ability3, poke_egg_groups.egggroup1, poke_egg_groups.egggroup2, poke_stats.base_hp, poke_stats.base_attack, poke_stats.base_defense, poke_stats.base_speed, poke_stats.base_spattack, poke_stats.base_spdefense, poke_stats.effort_hp, poke_stats.effort_attack, poke_stats.effort_defense, poke_stats.effort_speed, poke_stats.effort_spattack, poke_stats.effort_spdefense, poke_types.type1, poke_types.type2
+	FROM poke
+	INNER JOIN poke_abilities ON poke.id=poke_abilities.pokemon_id
+	INNER JOIN poke_egg_groups ON poke.id=poke_egg_groups.pokemon_id
+	INNER JOIN poke_stats ON poke.id=poke_stats.pokemon_id
+	INNER JOIN poke_types ON poke.id=poke_types.pokemon_id
+	INNER JOIN pokemon_names ON poke.id=pokemon_names.pokemon_id;
+
+DROP TABLE pokemon_abilities;
+DROP TABLE pokemon_egg_groups;
+DROP TABLE pokemon_stats;
+DROP TABLE pokemon_types;
+DROP TABLE poke_abilities;
+DROP TABLE poke_egg_groups;
+DROP TABLE poke_stats;
+DROP TABLE poke_types;
+DROP TABLE poke;
+COMMIT;

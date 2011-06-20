@@ -61,7 +61,7 @@ public class Main {
 			System.out.println(species.getSpeciesName() + " is Genderless.");
 		}
 		else {
-			System.out.println(species.getSpeciesName() + " is male " + species.getGenderRatio() + "% of the time.");
+			System.out.println(species.getSpeciesName() + " is male " + 100*species.getGenderRatio() + "% of the time.");
 		}
 		
 		System.out.println(species.getSpeciesName() + " learns the following moves:");
@@ -73,22 +73,22 @@ public class Main {
 				System.out.println(move.getMoveName() + " at level " + i);
 			}
 		}
-		
-		Pokemon pokemon = PokemonFactory.getPokemon(species);
-		System.out.println("A wild " + species.getSpeciesName() + " appeared!");
-		System.out.println(pokemon.getNickName() + " has ability " + pokemon.getAbility().getName());
-		System.out.println(pokemon.getNickName() + " is " + pokemon.getGender().getName());
-		Random generator = new Random();
-		int level = generator.nextInt(100) + 1;
-		pokemon.setLevel(30);
-		System.out.println(pokemon.getNickName() + " is level " + pokemon.getLevel());
-		System.out.println(pokemon.getNickName() + " has the following moves:");
-		Move[] moves = pokemon.getMoveArray();
-		for (int i = 0; i < moves.length; i++) {
-			if(moves[i] != mMoveArray[0]) {
-				System.out.println(moves[i].getMoveName());
-			}
-		}
+
+//		Pokemon pokemon = PokemonFactory.getPokemon(species);
+//		System.out.println("A wild " + species.getSpeciesName() + " appeared!");
+//		System.out.println(pokemon.getNickName() + " has ability " + pokemon.getAbility().getName());
+//		System.out.println(pokemon.getNickName() + " is " + pokemon.getGender().getName());
+//		Random generator = new Random();
+//		int level = generator.nextInt(100) + 1;
+//		pokemon.setLevel(30);
+//		System.out.println(pokemon.getNickName() + " is level " + pokemon.getLevel());
+//		System.out.println(pokemon.getNickName() + " has the following moves:");
+//		Move[] moves = pokemon.getMoveArray();
+//		for (int i = 0; i < moves.length; i++) {
+//			if(moves[i] != mMoveArray[0]) {
+//				System.out.println(moves[i].getMoveName());
+//			}
+//		}
 	}
 
 	/*
