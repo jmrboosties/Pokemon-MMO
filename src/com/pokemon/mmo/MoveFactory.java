@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Random;
 
-import com.pokemon.mmo.Battle.Sport;
+//import com.pokemon.mmo.Battle.Sport;
 import com.pokemon.mmo.Enums.ModdableBattleStats;
 import com.pokemon.mmo.Enums.MoveEffectGroup;
 import com.pokemon.mmo.Enums.MoveKinds;
@@ -56,7 +56,7 @@ public class MoveFactory {
 	}
 	
 	private static List<Integer> getMoveEffectIdList(MoveEffectGroup group) {
-		
+		return null;
 	}
 	
 	public static MoveEffectGroup getMoveEffectGroup(Move move) {
@@ -68,6 +68,7 @@ public class MoveFactory {
 		case 2 :
 			
 		}
+		return null;
 	}
 	
 	private static void setMoveNonVolatileEffect(ResultSet rs, Move move) {
@@ -275,14 +276,14 @@ public class MoveFactory {
 		case 147 :
 		case 151 :
 		case 159 :
-		case 274 :
-		case 275 :
-		case 276 :
+//		case 274 :
+//		case 275 :
+//		case 276 :
 			move.setVolatileEffect(MoveSecondaryVolatileEffect.FLINCHES);
 			break;
 		case 50 :
 		case 77 :
-		case 119 :
+//		case 119 :
 		case 200 :
 			move.setVolatileEffect(MoveSecondaryVolatileEffect.CONFUSES);
 			break;

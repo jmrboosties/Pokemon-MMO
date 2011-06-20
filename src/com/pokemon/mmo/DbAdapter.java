@@ -8,11 +8,11 @@ import java.sql.Statement;
 
 public class DbAdapter {
 
-	private Connection mConn;
-	private Statement mStat;
+	private Connection mConn = null;
+	private Statement mStat = null;
 
 	public DbAdapter() throws Exception {
-		Class.forName("org.sqlite.JDBC").newInstance();
+		Class.forName("org.sqlite.JDBC");
 		mConn = DriverManager.getConnection("jdbc:sqlite:assets/pokemon.db");
 		mStat = mConn.createStatement();
 	}
@@ -24,7 +24,7 @@ public class DbAdapter {
 			rs = mStat.executeQuery(query);
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("Problem in query");
+			System.out.println("Problem in query:  " + query);
 		}
 		return rs;
 	}
