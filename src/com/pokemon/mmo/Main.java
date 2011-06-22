@@ -11,28 +11,32 @@ public class Main {
 
 	public static PokemonSpecies[] mSpeciesArray;
 	public static Move[] mMoveArray;
+	
+	public static GUI gui = null;
 
 	public static void main(String[] args) {
 		mSpeciesArray = PokemonSpeciesFactory.createSpeciesArray();
 		mMoveArray = MoveFactory.createMoveArray();
+		gui = new GUI();
+		gui.start();
 
-		while(true) {
-			System.out.println("Welcome to the Pokedex. Enter the dex number of who you want to check.");
-			String input = "";
-			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-			try {
-				input = reader.readLine();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			int dexNum = Integer.parseInt(input);
-			if(!(0<dexNum) || !(dexNum<650)) {
-				System.out.println("Try again, don't fuck around. Pokedex goes to 649.");
-			}
-			else {
-				dexCheck(dexNum);
-			}
-		}
+//		while(true) {
+//			System.out.println("Welcome to the Pokedex. Enter the dex number of who you want to check.");
+//			String input = "";
+//			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+//			try {
+//				input = reader.readLine();
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//			int dexNum = Integer.parseInt(input);
+//			if(!(0<dexNum) || !(dexNum<650)) {
+//				System.out.println("Try again, don't fuck around. Pokedex goes to 649.");
+//			}
+//			else {
+//				dexCheck(dexNum);
+//			}
+//		}
 	}
 	
 	private static void dexCheck(int dexNum) {
