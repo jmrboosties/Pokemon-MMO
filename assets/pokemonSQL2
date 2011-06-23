@@ -44,4 +44,33 @@ DROP TABLE poke_egg_groups;
 DROP TABLE poke_stats;
 DROP TABLE poke_types;
 DROP TABLE poke;
+
+CREATE TABLE mm_stat_changes AS SELECT move_meta_stat_changes.move_id AS "move_id", hp.change AS "hp_change", attack.change AS "attack_change", defense.change AS "defense_change", spattack.change AS "spattack_change", spdefense.change AS "spdefense_change", speed.change AS "speed_change", accuracy.change AS "accuracy_change", evasion.change AS "evasion_change"
+	FROM move_meta_stat_changes
+	LEFT OUTER JOIN (SELECT move_id, change FROM move_meta_stat_changes WHERE stat_id='1') hp        ON hp.move_id       =move_meta_stat_changes.move_id
+	LEFT OUTER JOIN (SELECT move_id, change FROM move_meta_stat_changes WHERE stat_id='2') attack    ON attack.move_id   =move_meta_stat_changes.move_id
+	LEFT OUTER JOIN (SELECT move_id, change FROM move_meta_stat_changes WHERE stat_id='3') defense   ON defense.move_id  =move_meta_stat_changes.move_id
+	LEFT OUTER JOIN (SELECT move_id, change FROM move_meta_stat_changes WHERE stat_id='4') spattack  ON spattack.move_id =move_meta_stat_changes.move_id
+	LEFT OUTER JOIN (SELECT move_id, change FROM move_meta_stat_changes WHERE stat_id='5') spdefense ON spdefense.move_id=move_meta_stat_changes.move_id
+	LEFT OUTER JOIN (SELECT move_id, change FROM move_meta_stat_changes WHERE stat_id='6') speed     ON speed.move_id    =move_meta_stat_changes.move_id
+	LEFT OUTER JOIN (SELECT move_id, change FROM move_meta_stat_changes WHERE stat_id='7') accuracy  ON accuracy.move_id =move_meta_stat_changes.move_id
+	LEFT OUTER JOIN (SELECT move_id, change FROM move_meta_stat_changes WHERE stat_id='8') evasion   ON evasion.move_id  =move_meta_stat_changes.move_id
+	GROUP BY move_meta_stat_changes.move_id;
+
+DROP TABLE move_meta_stat_changes;
+
+CREATE TABLE m AS SELECT * FROM moves;
+DROP TABLE moves;
+
+CREATE TABLE moves AS SELECT m.*, move_names.name, move_meta.*, mm_stat_changes.hp_change, mm_stat_changes.attack_change, mm_stat_changes.defense_change, mm_stat_changes.spattack_change, mm_stat_changes.spdefense_change, mm_stat_changes.speed_change, mm_stat_changes.accuracy_change, mm_stat_changes.evasion_change
+	FROM m
+	INNER JOIN move_names ON m.id=move_names.move_id
+	LEFT OUTER JOIN move_meta ON m.id=move_meta.move_id
+	LEFT OUTER JOIN mm_stat_changes ON m.id=mm_stat_changes.move_id;
+
+DROP TABLE move_names;
+DROP TABLE move_meta;
+DROP TABLE mm_stat_changes;
+DROP TABLE m;
+
 COMMIT;
