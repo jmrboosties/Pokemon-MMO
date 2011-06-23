@@ -76,8 +76,31 @@ volatile_status_effects: int which corresponds to the volatile effects moves can
 	effects do not appear in the pokemon's status bar, do not stay after battle ends, and can stack. There
 	are a lot more of these, including confusion, attract, mean look, etc. Setup:
 	
-//TODO still, will update README when i get a structure for these, it won't be hard i just dont have the
-time to work it all out at the time of updating this.
+//separated into baton passable and non-baton passable
+0 none
+/**baton-passable vol vals*/
+1 confusion 
+2 curse (per turn dmg from a ghost)
+3 leech seed
+4 mindreader/lockon
+5 perish song
+6 embargo
+7 heal block
+8 ingrain
+9 aqua ring
+10 substitute
+11 magnet rise/telekinesis
+
+/**non-baton-passable*/
+12 torment
+13 taunt
+14 partialtrap
+15 meanlook
+16 nightmare
+17 infatuation
+18 identify
+19 flinch
+20 encore
 
 user_stat_changes: moves can change the user's stats by a stage. For instance, using steel wing has a chance
 	of raising the user's attack by one stage. This is stored in a different column than the stat changes
@@ -90,7 +113,7 @@ user_stat_changes: moves can change the user's stats by a stage. For instance, u
 	pairs which can be parsed to extract data. It's more conveinient than having a bunch of columns for data that
 	is never changed and will be stored in an array anyhow.
 	
-	EXAMPLE: {"attack":"0","defense":"0","special_attack":"1","special_defense":"0","speed":"1"}
+	EXAMPLE: {"attack":"0","defense":"0","special_attack":"1","special_defense":"0","speed":"1","accuracy":"0","evasion":"0"}
 	
 	This example would raise the user's special attack and speed by one stage each.
 
