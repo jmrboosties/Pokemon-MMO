@@ -1,0 +1,8 @@
+#!/bin/bash
+
+export CLASSPATH=$CLASSPATH:`pwd`/Pokemon-MMO/:`pwd`/libs/lwjgl-2.7.1/jar/lwjgl.jar:`pwd`/libs/sqlitejdbc-v056.jar:`pwd`/bin/
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:`pwd`/libs/lwjgl-2.7.1/native/linux/
+
+java com.pokemon.mmo.Main
+#-cp .:libs/lwjgl.jar
+#-Djava.library.path=libs/lwjgl-2.7.1/native/linux/

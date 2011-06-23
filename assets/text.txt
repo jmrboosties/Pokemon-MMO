@@ -1,0 +1,2 @@
+ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789
+abcdefghijklmnopqrstuvwxyz,.'-
