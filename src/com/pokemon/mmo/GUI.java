@@ -54,8 +54,8 @@ public class GUI {
 
 		initGL();		// init OpenGL
 		try {
-			font = new Font("assets/text.png", 6, 11);
-			font.buildFont(10);	// build the textures for text
+			font = new Font("assets/text.png", "assets/text.txt", 6, 13);
+			font.buildFont(2);	// build the textures for text
 			s = new Sprite("assets/pokemon_sprites/front/643.png");
 		} catch (IOException e) {
 			e.printStackTrace();

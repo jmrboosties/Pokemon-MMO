@@ -24,8 +24,8 @@ public class Font extends Texture2D {
 	
 	private int list_base = -1;
 
-	public Font(String fname, int lwidth, int lheight) throws IOException {
-		super(fname);
+	public Font(String pngfname, String txtfname, int lwidth, int lheight) throws IOException {
+		super(pngfname);
 		letter_width = lwidth;
 		letter_height = lheight;
 		
