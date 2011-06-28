@@ -17,11 +17,8 @@ public class Battle {
 	
 	protected Move mLastMove;
 
-	protected Pokemon mUserPokemon;
-	protected Pokemon mOtherPokemon;
-	
-	protected Trainer mUserTrainer;
-	protected Trainer mOtherTrainer;
+	protected BattlePlayer mBattlePlayerYou;
+	protected BattlePlayer mBattlePlayerEnemy;
 	
 	protected VolatileStatus mUserPokemonVolatile;
 
@@ -34,11 +31,12 @@ public class Battle {
 	public Battle() {
 		mWeather = Weather.NORMAL;
 		mLastMove = Main.mMoveArray[0];
+		mBattlePlayerYou = new BattlePlayer(); //TODO set trainer as a global
+		mBattlePlayerEnemy = new BattlePlayer(); //TODO method which will get this from online or gen, in due time
 	}
 
 	public Battle(Trainer trainer) {
-		mUserTrainer = trainer;
-		mWeather = Weather.NORMAL;
+		//TODO necessary? or something like it, alt constructor i mean
 	}
 	
 	protected boolean battleThread() {
@@ -47,7 +45,6 @@ public class Battle {
 			round(preRound());
 			postRound();
 		}
-		
 		return true;
 	}
 	
@@ -61,7 +58,12 @@ public class Battle {
 	
 	protected void round(boolean b) {
 		if(b) {
-			
+			if(mBattlePlayerYou == determineOrder(mBattlePlayerYou, mBattlePlayerEnemy)) {
+				
+			}
+			else {
+				
+			}
 		}
 		else {
 			
@@ -73,19 +75,19 @@ public class Battle {
 		
 	}
 
-	protected Pokemon determineOrder(Pokemon pokemon1, Pokemon pokemon2) {
-		int speed1 = battleAdjustedSpeed(pokemon1);
-		int speed2 = battleAdjustedSpeed(pokemon2);
+	protected BattlePlayer determineOrder(BattlePlayer player1, BattlePlayer player2) {
+		int speed1 = battleAdjustedSpeed(player1.getPokemon());
+		int speed2 = battleAdjustedSpeed(player2.getPokemon());
 		if (speed1 > speed2) {
-			return pokemon1;
+			return player1;
 		} else if (speed2 > speed1) {
-			return pokemon2;
+			return player2;
 		} else {
-			if(mUserTrainer.getTrainerId() > mOtherTrainer.getTrainerId()) {
-				return pokemon1;
+			if(player1.getTrainer().getTrainerId() > player2.getTrainer().getTrainerId()) {
+				return player1;
 			}
 			else {
-				return pokemon2;
+				return player2;
 			}
 		}
 	}
@@ -98,6 +100,31 @@ public class Battle {
 		pokemonSpeed = (int) (pokemonSpeed * getPayalyzeMod(pokemon));
 		pokemonSpeed = pokemonSpeed * getTailwindMod(pokemon);
 		return pokemonSpeed;
+	}
+	
+	protected void executeMove(BattlePlayer attacker, BattlePlayer target) {
+		//TODO this is the big one, better put it here than in each and every move object, I think...
+		Move move = attacker.getCurrentChosenMove();
+		switch(move.getMoveId()) {
+		case 1 : //means move is "normal, damage with possible effect to user or target.
+			int targetHp = target.getPokemon().getCurrentHP();
+			int damage = GameFields.damageCalc(attacker.getPokemon(), target.getPokemon(), move, this); //TODO consider 
+			//putting battleplayer as param here... all refs go in via battleplayer.get______ to keep consistent
+			targetHp = targetHp - damage;
+			if(targetHp > 0) {
+				target.getPokemon().setCurrentHP(targetHp);
+			}
+			else {
+				target.getPokemon().setCurrentHP(0);
+				target.getPokemon().setStatus(Status.FAINTED);
+				//TODO check if move has secondary effect ON USER, perform it if so. perhaps move things around?
+				return;
+			}
+			//TODO EVERYTHING ABOVE SHOULD GO IN A SEPARATE "DEAL DAMAGE METHOD"
+			
+			
+			break;
+		}
 	}
 
 	protected boolean executeMoves(Pokemon firstPokemon, Move firstMove,
