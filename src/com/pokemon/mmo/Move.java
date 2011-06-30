@@ -1,12 +1,11 @@
 package com.pokemon.mmo;
 
 import com.pokemon.mmo.Enums.ModdableBattleStats;
-import com.pokemon.mmo.Enums.MoveEffectGroup;
 import com.pokemon.mmo.Enums.MoveKinds;
-import com.pokemon.mmo.Enums.MoveSecondaryNonVolatileEffect;
-import com.pokemon.mmo.Enums.MoveSecondaryVolatileEffect;
+import com.pokemon.mmo.Enums.MoveMetaCategory;
 import com.pokemon.mmo.Enums.MoveTargetId;
 import com.pokemon.mmo.Enums.Moves;
+import com.pokemon.mmo.Enums.StatusAilment;
 import com.pokemon.mmo.Enums.Types;
 
 public class Move {
@@ -17,16 +16,15 @@ public class Move {
 	private int mPower;
 	private int mAccuracy;
 	private int mPriority;
-	private MoveEffectGroup mEffectGroup;
-	private MoveSecondaryVolatileEffect mVolatileEffect;
-	private MoveSecondaryNonVolatileEffect mNonVolatileEffect;
 	private int[] mMoveStatChanges = new int[7];
+	private StatusAilment mAilment;
 	private int mSecondaryChance;
 	private MoveKinds mKind;
 	private MoveTargetId mTarget;
 	private int mPP;
 	private int mMoveId;	
 	private int mMoveCode;
+	private MoveMetaCategory mMetaCategory;
 
 	public Move() {
 		mName = "-----";
@@ -36,10 +34,8 @@ public class Move {
 		mPower = 0;
 		mAccuracy = 0;
 		mPriority = 0;
-		setVolatileEffect(MoveSecondaryVolatileEffect.NONE);
-		setNonVolatileEffect(MoveSecondaryNonVolatileEffect.NONE);
-		mEffectGroup = MoveEffectGroup.NULL;
-		
+		mMetaCategory = MoveMetaCategory.UNIQUE_EFFECT;
+		mAilment = StatusAilment.NONE;
 	}
 
 	public void setMoveId(int id) {
@@ -64,14 +60,6 @@ public class Move {
 
 	public Types getType() {
 		return mType;
-	}
-
-	public void setEffectId(MoveEffectGroup effect) {
-		this.mEffectGroup = effect;
-	}
-
-	public MoveEffectGroup getEffectId() {
-		return mEffectGroup;
 	}
 
 	public void setSecondaryEffectChance(int chance) {
@@ -122,22 +110,6 @@ public class Move {
 		this.mKind = kind;
 	}
 
-	public void setVolatileEffect(MoveSecondaryVolatileEffect volatileEffect) {
-		this.mVolatileEffect = volatileEffect;
-	}
-
-	public MoveSecondaryVolatileEffect getVolatileEffect() {
-		return mVolatileEffect;
-	}
-
-	public void setNonVolatileEffect(MoveSecondaryNonVolatileEffect nonVolatileEffect) {
-		this.mNonVolatileEffect = nonVolatileEffect;
-	}
-
-	public MoveSecondaryNonVolatileEffect getNonVolatileEffect() {
-		return mNonVolatileEffect;
-	}
-
 	public boolean isRecoil() {
 		// TODO ALL OF THIS
 		return false;
@@ -183,6 +155,22 @@ public class Move {
 
 	public int[] getMoveStatChanges() {
 		return mMoveStatChanges;
+	}
+	
+	public void setMoveMetaCategory(MoveMetaCategory category) {
+		this.mMetaCategory = category;
+	}
+	
+	public MoveMetaCategory getMoveMetaCategory() {
+		return mMetaCategory;
+	}
+	
+	public void setStatusAilment(StatusAilment ailment) {
+		this.mAilment = ailment;
+	}
+	
+	public StatusAilment getStatusAilment() {
+		return mAilment;
 	}
 
 }

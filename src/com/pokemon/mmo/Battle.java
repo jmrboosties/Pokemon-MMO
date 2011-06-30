@@ -1,6 +1,5 @@
 package com.pokemon.mmo;
 
-import java.util.Random;
 import java.util.Scanner;
 
 import com.pokemon.mmo.Enums.Stats;
@@ -105,26 +104,20 @@ public class Battle {
 	protected void executeMove(BattlePlayer attacker, BattlePlayer target) {
 		//TODO this is the big one, better put it here than in each and every move object, I think...
 		Move move = attacker.getCurrentChosenMove();
-		switch(move.getMoveId()) {
-		case 1 : //means move is "normal, damage with possible effect to user or target.
-			int targetHp = target.getPokemon().getCurrentHP();
-			int damage = GameFields.damageCalc(attacker.getPokemon(), target.getPokemon(), move, this); //TODO consider 
-			//putting battleplayer as param here... all refs go in via battleplayer.get______ to keep consistent
-			targetHp = targetHp - damage;
-			if(targetHp > 0) {
-				target.getPokemon().setCurrentHP(targetHp);
-			}
-			else {
-				target.getPokemon().setCurrentHP(0);
-				target.getPokemon().setStatus(Status.FAINTED);
-				//TODO check if move has secondary effect ON USER, perform it if so. perhaps move things around?
-				return;
-			}
-			//TODO EVERYTHING ABOVE SHOULD GO IN A SEPARATE "DEAL DAMAGE METHOD"
-			
-			
+		MoveExecutionThread execution = new MoveExecutionThread(attacker, target, move, this);
+		switch(move.getMoveMetaCategory()) {
+		case INFLICTS_DAMAGE : //means move is "normal, damage with possible effect to user or target.
+			execution.dealDamage();
 			break;
 		}
+	}
+	
+	protected void setBattlePlayerYou(BattlePlayer player) {
+		this.mBattlePlayerYou = player;
+	}
+	
+	protected void setBattlePlayerEnemy(BattlePlayer player) {
+		this.mBattlePlayerEnemy = player;
 	}
 
 	protected boolean executeMoves(Pokemon firstPokemon, Move firstMove,

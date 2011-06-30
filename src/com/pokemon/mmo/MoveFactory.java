@@ -9,8 +9,10 @@ import java.util.Random;
 import com.pokemon.mmo.Enums.ModdableBattleStats;
 import com.pokemon.mmo.Enums.MoveEffectGroup;
 import com.pokemon.mmo.Enums.MoveKinds;
+import com.pokemon.mmo.Enums.MoveMetaCategory;
 import com.pokemon.mmo.Enums.MoveSecondaryNonVolatileEffect;
 import com.pokemon.mmo.Enums.MoveSecondaryVolatileEffect;
+import com.pokemon.mmo.Enums.StatusAilment;
 import com.pokemon.mmo.Enums.Types;
 
 public class MoveFactory {
@@ -26,16 +28,10 @@ public class MoveFactory {
 			for (int i = 1; i < moveArray.length; i++) {
 				Move move = new Move();
 
-				rs = adapter
-						.makeQuery("SELECT * FROM move_names WHERE move_id = '"
-								+ String.valueOf(i) + "'");
-				while (rs.next()) {
-					move.setMoveName(rs.getString("name"));
-				}
-
 				rs = adapter.makeQuery("SELECT * FROM moves WHERE id = '"
 						+ String.valueOf(i) + "'");
 				while (rs.next()) {
+					move.setMoveName(rs.getString("name"));
 					move.setBasePower(rs.getInt("power"));
 					move.setAccuracy(rs.getInt("accuracy"));
 					move.setMoveId(rs.getInt("id"));
@@ -43,6 +39,9 @@ public class MoveFactory {
 					move.setPriority(rs.getInt("priority"));
 					move.setKind(MoveKinds.getMoveKind(rs.getInt("damage_class_id")));
 					move.setType(Types.getType(rs.getInt("type_id")));
+					move.setMoveMetaCategory(MoveMetaCategory.getCategory(rs.getInt("meta_category_id")));
+					move.setStatusAilment(StatusAilment.getAilment(rs.getInt("meta_ailment_id")));
+					
 				}
 
 				moveArray[i] = move;

@@ -296,6 +296,35 @@ public class Enums {
 		}
 	}
 	
+	public static enum MoveMetaCategory {
+		INFLICTS_DAMAGE, STATUS_AILMENT_ONLY, CHANGE_STATS_ONLY, HEAL_USER, INFLICTS_DAMAGE_AND_STATUS_AILMENT,  INFLICTS_AILMENT_AND_STAT_CHANGE,
+		INFLICTS_DAMAGE_LOWER_TARGET_STATS, INFLICTS_DAMAGE_RAISES_USER_STATS, INFLICTS_AND_ABSORBS, OHKO, FULL_FIELD_EFFECT, ONE_SIDE_FIELD_EFFECT,
+		FORCES_TARGET_TO_SWITCH, UNIQUE_EFFECT;
+		
+		public static MoveMetaCategory getCategory(int i) {
+			for (MoveMetaCategory category : MoveMetaCategory.values()) {
+				if(i == category.ordinal()) {
+					return category;
+				}
+			}
+			return UNIQUE_EFFECT;
+		}
+	}
+	
+	public static enum StatusAilment {
+		NONE, PARALYSIS, SLEEP, FREEZE, BURN, POISON, CONFUSION, INFATUATION, TRAPPED, NIGHTMARE, TORMENT, DISABLE, YAWN, HEAL_BLOCK,
+		NO_TYPE_IMMUNITY, LEECH_SEED, EMBARGO, PERISH_SONG, INGRAIN;
+		
+		public static StatusAilment getAilment(int i) {
+			for (StatusAilment ailment : StatusAilment.values()) {
+				if(i == ailment.ordinal()) {
+					return ailment;
+				}
+			}
+			return NONE;
+		}
+	}
+	
 	public static enum MoveSecondaryNonVolatileEffect {
 		NONE, POISONS, BADLY_POISONS, BURNS, PARALYZES, FREEZES, SLEEPS, TRI_ATTACK
 	}
