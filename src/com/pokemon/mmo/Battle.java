@@ -56,22 +56,30 @@ public class Battle {
 	}
 	
 	protected void round(boolean b) {
-		if(b) {
-			if(mBattlePlayerYou == determineOrder(mBattlePlayerYou, mBattlePlayerEnemy)) {
-				
+		while(mBattlePlayerYou.getPokemon().getStatus() != Status.FAINTED && 
+				mBattlePlayerEnemy.getPokemon().getStatus() != Status.FAINTED) {
+			
+			if(b) {
+				if(mBattlePlayerYou == determineOrder(mBattlePlayerYou, mBattlePlayerEnemy)) {
+					
+					executeMove(mBattlePlayerYou, mBattlePlayerEnemy, true);
+					executeMove(mBattlePlayerEnemy, mBattlePlayerYou, false);
+				}
+				else {
+					executeMove(mBattlePlayerEnemy, mBattlePlayerYou, false);
+					executeMove(mBattlePlayerYou, mBattlePlayerEnemy, true);
+				}
 			}
 			else {
-				
+				System.out.println("Can you get here?");
 			}
+			return; //when someone faints
 		}
-		else {
-			
-		}
-		return; //when someone faints
+		
 	}
 	
 	protected void postRound() {
-		
+		mBattleContinues = false;
 	}
 
 	protected BattlePlayer determineOrder(BattlePlayer player1, BattlePlayer player2) {
@@ -101,14 +109,26 @@ public class Battle {
 		return pokemonSpeed;
 	}
 	
-	protected void executeMove(BattlePlayer attacker, BattlePlayer target) {
+	protected void executeMove(BattlePlayer attacker, BattlePlayer target, boolean bool) {
 		//TODO this is the big one, better put it here than in each and every move object, I think...
+		//if bool is true, user goes first, if false, enemy goes first
 		Move move = attacker.getCurrentChosenMove();
 		MoveExecutionThread execution = new MoveExecutionThread(attacker, target, move, this);
 		switch(move.getMoveMetaCategory()) {
 		case INFLICTS_DAMAGE : //means move is "normal, damage with possible effect to user or target.
 			execution.dealDamage();
 			break;
+		case MULTI_HIT :
+			execution.multiHit();
+			break;
+		}
+		if(bool) {
+			setBattlePlayerYou(execution.getAttacker());
+			setBattlePlayerEnemy(execution.getDefender());
+		}
+		else {
+			setBattlePlayerEnemy(execution.getAttacker());
+			setBattlePlayerYou(execution.getDefender());
 		}
 	}
 	

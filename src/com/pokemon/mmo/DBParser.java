@@ -9,7 +9,32 @@ import com.pokemon.mmo.Enums.Stats;
 public class DBParser {
 	
 	public static void main(String[] args) {
-		insertValsIntoSecondary();
+		test();
+	}
+	
+	public static void test() {
+		DbAdapter adapter;
+		ResultSet rs;
+		Integer fill = 123456;
+		boolean isNull = false;
+		
+		try {
+			adapter = new DbAdapter();
+			rs = adapter.makeQuery("SELECT * FROM moves WHERE id = '1'");
+			fill = rs.getInt("max_turns");
+			
+			if(fill == null) {
+				System.out.println("Hoo hoo!");
+				isNull = true;
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(!isNull) {
+			System.out.println(fill);
+		}
 	}
 	
 	public static void natureEnumCreator() {
@@ -136,7 +161,6 @@ public class DBParser {
 			targetSpe = doIt(reader, input);
 			
 			DbAdapter adapter;
-			ResultSet rs;
 			
 			String userStatChange = "{'attack':'"+userAtt+"','defense':'"+userDef+"','special_attack':'"+
 				userspecAtt+"','special_defense':'"+userspecDef+"','speed':'"+userSpe+"'}";

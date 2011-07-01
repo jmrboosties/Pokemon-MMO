@@ -20,8 +20,6 @@ public class Pokemon {
 	private Ability mAbility;
 	private Nature mNature;
 	
-	private int[] test = {1,2,3,4,5,6};
-	
 	/**
 	 * The following arrays are structed like so: 
 	 * 0 = HP, 1 = Attack, 2 = Defense, 3 = Sp. Attack, 4 = Sp. Defense, 5 = Speed

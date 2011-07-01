@@ -25,6 +25,11 @@ public class Move {
 	private int mMoveId;	
 	private int mMoveCode;
 	private MoveMetaCategory mMetaCategory;
+	private int mMoveEffect;
+	private int mMinHits;
+	private int mMaxHits;
+	private int mMinTurns;
+	private int mMaxTurns;
 
 	public Move() {
 		mName = "-----";
@@ -36,6 +41,15 @@ public class Move {
 		mPriority = 0;
 		mMetaCategory = MoveMetaCategory.UNIQUE_EFFECT;
 		mAilment = StatusAilment.NONE;
+		mMoveEffect = 0;
+		mMinHits = 0;
+		mMaxHits = 0;
+		mMaxTurns = 0;
+		mMinTurns = 0;
+		
+		for (int i = 0; i < mMoveStatChanges.length; i++) {
+			mMoveStatChanges[i] = 0;
+		}
 	}
 
 	public void setMoveId(int id) {
@@ -145,7 +159,10 @@ public class Move {
 //		
 //	}
 
-	public void setMoveStatChangesArray(int[] moveStatChanges) {
+	public void setMoveStatChangesArray(int[] moveStatChanges) throws IllegalArgumentException {
+		if(moveStatChanges.length != 7) {
+			throw new IllegalArgumentException();
+		}
 		this.mMoveStatChanges = moveStatChanges;
 	}
 	
@@ -171,6 +188,46 @@ public class Move {
 	
 	public StatusAilment getStatusAilment() {
 		return mAilment;
+	}
+
+	public void setMoveEffect(int moveEffect) {
+		this.mMoveEffect = moveEffect;
+	}
+
+	public int getMoveEffect() {
+		return mMoveEffect;
+	}
+
+	public void setMinHits(int minHits) {
+		this.mMinHits = minHits;
+	}
+
+	public int getMinHits() {
+		return mMinHits;
+	}
+
+	public void setMaxHits(int maxHIts) {
+		this.mMaxHits = maxHIts;
+	}
+
+	public int getMaxHits() {
+		return mMaxHits;
+	}
+
+	public void setMinTurns(int minTurns) {
+		this.mMinTurns = minTurns;
+	}
+
+	public int getMinTurns() {
+		return mMinTurns;
+	}
+
+	public void setMaxTurns(int maxTurns) {
+		this.mMaxTurns = maxTurns;
+	}
+
+	public int getMaxTurns() {
+		return mMaxTurns;
 	}
 
 }
