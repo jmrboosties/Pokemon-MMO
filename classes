@@ -12,15 +12,15 @@ src/com/pokemon/mmo/Move.java
 src/com/pokemon/mmo/PokemonSpeciesFactory.java
 src/com/pokemon/mmo/PokemonSpecies.java
 
-##src/com/pokemon/mmo/Battle.java
-##src/com/pokemon/mmo/BattlePlayer.java
-##src/com/pokemon/mmo/GameFields.java
-##src/com/pokemon/mmo/Items.java
-##src/com/pokemon/mmo/PokemonFactory.java
-##src/com/pokemon/mmo/Pokemon.java
-##src/com/pokemon/mmo/RandomForPokemon.java
-##src/com/pokemon/mmo/Trainer.java
-##src/com/pokemon/mmo/WildBattle.java
+src/com/pokemon/mmo/Battle.java
+src/com/pokemon/mmo/BattlePlayer.java
+src/com/pokemon/mmo/GameFields.java
+src/com/pokemon/mmo/Items.java
+src/com/pokemon/mmo/PokemonFactory.java
+src/com/pokemon/mmo/Pokemon.java
+src/com/pokemon/mmo/RandomForPokemon.java
+src/com/pokemon/mmo/Trainer.java
+#src/com/pokemon/mmo/WildBattle.java
 
 #src/com/pokemon/mmo/Bulbasaur.java
 #src/com/pokemon/mmo/Charmander.java
