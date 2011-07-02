@@ -31,6 +31,23 @@ public class PokemonFactory {
 		return pokemon;
 	}
 	
+	public static Pokemon getPokemonAtLevel(PokemonSpecies species, int level) {
+		
+		Pokemon pokemon = new Pokemon(species);
+
+		pokemon.setLevel(level);
+		pokemon.setGender(determineGender(species));
+		pokemon.setAbility(determineAbility(species));		
+		
+		pokemon.setStat(Stats.HP, setHPStat(pokemon, species));
+		for (Stats stat : Stats.values()) {
+			pokemon.setStat(stat, setStat(pokemon, species, stat));
+		}
+		pokemon.setCurrentHP(pokemon.getStat(Stats.HP));
+		
+		return pokemon;
+	}
+	
 	public static Pokemon setPokemonStats(PokemonSpecies species, int level, Gender gender, Ability ability) {
 
 		Pokemon pokemon = new Pokemon(species);
@@ -62,8 +79,7 @@ public class PokemonFactory {
 		return maxHP;
 	}
 
-	private static int setStat(Pokemon pokemon, PokemonSpecies species,
-			Stats stat) {
+	private static int setStat(Pokemon pokemon, PokemonSpecies species, Stats stat) {
 		int totalStat = 1;
 		double iv = 0;
 		double ev = 0;
@@ -156,7 +172,7 @@ public class PokemonFactory {
 	}
 	
 	private static void determineMoves(Pokemon pokemon) {
-		HashMap map = pokemon.getSpecies().getHashMap(0);
+		HashMap map = pokemon.getSpecies().getLevelMoves();
 		int level = pokemon.getLevel();
 		System.out.println(level);
 		int j = 1;

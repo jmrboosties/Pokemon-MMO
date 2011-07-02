@@ -8,13 +8,15 @@ public class BattlePlayer {
 	private Pokemon mPokemon;
 	private Move mCurrentChosenMove;
 	
-	private ArrayList<Move> mPreviousMoves;
+	private boolean mGastroAcid; //TODO add this to field? dont think so
 	
-	private int[] mBattleStatBuffs = {0,0,0,0,0,0,0};
+	private ArrayList<Move> mPreviousMoves;
 	private boolean[] mOnFieldBuffs; //do length here with all false
 	
-	public BattlePlayer() {
-		
+	public BattlePlayer(Trainer trainer) {
+		this.mTrainer = trainer;
+		mPokemon = mTrainer.getLeadingPokemon();
+		mGastroAcid = false;
 	}
 	
 	public void setTrainer(Trainer trainer) {
@@ -39,6 +41,29 @@ public class BattlePlayer {
 	
 	public Move getCurrentChosenMove() {
 		return mCurrentChosenMove;
+	}
+	
+	public boolean hasReflect() {
+		//TODO THIS IS PLACEHOLDER WILL DELETE
+		return false;
+	}
+	
+	public boolean hasLightScreen() {
+		//TODO SAME AS ABOVE
+		return false;
+	}
+	
+	public boolean hasFlashFire() {
+		//TODO ANOTHER PLACEHOLDER
+		return false;
+	}
+
+	public void setGastroAcid(boolean gastroAcid) {
+		this.mGastroAcid = gastroAcid;
+	}
+
+	public boolean isGastroAcid() {
+		return mGastroAcid;
 	}
 	
 }

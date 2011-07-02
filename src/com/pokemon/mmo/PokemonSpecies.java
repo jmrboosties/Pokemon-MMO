@@ -78,7 +78,7 @@ public class PokemonSpecies {
 
 	public PokemonSpecies() {}
 
-	public PokemonSpecies(ResultSet info, ResultSet moves) throws Exception, SQLException {
+	public PokemonSpecies(ResultSet info) throws Exception, SQLException {
 		//System.out.println("BasePokemon(ResultSet)");
 
 		// Base Info
@@ -150,33 +150,36 @@ public class PokemonSpecies {
 //		mItem1 = 0;
 //		mItem2 = 0;
 
-		while(moves.next()) {
-			switch (moves.getInt("pokemon_move_method_id")) {
-				case 1:
-					mLevelMoves.put(new Integer(moves.getInt("level")), new Integer(moves.getInt("move_id")));
-					break;
-				case 2:
-					mEggMoves.put(new Integer(moves.getInt("move_id")), new Boolean(true));
-					break;
-				case 3:
-					mTutorMoves.put(new Integer(moves.getInt("move_id")), new Boolean(true));
-					break;
-				case 4:
-					mTMMoves.put(new Integer(moves.getInt("move_id")), new Boolean(true));
-					break;
-				default:
-					throw new Exception();
+		
+	}
+	
+	public void setMoves(ResultSet moves) {
+		try {
+			while(moves.next()) {
+				switch (moves.getInt("pokemon_move_method_id")) {
+					case 1:
+						mLevelMoves.put(new Integer(moves.getInt("level")), new Integer(moves.getInt("move_id")));
+						break;
+					case 2:
+						mEggMoves.put(new Integer(moves.getInt("move_id")), new Boolean(true));
+						break;
+					case 3:
+						mTutorMoves.put(new Integer(moves.getInt("move_id")), new Boolean(true));
+						break;
+					case 4:
+						mTMMoves.put(new Integer(moves.getInt("move_id")), new Boolean(true));
+						break;
+					default:
+						throw new Exception();
+				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
-
-
-
-
-
-
 	public void printPokemon() throws Exception {
+		System.out.println();
 		System.out.println("Pokedex No.:\t" + mPokedexNo);
 		System.out.println("Pokemon Name:\t" + mPokemonName);
 		System.out.println("Species Name:\t" + mSpecies);

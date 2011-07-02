@@ -251,7 +251,7 @@ public class Enums {
 		NONE,
 	}
 
-	public static enum Status {
+	public static enum NonVolatileStatusAilment {
 		NONE, POISON, TOXIC, BURN, PARALYZE, FREEZE, SLEEP, FAINTED
 	}
 	
@@ -311,12 +311,12 @@ public class Enums {
 		}
 	}
 	
-	public static enum StatusAilment {
+	public static enum MetaStatusAilment {
 		NONE, PARALYSIS, SLEEP, FREEZE, BURN, POISON, CONFUSION, INFATUATION, TRAPPED, NIGHTMARE, TORMENT, DISABLE, YAWN, HEAL_BLOCK,
-		NO_TYPE_IMMUNITY, LEECH_SEED, EMBARGO, PERISH_SONG, INGRAIN;
+		NO_TYPE_IMMUNITY, LEECH_SEED, EMBARGO, PERISH_SONG, INGRAIN, TOXIC;
 		
-		public static StatusAilment getAilment(int i) {
-			for (StatusAilment ailment : StatusAilment.values()) {
+		public static MetaStatusAilment getAilment(int i) {
+			for (MetaStatusAilment ailment : MetaStatusAilment.values()) {
 				if(i == ailment.ordinal()) {
 					return ailment;
 				}
@@ -329,13 +329,17 @@ public class Enums {
 		NONE, POISONS, BADLY_POISONS, BURNS, PARALYZES, FREEZES, SLEEPS, TRI_ATTACK
 	}
 	
-	public static enum MoveSecondaryVolatileEffect {
-		NONE, CONFUSES, CURSES, ENCORES, FLINCHES, IDENTIFIES, ATTRACTS, LEECH_SEEDS, LOCKS_ON, NIGHTMARES,
-		PARTIALLY_TRAPS, PERISH_SONG, TAUNTS, TORMENTS, YAWNS, TELEKINESIS, KNOCKED_DOWN
+	public static enum VolatileEffectBatonPass {
+		CONFUSION, CURSE, LEECH_SEED, LOCK_ON, PERISH_SONG, EMBARGO, HEAL_BLOCK, INGRAIN, AQUA_RING,
+		SUBSTITUTE, RISE
+	}
+	
+	public static enum VolatileEffectNoBatonPass {
+		TORMENT, TAUNT, TRAP, NIGHTMARE, INFATUATION, IDENTIFY, ENCORE, KNOCKDOWN
 	}
 	
 	public static enum PokemonVolatileBattleStatus {
-		DEFENSE_CURL, FOCUS_ENERGY, FOLLOWED, MINIMIZED, SUBSTITUTE, TRAPPED
+		DEFENSE_CURL, FOCUS_ENERGY, FOLLOWED, MINIMIZED
 	}
 	
 	public static enum ModdableBattleStats {
@@ -350,5 +354,5 @@ public class Enums {
 			return ATTACK;
 		}
 	}
-
+	
 }

@@ -2,12 +2,15 @@ package com.pokemon.mmo;
 
 import java.util.Random;
 
+import javax.net.ssl.SSLEngineResult.Status;
+
 import com.pokemon.mmo.Battle.Sport;
 import com.pokemon.mmo.Enums.Ability;
+import com.pokemon.mmo.Enums.ModdableBattleStats;
 import com.pokemon.mmo.Enums.MoveKinds;
 import com.pokemon.mmo.Enums.Moves;
+import com.pokemon.mmo.Enums.NonVolatileStatusAilment;
 import com.pokemon.mmo.Enums.Stats;
-import com.pokemon.mmo.Enums.Status;
 import com.pokemon.mmo.Enums.Types;
 import com.pokemon.mmo.Enums.Weather;
 
@@ -54,10 +57,13 @@ public class GameFields {
 		return retValue;
 	}
 
-	public static int damageCalc(Pokemon attacker, Pokemon defender, Move move,
+	public static int damageCalc(BattlePlayer attacker, BattlePlayer defender, Move move,
 			Battle battle) {
 		int damageInt = 1;
 
+		Pokemon pokemonAttacker = attacker.getPokemon();
+		Pokemon pokemonDefender = defender.getPokemon();
+		
 		/**
 		 * I am doing it step by step because the game cuts off any decimals at
 		 * each step.
@@ -67,7 +73,7 @@ public class GameFields {
 		 * Type2 * Mod3)
 		 */
 
-		int levelVar = ((attacker.getLevel() * 2 / 5) + 2);
+		int levelVar = ((pokemonAttacker.getLevel() * 2 / 5) + 2);
 		int next1 = levelVar * calcBasePower(attacker, defender, move, battle);
 		int next2 = next1
 				* calcAttackOrSpAttack(attacker, defender, move, battle) / 50;
@@ -75,23 +81,29 @@ public class GameFields {
 				/ calcDefenseOrSpecialDefense(defender, attacker, move, battle);
 		int next4 = (next3 * calcMod1(attacker, defender, move, battle)) + 2;
 		int next5 = (int) (next4 * /* calcCritHit(attacker, defender) */calcMod2(
-				attacker, move));
+				pokemonAttacker, move));
 		int next6 = (int) (next5 * .9);
-		int next7 = (int) (next6 * stabDetermine(attacker.getType(1),
-				attacker.getType(2), move.getType()));
+		int next7 = (int) (next6 * stabDetermine(pokemonAttacker.getType(1),
+				pokemonAttacker.getType(2), move.getType()));
 
-		double effectiveness = typeMath(move.getType(), defender.getType(1),
-				defender.getType(2));
+		double effectiveness = typeMath(move.getType(), pokemonDefender.getType(1),
+				pokemonDefender.getType(2));
 
 		double next8 = (next7 * effectiveness);
 
 		damageInt = (int) (next8 * calcMod3(attacker, defender, effectiveness));
+		
+		//TODO ADD IN CRIT HITS
 
 		return damageInt;
 	}
 
-	private static int calcBasePower(Pokemon attacker, Pokemon defender,
+	private static int calcBasePower(BattlePlayer playerAttacker, BattlePlayer playerDefender,
 			Move move, Battle stats) {
+		
+		Pokemon attacker = playerAttacker.getPokemon();
+		Pokemon defender = playerDefender.getPokemon();
+		
 		double hh = 1;
 		double bp = move.getBasePower();
 		double it = 1;
@@ -102,11 +114,11 @@ public class GameFields {
 		double fa = 1;
 		// BasePower = HH * BP * IT * CHG * MS * WS * UA * FA
 
-		/** HH variable */
-
-		if (attacker.isHelpedByHand()) {
-			hh = (long) 1.5;
-		}
+//		/** HH variable */
+//TODO
+//		if (attacker.isHelpedByHand()) {
+//			hh = (long) 1.5;
+//		}
 
 		/** IT variable */
 
@@ -155,10 +167,10 @@ public class GameFields {
 
 		/** CHG variable */
 
-		if (stats.getLastMove().getMoveEnum() == Moves.CHARGE
-				&& move.getType() == Types.ELECTRIC) {
-			chg = 2;
-		}
+		//TODO if (stats.getLastMove().getMoveEnum() == Moves.CHARGE
+			//	&& move.getType() == Types.ELECTRIC) {
+			//chg = 2;
+		//}
 
 		/** MS variable */
 
@@ -192,7 +204,7 @@ public class GameFields {
 			}
 			break;
 		case IRON_FIST: 
-			if (move.isPunching()) {
+			if (move.isPunching()) { //TODO change this to flags or something
 				ua = (long) 1.2;
 			}
 			break;
@@ -253,8 +265,12 @@ public class GameFields {
 		return basePower;
 	}
 
-	private static int calcAttackOrSpAttack(Pokemon attacker, Pokemon defender,
+	private static int calcAttackOrSpAttack(BattlePlayer playerAttacker, BattlePlayer playerDefender,
 			Move move, Battle stats) {
+		
+		Pokemon attacker = playerAttacker.getPokemon();
+		Pokemon defender = playerDefender.getPokemon();
+		
 		int attack = 1;
 		int stat = 1;
 		long sm = 1;
@@ -264,14 +280,14 @@ public class GameFields {
 		if (move.getKind() == MoveKinds.PHYSICAL) {
 			stat = attacker.getStat(Stats.ATTACK);
 
-			if (attacker.getStatChanges(1) > 0) {
-				sm = (attacker.getStatChanges(1) + 2) / 2;
-			} else if (attacker.getStatChanges(1) < 0) {
-				sm = 2 / (attacker.getStatChanges(1) + 2);
+			if (attacker.getStatStageChange(ModdableBattleStats.ATTACK) > 0) {
+				sm = (attacker.getStatStageChange(ModdableBattleStats.ATTACK) + 2) / 2;
+			} else if (attacker.getStatStageChange(ModdableBattleStats.ATTACK) < 0) {
+				sm = 2 / (attacker.getStatStageChange(ModdableBattleStats.ATTACK) + 2);
 			}
 
 			if (defender.getAbility() == Ability.UNAWARE
-					&& attacker.getStatChanges(1) > 0) {
+					&& attacker.getStatStageChange(ModdableBattleStats.ATTACK) > 0) {
 				sm = 1;
 			}
 
@@ -298,7 +314,7 @@ public class GameFields {
 				am = (long) 1.5;
 				break;
 			case SLOW_START:
-				if (attacker.getTurnsInBattle() < 5) {
+				if (attacker.getTurnsInBattle() < 5) { //TODO
 					am = (long) 0.5;
 				}
 				break;
@@ -324,14 +340,14 @@ public class GameFields {
 		} else if (move.getKind() == MoveKinds.SPECIAL) {
 			stat = attacker.getStat(Stats.SPECIAL_ATTACK);
 
-			if (attacker.getStatChanges(3) > 0) {
-				sm = (attacker.getStatChanges(3) + 2) / 2;
-			} else if (attacker.getStatChanges(3) < 0) {
-				sm = 2 / (attacker.getStatChanges(3) + 2);
+			if (attacker.getStatStageChange(ModdableBattleStats.SPECIAL_ATTACK) > 0) {
+				sm = (attacker.getStatStageChange(ModdableBattleStats.SPECIAL_ATTACK) + 2) / 2;
+			} else if (attacker.getStatStageChange(ModdableBattleStats.SPECIAL_ATTACK) < 0) {
+				sm = 2 / (attacker.getStatStageChange(ModdableBattleStats.SPECIAL_ATTACK) + 2);
 			}
 
 			if (defender.getAbility() == Ability.UNAWARE
-					&& attacker.getStatChanges(3) > 0) {
+					&& attacker.getStatStageChange(ModdableBattleStats.SPECIAL_ATTACK) > 0) {
 				sm = 1;
 			}
 
@@ -370,8 +386,12 @@ public class GameFields {
 		return attack;
 	}
 
-	private static int calcDefenseOrSpecialDefense(Pokemon defender,
-			Pokemon attacker, Move move, Battle stats) {
+	private static int calcDefenseOrSpecialDefense(BattlePlayer playerDefender,
+			BattlePlayer playerAttacker, Move move, Battle stats) {
+		
+		Pokemon defender = playerDefender.getPokemon();
+		Pokemon attacker = playerAttacker.getPokemon();
+		
 		// [Sp]Def = Stat * SM * Mod
 		int defense = 1;
 		int stat = 1;
@@ -382,14 +402,14 @@ public class GameFields {
 		case PHYSICAL:
 			stat = defender.getStat(Stats.DEFENSE);
 
-			if (defender.getStatChanges(2) > 0) {
-				sm = (defender.getStatChanges(2) + 2) / 2;
-			} else if (defender.getStatChanges(2) < 0) {
-				sm = 2 / (defender.getStatChanges(2) + 2);
+			if (defender.getStatStageChange(ModdableBattleStats.DEFENSE) > 0) {
+				sm = (defender.getStatStageChange(ModdableBattleStats.DEFENSE) + 2) / 2;
+			} else if (defender.getStatStageChange(ModdableBattleStats.DEFENSE) < 0) {
+				sm = 2 / (defender.getStatStageChange(ModdableBattleStats.DEFENSE) + 2);
 			}
 
 			if (attacker.getAbility() == Ability.UNAWARE
-					&& defender.getStatChanges(2) > 0) {
+					&& defender.getStatStageChange(ModdableBattleStats.DEFENSE) > 0) {
 				sm = 1;
 			}
 			// mod = ability x item x sandstorm for rock
@@ -416,14 +436,14 @@ public class GameFields {
 		case SPECIAL:
 			stat = defender.getStat(Stats.SPECIAL_DEFENSE);
 
-			if (defender.getStatChanges(4) > 0) {
-				sm = (defender.getStatChanges(4) + 2) / 2;
-			} else if (defender.getStatChanges(4) < 0) {
-				sm = 2 / (defender.getStatChanges(4) + 2);
+			if (defender.getStatStageChange(ModdableBattleStats.SPECIAL_DEFENSE) > 0) {
+				sm = (defender.getStatStageChange(ModdableBattleStats.SPECIAL_DEFENSE) + 2) / 2;
+			} else if (defender.getStatStageChange(ModdableBattleStats.SPECIAL_DEFENSE) < 0) {
+				sm = 2 / (defender.getStatStageChange(ModdableBattleStats.SPECIAL_DEFENSE) + 2);
 			}
 
 			if (attacker.getAbility() == Ability.UNAWARE
-					&& defender.getStatChanges(4) > 0) {
+					&& defender.getStatStageChange(ModdableBattleStats.SPECIAL_DEFENSE) > 0) {
 				sm = 1;
 			}
 			if (defender.getAbility() == Ability.FLOWER_GIFT
@@ -474,8 +494,11 @@ public class GameFields {
 		return stab;
 	}
 
-	private static int calcMod1(Pokemon attacker, Pokemon defender, Move move,
+	private static int calcMod1(BattlePlayer playerAttacker, BattlePlayer playerDefender, Move move,
 			Battle battle) {
+		
+		Pokemon attacker = playerAttacker.getPokemon();
+		
 		/* Mod1 = BRN * RL * TVT * SR * FF */
 		double calcMod = 1;
 		double brn = 1;
@@ -483,11 +506,11 @@ public class GameFields {
 		double sr = 1;
 		double ff = 1;
 
-		if (attacker.getStatus() == Status.BURN) {
+		if (attacker.getStatus() == NonVolatileStatusAilment.BURN) {
 			brn = 0.5;
 		}
-		if ((defender.hasReflect() && move.getKind() == MoveKinds.PHYSICAL)
-				|| (defender.hasLightScreen() && move.getKind() == MoveKinds.SPECIAL)) {
+		if ((playerDefender.hasReflect() && move.getKind() == MoveKinds.PHYSICAL) //TODO PLACEHOLDER REWORK WITH
+				|| (playerDefender.hasLightScreen() && move.getKind() == MoveKinds.SPECIAL)) { //BATTLEPLAYER IN MIND
 			rl = 0.5;
 		}
 		if (battle.getWeather() != Weather.NORMAL) {
@@ -510,7 +533,7 @@ public class GameFields {
 				break;
 			}
 		}
-		if (attacker.hasFlashFire() /*TODO create a buff system in the pokemon class which returns 
+		if (playerAttacker.hasFlashFire() /*TODO create a buff system in the pokemon class which returns 
 		 								an array of buffs (we could do the buffs as enums) This is useful
 		 								all over our code.*/) {
 			ff = 1.5;
@@ -534,8 +557,12 @@ public class GameFields {
 		return (int) mod2;
 	}
 
-	private static int calcMod3(Pokemon attacker, Pokemon defender,
+	private static int calcMod3(BattlePlayer playerAttacker, BattlePlayer playerDefender,
 			double effectiveness) {
+		
+		Pokemon attacker = playerAttacker.getPokemon();
+		Pokemon defender = playerDefender.getPokemon();
+		
 		double mod3 = 1;
 		double srf = 1;
 		double eb = 1;

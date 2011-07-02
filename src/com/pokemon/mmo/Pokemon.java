@@ -4,10 +4,13 @@ import java.util.Random;
 
 import com.pokemon.mmo.Enums.Ability;
 import com.pokemon.mmo.Enums.Gender;
+import com.pokemon.mmo.Enums.ModdableBattleStats;
 import com.pokemon.mmo.Enums.Nature;
+import com.pokemon.mmo.Enums.NonVolatileStatusAilment;
 import com.pokemon.mmo.Enums.Stats;
-import com.pokemon.mmo.Enums.Status;
 import com.pokemon.mmo.Enums.Types;
+import com.pokemon.mmo.Enums.VolatileEffectBatonPass;
+import com.pokemon.mmo.Enums.VolatileEffectNoBatonPass;
 
 public class Pokemon {
 
@@ -19,6 +22,11 @@ public class Pokemon {
 	private int mLevel;
 	private Ability mAbility;
 	private Nature mNature;
+	
+	private boolean[] mBatonPassVolatileStatus = new boolean[VolatileEffectBatonPass.values().length];
+	private boolean[] mNoBatonPassVolatileStatus = new boolean[VolatileEffectNoBatonPass.values().length];
+	private NonVolatileStatusAilment mAilment;
+	private int[] mBattleStatBuffs = new int[7];
 	
 	/**
 	 * The following arrays are structed like so: 
@@ -32,8 +40,8 @@ public class Pokemon {
 	private Move[] mMoves = new Move[4];
 
 	private int mCurrentHP;
-	private Status mStatus;
-	//private SecondaryStatus[] mSecondaryStatus;
+	private int mAccuracy;
+	private int mEvasion;
 	private int mTurnsInBattle;
 
 	public Pokemon(PokemonSpecies species) {
@@ -61,8 +69,22 @@ public class Pokemon {
 		for (int i = 0; i < mMoves.length; i++) {
 			mMoves[i] = Main.mMoveArray[0];
 		}
+		
+		for (int i = 0; i < mBatonPassVolatileStatus.length; i++) {
+			mBatonPassVolatileStatus[i] = false;
+		}
+		
+		for (int i = 0; i < mNoBatonPassVolatileStatus.length; i++) {
+			mNoBatonPassVolatileStatus[i] = false;
+		}
+		
+		for (int i = 0; i < mBattleStatBuffs.length; i++) {
+			mBattleStatBuffs[i] = 0;
+		}
 
 		this.mTurnsInBattle = 0;
+		this.mAccuracy = 100;
+		this.mEvasion = 100;
 	}
 
 	public void setLevel(int level) {
@@ -182,11 +204,6 @@ public class Pokemon {
 		return mCurrentHP;
 	}
 
-	public boolean isHelpedByHand() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	public Gender getGender() {
 		return mGender;
 	}
@@ -200,16 +217,16 @@ public class Pokemon {
 		return ratio;
 	}
 
-	public Status getStatus() {
-		return mStatus;
+	public NonVolatileStatusAilment getStatus() {
+		return mAilment;
 	}
 
-	public void setStatus(Status status) {
-		this.mStatus = status;
+	public void setStatus(NonVolatileStatusAilment status) {
+		this.mAilment = status;
 	}
 
 	public boolean isAffectedByStatusAilment() {
-		if (mStatus != Status.NONE) {
+		if (mAilment != NonVolatileStatusAilment.NONE) {
 			return true;
 		} else {
 			return false;
@@ -222,21 +239,6 @@ public class Pokemon {
 
 	public void nextTurnInBattle() {
 		this.mTurnsInBattle = mTurnsInBattle + 1;
-	}
-
-	public boolean hasLightScreen() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean hasReflect() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean hasFlashFire() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 	
 	public void setMoveSlot(int i, Move move) {
@@ -262,5 +264,64 @@ public class Pokemon {
 		Random generator = new Random();
 		int gen = generator.nextInt(moves) + 1;
 		return mMoves[gen];
+	}
+	
+	public void setBatonVolatileAilment(VolatileEffectBatonPass ailment, boolean bool) {
+		int i = ailment.ordinal();
+		mBatonPassVolatileStatus[i] = bool;
+	}
+	
+	public boolean getBatonVolatileAilment(VolatileEffectBatonPass ailment) {
+		int i = ailment.ordinal();
+		return mBatonPassVolatileStatus[i];
+	}
+	
+	public void setNoBatonVolatileAilment(VolatileEffectNoBatonPass ailment, boolean bool) {
+		int i = ailment.ordinal();
+		mNoBatonPassVolatileStatus[i] = bool;
+	}
+	
+	public boolean getNoBatonVolatileAilment(VolatileEffectNoBatonPass ailment) {
+		int i = ailment.ordinal();
+		return mNoBatonPassVolatileStatus[i];
+	}
+	
+	public void setStatStageChange(ModdableBattleStats stat, int i) {
+		int j = stat.ordinal();
+		mBattleStatBuffs[j] = i;
+	}
+	
+	public void setStatStageChangeArray(int[] array) {
+		if(array.length != ModdableBattleStats.values().length) {
+			throw new IllegalArgumentException();
+		}
+		else {
+			this.mBattleStatBuffs = array;
+		}
+	}
+	
+	public int getStatStageChange(ModdableBattleStats stat) {
+		int i = stat.ordinal();
+		return mBattleStatBuffs[i];
+	}
+	
+	public int[] getStatStageChangeArray() {
+		return mBattleStatBuffs;
+	}
+
+	public void setAccuracy(int accuracy) {
+		this.mAccuracy = accuracy;
+	}
+
+	public int getAccuracy() {
+		return mAccuracy;
+	}
+
+	public void setEvasion(int evasion) {
+		this.mEvasion = evasion;
+	}
+
+	public int getEvasion() {
+		return mEvasion;
 	}
 }

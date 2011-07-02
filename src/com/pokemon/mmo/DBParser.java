@@ -15,13 +15,13 @@ public class DBParser {
 	public static void test() {
 		DbAdapter adapter;
 		ResultSet rs;
-		Integer fill = 123456;
+		String fill = "failure";
 		boolean isNull = false;
 		
 		try {
 			adapter = new DbAdapter();
-			rs = adapter.makeQuery("SELECT * FROM moves WHERE id = '1'");
-			fill = rs.getInt("max_turns");
+			rs = adapter.makeQuery("SELECT * FROM pokemon WHERE id = '1'");
+			fill = rs.getString("name");
 			
 			if(fill == null) {
 				System.out.println("Hoo hoo!");

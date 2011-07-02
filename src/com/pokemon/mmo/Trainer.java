@@ -4,7 +4,7 @@ public class Trainer {
 
 	private String mName;
 	private int mId;
-	private Pokemon mPokemon1;
+	private Pokemon mLeadingPokemon;
 
 	// INITIALIZE POKEMON WHEN YOU INITIALIZE TRAINER?
 
@@ -27,11 +27,11 @@ public class Trainer {
 
 	public Pokemon getLeadingPokemon() {
 		// NORMALLY WOULD RETURN A DB QUERY
-		return mPokemon1;
+		return mLeadingPokemon;
 	}
 
-	public void setPokemon1(Pokemon pokemon) {
-		this.mPokemon1 = pokemon;
+	public void setLeadingPokemon(Pokemon pokemon) {
+		this.mLeadingPokemon = pokemon;
 	}
 
 }

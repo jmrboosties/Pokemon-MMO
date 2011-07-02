@@ -14,11 +14,24 @@ public class Main {
 	
 	public static GUI gui = null;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		mSpeciesArray = PokemonSpeciesFactory.createSpeciesArray();
-		//mMoveArray = MoveFactory.createMoveArray();
-		gui = new GUI();
-		gui.start();
+		mMoveArray = MoveFactory.createMoveArray();
+		/*for (int i = 1; i < 10; i++) {
+			mSpeciesArray[i].printPokemon();
+			System.out.println(mSpeciesArray[i].getSpeciesName() + " learns:");
+			HashMap map = mSpeciesArray[i].getHashMap(0);
+			for (int j = 1; j < 101; j++) {
+				Integer moveId = (Integer) map.get(j);
+				if(moveId != null) {
+					Move move = mMoveArray[moveId];
+					System.out.println(move.getMoveName() + " at level " + j);
+				}
+			}
+		}*/
+		battleSim();
+		//gui = new GUI();
+		//gui.start();
 
 //		while(true) {
 //			System.out.println("Welcome to the Pokedex. Enter the dex number of who you want to check.");
@@ -37,6 +50,15 @@ public class Main {
 //				dexCheck(dexNum);
 //			}
 //		}
+	}
+	
+	private static void battleSim() {
+		Trainer trainer1 = new Trainer();
+		trainer1.setLeadingPokemon(PokemonFactory.getPokemonAtLevel(mSpeciesArray[4], 15));
+		Trainer trainer2 = new Trainer();
+		trainer2.setLeadingPokemon(PokemonFactory.getPokemonAtLevel(mSpeciesArray[10], 15));
+		Battle battle = new Battle(trainer1, trainer2);
+		battle.battleThread();
 	}
 	
 	private static void dexCheck(int dexNum) {

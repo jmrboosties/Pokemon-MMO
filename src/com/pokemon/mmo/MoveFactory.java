@@ -1,18 +1,11 @@
 package com.pokemon.mmo;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Random;
 
-//import com.pokemon.mmo.Battle.Sport;
-import com.pokemon.mmo.Enums.ModdableBattleStats;
+import com.pokemon.mmo.Enums.MetaStatusAilment;
 import com.pokemon.mmo.Enums.MoveEffectGroup;
 import com.pokemon.mmo.Enums.MoveKinds;
 import com.pokemon.mmo.Enums.MoveMetaCategory;
-import com.pokemon.mmo.Enums.MoveSecondaryNonVolatileEffect;
-import com.pokemon.mmo.Enums.MoveSecondaryVolatileEffect;
-import com.pokemon.mmo.Enums.StatusAilment;
 import com.pokemon.mmo.Enums.Types;
 
 public class MoveFactory {
@@ -40,7 +33,7 @@ public class MoveFactory {
 					move.setKind(MoveKinds.getMoveKind(rs.getInt("damage_class_id")));
 					move.setType(Types.getType(rs.getInt("type_id")));
 					move.setMoveMetaCategory(MoveMetaCategory.getCategory(rs.getInt("meta_category_id")));
-					move.setStatusAilment(StatusAilment.getAilment(rs.getInt("meta_ailment_id")));
+					move.setStatusAilment(MetaStatusAilment.getAilment(rs.getInt("meta_ailment_id")));
 					move.setMoveEffect(rs.getInt("effect_id"));
 					
 					move.setMaxHits(rs.getInt("max_hits"));
@@ -48,6 +41,8 @@ public class MoveFactory {
 					
 					move.setMaxTurns(rs.getInt("max_turns"));
 					move.setMinTurns(rs.getInt("min_turns"));
+					
+					move.setRecoilPercentage(rs.getInt("recoil"));
 					
 					int[] stats = new int[7];
 					stats[0] = rs.getInt("attack_change");
@@ -70,16 +65,13 @@ public class MoveFactory {
 				}
 				moveArray[i] = move;
 			}
+			adapter.close();
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		System.out.println("Done populating moves.");
 		return moveArray;
-	}
-	
-	private static List<Integer> getMoveEffectIdList(MoveEffectGroup group) {
-		return null;
 	}
 	
 	public static MoveEffectGroup getMoveEffectGroup(Move move) {

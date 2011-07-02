@@ -1,11 +1,11 @@
 package com.pokemon.mmo;
 
+import com.pokemon.mmo.Enums.MetaStatusAilment;
 import com.pokemon.mmo.Enums.ModdableBattleStats;
 import com.pokemon.mmo.Enums.MoveKinds;
 import com.pokemon.mmo.Enums.MoveMetaCategory;
 import com.pokemon.mmo.Enums.MoveTargetId;
 import com.pokemon.mmo.Enums.Moves;
-import com.pokemon.mmo.Enums.StatusAilment;
 import com.pokemon.mmo.Enums.Types;
 
 public class Move {
@@ -17,7 +17,7 @@ public class Move {
 	private int mAccuracy;
 	private int mPriority;
 	private int[] mMoveStatChanges = new int[7];
-	private StatusAilment mAilment;
+	private MetaStatusAilment mAilment;
 	private int mSecondaryChance;
 	private MoveKinds mKind;
 	private MoveTargetId mTarget;
@@ -30,6 +30,7 @@ public class Move {
 	private int mMaxHits;
 	private int mMinTurns;
 	private int mMaxTurns;
+	private int mRecoilPercentage;
 
 	public Move() {
 		mName = "-----";
@@ -40,12 +41,13 @@ public class Move {
 		mAccuracy = 0;
 		mPriority = 0;
 		mMetaCategory = MoveMetaCategory.UNIQUE_EFFECT;
-		mAilment = StatusAilment.NONE;
+		mAilment = MetaStatusAilment.NONE;
 		mMoveEffect = 0;
 		mMinHits = 0;
 		mMaxHits = 0;
 		mMaxTurns = 0;
 		mMinTurns = 0;
+		setRecoilPercentage(0);
 		
 		for (int i = 0; i < mMoveStatChanges.length; i++) {
 			mMoveStatChanges[i] = 0;
@@ -124,11 +126,6 @@ public class Move {
 		this.mKind = kind;
 	}
 
-	public boolean isRecoil() {
-		// TODO ALL OF THIS
-		return false;
-	}
-
 	public boolean isPunching() {
 		// TODO Auto-generated method stub
 		return false;
@@ -142,7 +139,7 @@ public class Move {
 		this.mPriority = priority;
 	}
 
-	public int getPriority(Move move) {
+	public int getPriority() {
 		return mPriority;
 	}
 	
@@ -182,11 +179,11 @@ public class Move {
 		return mMetaCategory;
 	}
 	
-	public void setStatusAilment(StatusAilment ailment) {
+	public void setStatusAilment(MetaStatusAilment ailment) {
 		this.mAilment = ailment;
 	}
 	
-	public StatusAilment getStatusAilment() {
+	public MetaStatusAilment getStatusAilment() {
 		return mAilment;
 	}
 
@@ -228,6 +225,23 @@ public class Move {
 
 	public int getMaxTurns() {
 		return mMaxTurns;
+	}
+
+	public void setRecoilPercentage(int recoilPercentage) {
+		this.mRecoilPercentage = recoilPercentage;
+	}
+
+	public int getRecoilPercentage() {
+		return mRecoilPercentage;
+	}
+	
+	public boolean isRecoil() {
+		if(mRecoilPercentage < 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 }
