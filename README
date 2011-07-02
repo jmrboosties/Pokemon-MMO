@@ -138,7 +138,7 @@ assets/
 	Everything that is not source-, class- and library files. This directory
 	contains databases, images, sounds, etc.
 
-lib/
+libs/
 	External libraries needed to compile this project.
 
 README
@@ -155,13 +155,24 @@ classes
 
 HOW TO BUILD:
 -------------
-
-Dependencies:
+* Dependencies:
 
 	- Java Developing Kit (JDK) 6
 
-From the root of this project execute the following:
+* If not already present create new folder called 'dir' at the root of
+  this project.
+
+* From the root of this project execute the following:
 
 	javac @options @classes
 
-All compiled .class-files will be place under bin/.
+* All compiled .class-files will be placed under bin/.
+
+HOW TO RUN:
+-----------
+* From the root of this project execute the following:
+
+       java -classpath \
+       'libs/lwjgl-2.7.1/jar/lwjgl.jar:libs/sqlitejdbc-v056.jar:bin' \
+       com.pokemon.mmo.Main
+       
