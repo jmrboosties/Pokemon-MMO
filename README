@@ -172,7 +172,27 @@ HOW TO RUN:
 -----------
 * From the root of this project execute the following:
 
+* Linux:
+
        java -classpath \
        'libs/lwjgl-2.7.1/jar/lwjgl.jar:libs/sqlitejdbc-v056.jar:bin' \
+       -Djava.library.path=libs/lwjgl-2.7.1/native/linux/ \
        com.pokemon.mmo.Main
-       
+
+* Windows:
+		java -classpath \
+       'libs/lwjgl-2.7.1/jar/lwjgl.jar:libs/sqlitejdbc-v056.jar:bin' \
+       -Djava.library.path=libs/lwjgl-2.7.1/native/windows/ \
+       com.pokemon.mmo.Main
+
+* Mac:
+		java -classpath \
+       'libs/lwjgl-2.7.1/jar/lwjgl.jar:libs/sqlitejdbc-v056.jar:bin' \
+       -Djava.library.path=libs/lwjgl-2.7.1/native/mac/ \
+       com.pokemon.mmo.Main
+
+* Solaris:
+		java -classpath \
+       'libs/lwjgl-2.7.1/jar/lwjgl.jar:libs/sqlitejdbc-v056.jar:bin' \
+       -Djava.library.path=libs/lwjgl-2.7.1/native/solaris/ \
+       com.pokemon.mmo.Main
