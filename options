@@ -1,3 +1,4 @@
 -d bin
 -sourcepath src
 -Xlint:unchecked
+-classpath libs/lwjgl-2.7.1/jar/lwjgl.jar:libs/sqlitejdbc-v056.jar
