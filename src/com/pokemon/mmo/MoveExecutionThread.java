@@ -1,7 +1,5 @@
 package com.pokemon.mmo;
 
-import java.util.Random;
-
 import com.pokemon.mmo.Enums.NonVolatileStatusAilment;
 
 public class MoveExecutionThread {
@@ -13,7 +11,7 @@ public class MoveExecutionThread {
 	
 	private Move mMove;
 	
-	private Random mGenerator;
+	private RandomForPokemon mGenerator;
 	
 	public MoveExecutionThread(BattlePlayer attacker, BattlePlayer target, Move move, Battle battle) {
 		this.mAttacker = attacker;
