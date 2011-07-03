@@ -63,7 +63,7 @@ public class PokemonSpecies {
 	private int mItem2 = 0;
 
 	// Moves
-	private HashMap<Integer, Integer> mLevelMoves = new HashMap<Integer, Integer>();
+	private HashMap<Integer, Integer[]> mLevelMoves = new HashMap<Integer, Integer[]>();
 	private HashMap<Integer, Boolean> mEggMoves = new HashMap<Integer, Boolean>();
 	private HashMap<Integer, Boolean> mTutorMoves = new HashMap<Integer, Boolean>();
 	private HashMap<Integer, Boolean> mTMMoves = new HashMap<Integer, Boolean>();
@@ -155,10 +155,28 @@ public class PokemonSpecies {
 	
 	public void setMoves(ResultSet moves) {
 		try {
+			int lastLevel = 0;
+			int[] moveIdsBuff = new int[20];
+			int cnt = 0;
 			while(moves.next()) {
 				switch (moves.getInt("pokemon_move_method_id")) {
 					case 1:
-						mLevelMoves.put(new Integer(moves.getInt("level")), new Integer(moves.getInt("move_id")));
+						int newLevel = moves.getInt("level");
+						if( newLevel != lastLevel && moveIdsBuff[0] != 0){
+							Integer[] moveIds = new Integer[cnt];
+							// flush buffer and reset cnt
+							for(int i = 0; i < cnt; i++){
+								moveIds[i] = (Integer)moveIdsBuff[i];
+							}
+							moveIdsBuff = new int[20];
+							cnt = 0;
+							// add moveIds
+							mLevelMoves.put(lastLevel,moveIds);
+						}
+						// put newl moveId into buffer first
+						moveIdsBuff[cnt] = moves.getInt("move_id");
+						cnt++;
+						lastLevel = newLevel;
 						break;
 					case 2:
 						mEggMoves.put(new Integer(moves.getInt("move_id")), new Boolean(true));
@@ -311,19 +329,12 @@ public class PokemonSpecies {
 
 
 	// Moves
-	public HashMap[] getLearnableMoveArray() {
-		HashMap[] move_maps = new HashMap[4];
-		move_maps[0] = mLevelMoves;
-		move_maps[1] = mEggMoves;
-		move_maps[2] = mTutorMoves;
-		move_maps[3] = mTMMoves;
-		return move_maps;
+	public HashMap<Integer, Integer[]> getLevelMoves() {
+		return mLevelMoves;
 	}
-	public HashMap getHashMap(int hashMap)		{ return this.getLearnableMoveArray()[hashMap]; }
-	public HashMap getLevelMoves()			{ return mLevelMoves; }
-	public HashMap getEggMoves()			{ return mEggMoves; }
-	public HashMap getTutorMoves()			{ return mTutorMoves; }
-	public HashMap getTMMoves()			{ return mTMMoves; }
+	public HashMap<Integer, Boolean> getEggMoves()		{ return mEggMoves; }
+	public HashMap<Integer, Boolean> getTutorMoves()	{ return mTutorMoves; }
+	public HashMap<Integer, Boolean> getTMMoves()		{ return mTMMoves; }
 
 
 
