@@ -172,17 +172,18 @@ public class PokemonFactory {
 	}
 	
 	private static void determineMoves(Pokemon pokemon) {
-		HashMap map = pokemon.getSpecies().getLevelMoves();
+		HashMap<Integer, Integer[]> map = pokemon.getSpecies().getLevelMoves();
 		int level = pokemon.getLevel();
-		System.out.println(level);
 		int j = 1;
 		for (int i = level; i > 0; i--) {
-			Integer moveId = (Integer) map.get(i);
-			if(moveId != null) {
-				pokemon.setMoveSlot(j, Main.mMoveArray[moveId]);
-				j++;
-				if(j > 4) {
-					return;
+			Integer[] moveIds = map.get(i);
+			if(moveIds != null){
+				for(Integer moveId : moveIds){
+					pokemon.setMoveSlot(j, Main.mMoveArray[moveId]);
+					j++;
+					if(j > 4) {
+						return;
+					}
 				}
 			}
 		}

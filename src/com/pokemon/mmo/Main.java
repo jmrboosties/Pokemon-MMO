@@ -91,12 +91,14 @@ public class Main {
 		}
 		
 		System.out.println(species.getSpeciesName() + " learns the following moves:");
-		HashMap map = species.getHashMap(0);
-		for (int i = 1; i < 101; i++) {
-			Integer moveId = (Integer) map.get(i);
-			if(moveId != null) {
-				Move move = mMoveArray[moveId];
-				System.out.println(move.getMoveName() + " at level " + i);
+		HashMap<Integer, Integer[]> map = species.getLevelMoves();
+		for (int i = 1; i <= 100; i++) {
+			Integer[] moveIds = map.get(i);
+			for(Integer moveId : moveIds){
+				if(moveId != null) {
+					Move move = mMoveArray[moveId];
+					System.out.println(move.getMoveName() + " at level " + i);
+				}
 			}
 		}
 
