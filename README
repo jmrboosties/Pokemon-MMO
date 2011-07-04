@@ -42,84 +42,34 @@ should be right:
 
 Note that there is no 87.5% female, I checked and this is not a mistake.
 
-DATABASE STRUCTURE FOR STATUS EFFECTS:
---------------------------------------
-Veekun's pokedex also doesn't store data for secondary effects like poison and stat stages.
-Instead, a table titled move_effects_prose exists which explains what each "move class" does.
-This table includes moves which have a 10% chance of burn, causing flinch, always lower the 
-target's speed, as well as more complicated moves like Trick Room and Whirlwind. For moves like
-Flamethrower and Sand-Attack, despite having an effect other than "do damage" (like Tackle
-for instance, which is the simplest move) we can still group them into a common move class.
-In order to do this, I've created a table titled move_secondary_effects. This table contains an
-primary id column along with 5 other pertinent columns of data. These are:
+NOTE: Earlier section on database structure for status ailments is outdated, new and improved system now.
 
-move_id: ties the data in the row to the move's id which all other move tables refer to.
+TYPE NUMBERING IN DATABASE
+--------------------------
+The way our database numbers types differs from traditional listings of types as well as commonly used
+matricies for determining type effectiveness. Our database uses the following:
 
-non_volatile_status_effects: int which corresponds to non-volatile status effects the move can
-	induce. these are status effects which appear on the pokemon's status bar in-game, and remain
-	after battle. Poison, Paralyze, Burn, Sleep, and Paralysis. While nearly all non-volatile status
-	inducing moves can only induce 1 effect, a select few (such as Tri-Attack) have a chance of
-	inflicting more than one. We need to account for this, I've come up with the following integer-based
-	setup:
-	
-0 none
-1 poison
-2 bad poison (toxic)
-3 sleep
-4 burn
-5 paralyze
-6 freeze
-33 triattack (10% chance of burn paralyze or freeze)
-//More if necessary, I don't think there are any other strange combos like tri-attack's
+1 Normal
+2 Fighting
+3 Flying
+4 Poison
+5 Ground
+6 Rock
+7 Bug
+8 Ghost
+9 Steel
+10 Fire
+11 Water
+12 Grass
+13 Electric
+14 Psychic
+15 Ice
+16 Dragon
+17 Dark
 
-volatile_status_effects: int which corresponds to the volatile effects moves can inflict. these status
-	effects do not appear in the pokemon's status bar, do not stay after battle ends, and can stack. There
-	are a lot more of these, including confusion, attract, mean look, etc. Setup:
-	
-//separated into baton passable and non-baton passable
-0 none
-/**baton-passable vol vals*/
-1 confusion 
-2 curse (per turn dmg from a ghost)
-3 leech seed
-4 mindreader/lockon
-5 perish song
-6 embargo
-7 heal block
-8 ingrain
-9 aqua ring
-10 substitute
-11 magnet rise/telekinesis
+Note that these were divided into "physical" and "special" attack types (gens 1-3), which obviously
+is handled differently now, and thank god =).
 
-/**non-baton-passable*/
-12 torment
-13 taunt
-14 partialtrap
-15 meanlook
-16 nightmare
-17 infatuation
-18 identify
-19 flinch
-20 encore
-
-user_stat_changes: moves can change the user's stats by a stage. For instance, using steel wing has a chance
-	of raising the user's attack by one stage. This is stored in a different column than the stat changes
-	the target experiences. It should also be noted that for stat stage changing moves which are not just secondary
-	effects (moves like Growth, Harden, etc) can either affect the user or target, depending on the move. What
-	I mean by this is some stat-affecting moves can target allies as well as the user, in which case the effect 
-	would be target-specific not user-specific.
-	
-	The structure of this column is a JSON object. For those unfamiliar this is a grouping of key/value
-	pairs which can be parsed to extract data. It's more conveinient than having a bunch of columns for data that
-	is never changed and will be stored in an array anyhow.
-	
-	EXAMPLE: {"attack":"0","defense":"0","special_attack":"1","special_defense":"0","speed":"1","accuracy":"0","evasion":"0"}
-	
-	This example would raise the user's special attack and speed by one stage each.
-
-target_stat_changes: same as above, only it affects the target instead. This is for moves like Psychic, which
-	have a chance (0-100%, this value is already accounted for in the moves table) of inflicting a stat stage 
-	change on hit.
 
 PROJECT STRUCTURE:
 ------------------
