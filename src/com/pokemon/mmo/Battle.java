@@ -2,8 +2,6 @@ package com.pokemon.mmo;
 
 import java.util.Scanner;
 
-import org.omg.PortableInterceptor.NON_EXISTENT;
-
 import com.pokemon.mmo.Enums.Ability;
 import com.pokemon.mmo.Enums.NonVolatileStatusAilment;
 import com.pokemon.mmo.Enums.Stats;
@@ -13,6 +11,8 @@ import com.pokemon.mmo.Enums.Weather;
 
 public class Battle {
 
+	protected RandomForPokemon mGenerator = new RandomForPokemon();
+	
 	protected Weather mWeather;
 	protected Sport mSport;
 	protected TeamBuff mTeamBuff;
@@ -56,7 +56,8 @@ public class Battle {
 	}
 	
 	protected boolean preRound() {
-		//TODO choose your move? yea i think so.
+		mBattlePlayerYou.setCurrentChosenMove(getTrainerMove(mBattlePlayerYou.getPokemon()));
+		mBattlePlayerEnemy.setCurrentChosenMove(mGenerator.getRandomMove(mBattlePlayerEnemy.getPokemon()));
 		return true;
 	}
 	
@@ -87,7 +88,7 @@ public class Battle {
 	}
 
 	protected BattlePlayer determineOrder(BattlePlayer player1, BattlePlayer player2) {
-		Move player1Move = getTrainerMove(player1.getPokemon());
+		Move player1Move = player1.getCurrentChosenMove();
 		Move player2Move = player2.getCurrentChosenMove();
 		
 		if(player1Move.getPriority() > player2Move.getPriority()) {
@@ -136,6 +137,9 @@ public class Battle {
 			break;
 		case MULTI_HIT :
 			execution.multiHit();
+			break;
+		default :
+			System.out.println(move.getMoveName() + " has a meta category of " + move.getMoveMetaCategory() + " and we don't have that coded.");
 			break;
 		}
 		if(bool) {
@@ -209,7 +213,7 @@ public class Battle {
 					cnt++;
 				}
 			}
-			System.out.print("Enter a number between 1 and " + cnt + ": ");
+			System.out.print("Enter a number between 1 and " + String.valueOf(cnt-1) + ": ");
 			String input = scan.nextLine();
 			if (input.matches("^[1-" + cnt + "]$")) {
 				choice = Integer.parseInt(input);

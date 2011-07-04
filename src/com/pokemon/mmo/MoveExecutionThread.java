@@ -11,7 +11,7 @@ public class MoveExecutionThread {
 	
 	private Move mMove;
 	
-	private RandomForPokemon mGenerator;
+	private RandomForPokemon mGenerator = new RandomForPokemon();
 	
 	public MoveExecutionThread(BattlePlayer attacker, BattlePlayer target, Move move, Battle battle) {
 		this.mAttacker = attacker;

@@ -54,6 +54,12 @@ public class GameFields {
 		else{
 			retValue = typeMatrix[moveType.getId()][defenderType1.getId()]*typeMatrix[moveType.getId()][defenderType2.getId()];
 		}
+		if(retValue > 1) {
+			System.out.println("It's super effective!");
+		}
+		else if(retValue < 1) {
+			System.out.println("It's not very effective...");
+		}
 		return retValue;
 	}
 

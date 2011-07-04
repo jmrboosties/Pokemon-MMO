@@ -254,18 +254,6 @@ public class Pokemon {
 		return mMoves;
 	}
 	
-	public Move getRandomMove() {
-		int moves = 0;
-		for (int i = 0; i < mMoves.length; i++) {
-			if(mMoves[i] != Main.mMoveArray[0]) {
-				moves++;
-			}
-		}
-		Random generator = new Random();
-		int gen = generator.nextInt(moves) + 1;
-		return mMoves[gen];
-	}
-	
 	public void setBatonVolatileAilment(VolatileEffectBatonPass ailment, boolean bool) {
 		int i = ailment.ordinal();
 		mBatonPassVolatileStatus[i] = bool;
