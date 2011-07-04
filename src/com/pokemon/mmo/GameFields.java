@@ -46,13 +46,13 @@ public class GameFields {
 		}
 		double retValue = 0.0;
 		if(defenderType2 == Types.NONE){
-			retValue = typeMatrix[moveType.getId()][defenderType1.getId()];
+			retValue = typeMatrix[moveType.getId()-1][defenderType1.getId()-1];
 		}
 		else if(defenderType1 == Types.NONE) {
-			retValue = typeMatrix[moveType.getId()][defenderType2.getId()];
+			retValue = typeMatrix[moveType.getId()-1][defenderType2.getId()-1];
 		}
 		else{
-			retValue = typeMatrix[moveType.getId()][defenderType1.getId()]*typeMatrix[moveType.getId()][defenderType2.getId()];
+			retValue = typeMatrix[moveType.getId()-1][defenderType1.getId()-1]*typeMatrix[moveType.getId()-1][defenderType2.getId()-1];
 		}
 		if(retValue > 1) {
 			System.out.println("It's super effective!");
