@@ -1,11 +1,16 @@
 package com.pokemon.mmo;
 
+import com.pokemon.mmo.Enums.Ability;
+import com.pokemon.mmo.Enums.ModdableBattleStats;
 import com.pokemon.mmo.Enums.NonVolatileStatusAilment;
 
 public class MoveExecutionThread {
 
 	private BattlePlayer mAttacker;
 	private BattlePlayer mTarget;
+	
+	private Pokemon mAttackerPokemon;
+	private Pokemon mTargetPokemon;
 	
 	private Battle mBattle;
 	
@@ -18,6 +23,9 @@ public class MoveExecutionThread {
 		this.mTarget = target;
 		this.mMove = move;
 		this.mBattle = battle;
+		
+		this.mAttackerPokemon = mAttacker.getPokemon();
+		this.mTargetPokemon = mTarget.getPokemon();
 	}
 	
 	public BattlePlayer getAttacker() {
@@ -30,37 +38,45 @@ public class MoveExecutionThread {
 	
 	public void dealDamage(boolean bool) {
 		if(!bool) {
-			System.out.println(mAttacker.getPokemon().getNickName() + "'s attack missed!");
+			System.out.println(mAttackerPokemon.getNickName() + "'s attack missed!");
 		}
 		else {
-			int targetHp = mTarget.getPokemon().getCurrentHP();
-			int attackerHp = mAttacker.getPokemon().getCurrentHP();
-			System.out.println(mAttacker.getPokemon().getNickName() + " uses " + mMove.getMoveName() + "!");
+			int targetHp = mTargetPokemon.getCurrentHP();
+			int attackerHp = mAttackerPokemon.getCurrentHP();
+			System.out.println(mAttackerPokemon.getNickName() + " uses " + mMove.getMoveName() + "!");
 			int damage = GameFields.damageCalc(mAttacker, mTarget, mMove, mBattle); 
 			targetHp = targetHp - damage;
-			System.out.println(mTarget.getPokemon().getNickName() + " takes " + damage);
-			applyAttackerStatChanges();
-			applyAttackerStatusAilments();
+			System.out.println(mTargetPokemon.getNickName() + " takes " + damage + " damage!");
+//			applyAttackerStatChanges(); TODO this may move to a diff method
+//			applyAttackerStatusAilments();
 			if(targetHp > 0) {
-				mTarget.getPokemon().setCurrentHP(targetHp);
+				mTargetPokemon.setCurrentHP(targetHp);
+				angerPointCheck();
 			}
 			else {
-				mTarget.getPokemon().setCurrentHP(0);
-				mTarget.getPokemon().setStatus(NonVolatileStatusAilment.FAINTED);
-				System.out.println(mTarget.getPokemon().getNickName() + " fainted!");
+				mTargetPokemon.setCurrentHP(0);
+				mTargetPokemon.setStatus(NonVolatileStatusAilment.FAINTED);
+				System.out.println(mTargetPokemon.getNickName() + " fainted!");
 				return;
 			}
-			applyTargetStatChanges();
-			applyTargetStatusAilments();
+//			applyTargetStatChanges(); TODO this may move to a diff method
+//			applyTargetStatusAilments();
 			
 			int recoil = mMove.getRecoilPercentage();
-			if(recoil != 0) {
+			if(recoil != 0) { //TODO change this to below 0, absorb handled differently... or do a switch or something which handles items like bigroot
 				int recoilDamage = (damage * recoil) / 100;
 				attackerHp = attackerHp + recoilDamage;
+				mAttackerPokemon.setCurrentHP(attackerHp);
 			}
 		}
 	}
 	
+	private void angerPointCheck() {
+		if(mTarget.tookACrit() && mTargetPokemon.hasAbility(Ability.ANGER_POINT)) {
+			mTargetPokemon.setStatStageChange(ModdableBattleStats.ATTACK, 6);
+		}
+	}
+
 	private void applyAttackerStatChanges() {
 		//TODO fill this in with the stats and stuff
 	}

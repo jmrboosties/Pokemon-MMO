@@ -2,8 +2,6 @@ package com.pokemon.mmo;
 
 import java.util.Random;
 
-import javax.net.ssl.SSLEngineResult.Status;
-
 import com.pokemon.mmo.Battle.Sport;
 import com.pokemon.mmo.Enums.Ability;
 import com.pokemon.mmo.Enums.ModdableBattleStats;
@@ -86,7 +84,7 @@ public class GameFields {
 		int next3 = next2
 				/ calcDefenseOrSpecialDefense(defender, attacker, move, battle);
 		int next4 = (next3 * calcMod1(attacker, defender, move, battle)) + 2;
-		int next5 = (int) (next4 * /* calcCritHit(attacker, defender) */calcMod2(
+		int next5 = (int) (next4 * calcCritHit(attacker, defender) * calcMod2(
 				pokemonAttacker, move));
 		int next6 = (int) (next5 * .9);
 		int next7 = (int) (next6 * stabDetermine(pokemonAttacker.getType(1),
@@ -99,7 +97,7 @@ public class GameFields {
 
 		damageInt = (int) (next8 * calcMod3(attacker, defender, effectiveness));
 		
-		//TODO ADD IN CRIT HITS
+		
 
 		return damageInt;
 	}
@@ -594,19 +592,30 @@ public class GameFields {
 		return (int) mod3;
 	}
 
-	private static int calcCritHit(Pokemon attacker, Pokemon defender) {
+	private static int calcCritHit(BattlePlayer playerAttacker, BattlePlayer playerDefender) {
+		Pokemon attacker = playerAttacker.getPokemon();
+		Pokemon defender = playerDefender.getPokemon();
 		int critMult = 1;
 		if (defender.getAbility() == Ability.BATTLE_ARMOR) {
 			return critMult;
 		}
 		Random generator = new Random();
 		double ran = (double) generator.nextDouble() * 100;
-		//TODO ability super luck and other crit chance modifiers
-		if (ran <= 6.25) {
+		double chance = 6.25;
+		
+		if(attacker.getAbility() == Ability.SUPER_LUCK) {
+			chance = chance * 2;
+		}
+		if(defender.getAbility() == Ability.BATTLE_ARMOR || defender.getAbility() == Ability.SHELL_ARMOR) {
+			ran = 100;
+		}
+		
+		if (ran <= chance) {
 			critMult = 2;
 			if (attacker.getAbility() == Ability.SNIPER) {
 				critMult = 3;
 			}
+			playerDefender.setTookACrit(true);
 		}
 		return critMult;
 	}

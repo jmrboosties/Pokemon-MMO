@@ -23,6 +23,8 @@ public class Pokemon {
 	private Ability mAbility;
 	private Nature mNature;
 	
+	private AbilityClass mBattleAbility; //TODO getter no setter
+	
 	private boolean[] mBatonPassVolatileStatus = new boolean[VolatileEffectBatonPass.values().length];
 	private boolean[] mNoBatonPassVolatileStatus = new boolean[VolatileEffectNoBatonPass.values().length];
 	private NonVolatileStatusAilment mAilment;
@@ -56,6 +58,7 @@ public class Pokemon {
 		Random generator = new Random();
 		int natureInt = generator.nextInt(25) + 1; 
 
+		mAbility = Ability.NONE;
 		mNature = Nature.getNature(natureInt);
 		
 		for (int i = 0; i < mIVs.length; i++) {
@@ -85,6 +88,15 @@ public class Pokemon {
 		this.mTurnsInBattle = 0;
 		this.mAccuracy = 100;
 		this.mEvasion = 100;
+	}
+	
+	public void initBattleAbility() {
+		if(mAbility != Ability.NONE) {
+			mBattleAbility = new AbilityClass(this);
+		}
+		else {
+			throw new IllegalArgumentException("Ability for pokemon not set.");
+		}
 	}
 
 	public void setLevel(int level) {
@@ -311,5 +323,14 @@ public class Pokemon {
 
 	public int getEvasion() {
 		return mEvasion;
+	}
+	
+	public boolean hasAbility(Ability ability) {
+		if(mAbility == ability) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 }

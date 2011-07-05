@@ -8,7 +8,9 @@ public class BattlePlayer {
 	private Pokemon mPokemon;
 	private Move mCurrentChosenMove;
 	
-	private boolean mGastroAcid; //TODO add this to field? dont think so
+	private boolean mGastroAcid = false; //TODO add this to field? dont think so
+	
+	private boolean mTookACrit = false;
 	
 	private ArrayList<Move> mPreviousMoves;
 	private boolean[] mOnFieldBuffs; //do length here with all false
@@ -16,7 +18,6 @@ public class BattlePlayer {
 	public BattlePlayer(Trainer trainer) {
 		this.mTrainer = trainer;
 		mPokemon = mTrainer.getLeadingPokemon();
-		mGastroAcid = false;
 	}
 	
 	public void setTrainer(Trainer trainer) {
@@ -64,6 +65,14 @@ public class BattlePlayer {
 
 	public boolean isGastroAcid() {
 		return mGastroAcid;
+	}
+
+	public void setTookACrit(boolean tookACrit) {
+		this.mTookACrit = tookACrit;
+	}
+
+	public boolean tookACrit() {
+		return mTookACrit;
 	}
 	
 }
