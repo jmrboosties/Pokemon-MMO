@@ -192,7 +192,7 @@ public class GameFields {
 
 		/** UA variable */
 
-		switch (attacker.getAbility()) {
+		switch (attacker.getBattleAbility()) {
 		case RIVALRY :
 			if (attacker.getGender() == defender.getGender()) {
 				ua = (long) 1.25;
@@ -245,7 +245,7 @@ public class GameFields {
 
 		/** FA variable */
 
-		switch (defender.getAbility()) {
+		switch (defender.getBattleAbility()) {
 		case THICK_FAT: 
 			if (move.getType() == Types.FIRE || move.getType() == Types.ICE) {
 				fa = (long) 0.5;
@@ -290,12 +290,12 @@ public class GameFields {
 				sm = 2 / (attacker.getStatStageChange(ModdableBattleStats.ATTACK) + 2);
 			}
 
-			if (defender.getAbility() == Ability.UNAWARE
+			if (defender.getBattleAbility() == Ability.UNAWARE
 					&& attacker.getStatStageChange(ModdableBattleStats.ATTACK) > 0) {
 				sm = 1;
 			}
 
-			switch (attacker.getAbility()) {
+			switch (attacker.getBattleAbility()) {
 			case PURE_POWER:
 			case HUGE_POWER:
 				am = 2;
@@ -350,12 +350,12 @@ public class GameFields {
 				sm = 2 / (attacker.getStatStageChange(ModdableBattleStats.SPECIAL_ATTACK) + 2);
 			}
 
-			if (defender.getAbility() == Ability.UNAWARE
+			if (defender.hasAbility(Ability.UNAWARE)
 					&& attacker.getStatStageChange(ModdableBattleStats.SPECIAL_ATTACK) > 0) {
 				sm = 1;
 			}
 
-			switch (attacker.getAbility()) {
+			switch (attacker.getBattleAbility()) {
 			case SOLAR_POWER:
 				if (stats.getWeather() == Weather.SUNNY_DAY) {
 					am = (long) 1.5;
@@ -412,13 +412,13 @@ public class GameFields {
 				sm = 2 / (defender.getStatStageChange(ModdableBattleStats.DEFENSE) + 2);
 			}
 
-			if (attacker.getAbility() == Ability.UNAWARE
+			if (attacker.hasAbility(Ability.UNAWARE)
 					&& defender.getStatStageChange(ModdableBattleStats.DEFENSE) > 0) {
 				sm = 1;
 			}
 			// mod = ability x item x sandstorm for rock
 
-			if (defender.getAbility() == Ability.FLOWER_GIFT
+			if (defender.hasAbility(Ability.FLOWER_GIFT)
 					&& stats.getWeather() == Weather.SUNNY_DAY) {
 				mod = 1.5;
 			}
@@ -446,11 +446,11 @@ public class GameFields {
 				sm = 2 / (defender.getStatStageChange(ModdableBattleStats.SPECIAL_DEFENSE) + 2);
 			}
 
-			if (attacker.getAbility() == Ability.UNAWARE
+			if (attacker.hasAbility(Ability.UNAWARE)
 					&& defender.getStatStageChange(ModdableBattleStats.SPECIAL_DEFENSE) > 0) {
 				sm = 1;
 			}
-			if (defender.getAbility() == Ability.FLOWER_GIFT
+			if (defender.hasAbility(Ability.FLOWER_GIFT)
 					&& stats.getWeather() == Weather.SUNNY_DAY) {
 				mod = 1.5;
 			}
@@ -573,14 +573,14 @@ public class GameFields {
 		double tl = 1;
 		double trb = 1;
 		// Mod3 = SRF * EB * TL * TRB
-		if (defender.getAbility() == Ability.SOLID_ROCK
-				|| defender.getAbility() == Ability.FILTER) {
+		if (defender.hasAbility(Ability.SOLID_ROCK) 
+				|| defender.hasAbility(Ability.FILTER)) {
 			srf = 0.75;
 		}
 		if (attacker.getHeldItem() == Items.EXPERT_BELT && (effectiveness >= 2)) {
 			eb = 1.2;
 		}
-		if(effectiveness > 1 && attacker.getAbility() == Ability.TINTED_LENS) {
+		if(effectiveness > 1 && attacker.hasAbility(Ability.TINTED_LENS)) {
 			tl = 2;
 		}
 		if (defender.getHeldItem() <= 200 && defender.getHeldItem() >= 217) {
@@ -596,23 +596,23 @@ public class GameFields {
 		Pokemon attacker = playerAttacker.getPokemon();
 		Pokemon defender = playerDefender.getPokemon();
 		int critMult = 1;
-		if (defender.getAbility() == Ability.BATTLE_ARMOR) {
+		if (defender.hasAbility(Ability.BATTLE_ARMOR)) {
 			return critMult;
 		}
 		Random generator = new Random();
 		double ran = (double) generator.nextDouble() * 100;
 		double chance = 6.25;
 		
-		if(attacker.getAbility() == Ability.SUPER_LUCK) {
+		if(attacker.hasAbility(Ability.SUPER_LUCK)) {
 			chance = chance * 2;
 		}
-		if(defender.getAbility() == Ability.BATTLE_ARMOR || defender.getAbility() == Ability.SHELL_ARMOR) {
+		if(defender.hasAbility(Ability.BATTLE_ARMOR) || defender.hasAbility(Ability.SHELL_ARMOR)) {
 			ran = 100;
 		}
 		
 		if (ran <= chance) {
 			critMult = 2;
-			if (attacker.getAbility() == Ability.SNIPER) {
+			if (attacker.hasAbility(Ability.SNIPER)) {
 				critMult = 3;
 			}
 			playerDefender.setTookACrit(true);

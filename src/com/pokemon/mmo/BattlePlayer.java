@@ -18,6 +18,7 @@ public class BattlePlayer {
 	public BattlePlayer(Trainer trainer) {
 		this.mTrainer = trainer;
 		mPokemon = mTrainer.getLeadingPokemon();
+		mPokemon.initBattleAbility();
 	}
 	
 	public void setTrainer(Trainer trainer) {

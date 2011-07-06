@@ -95,8 +95,12 @@ public class Pokemon {
 			mBattleAbility = new AbilityClass(this);
 		}
 		else {
-			throw new IllegalArgumentException("Ability for pokemon not set.");
+			throw new IllegalArgumentException("Ability for " + mNickName + " not set.");
 		}
+	}
+	
+	public Ability getBattleAbility() {
+		return mBattleAbility.getBattleAbility();
 	}
 
 	public void setLevel(int level) {
@@ -113,7 +117,7 @@ public class Pokemon {
 		PokemonFactory.respecStats(this, mSpecies);
 	}
 
-	public Ability getAbility() {
+	public Ability getTrueAbility() {
 		return mAbility;
 	}
 	
@@ -300,6 +304,17 @@ public class Pokemon {
 		}
 	}
 	
+	public void addStatChangeArray(int[] array) {
+		if(array.length != ModdableBattleStats.values().length) {
+			throw new IllegalArgumentException();
+		}
+		else {
+			for (int i = 0; i < mBattleStatBuffs.length; i++) {
+				mBattleStatBuffs[i] = mBattleStatBuffs[i] + array[i];
+			}
+		}
+	}
+	
 	public int getStatStageChange(ModdableBattleStats stat) {
 		int i = stat.ordinal();
 		return mBattleStatBuffs[i];
@@ -326,7 +341,7 @@ public class Pokemon {
 	}
 	
 	public boolean hasAbility(Ability ability) {
-		if(mAbility == ability) {
+		if(mBattleAbility.getBattleAbility() == ability) {
 			return true;
 		}
 		else {

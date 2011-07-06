@@ -71,6 +71,20 @@ public class MoveExecutionThread {
 		}
 	}
 	
+	public void changeStatsOnly() {
+		switch(mMove.getMoveTarget()) {
+		case USER :
+			applyAttackerStatChanges();
+			break;
+		case SELECTED_POKEMON :
+			//TODO
+			break;
+		case ALL_OPPONENTS :
+			//TODO same as selected for now, but in double battles this could change
+			break;
+		}
+	}
+	
 	private void angerPointCheck() {
 		if(mTarget.tookACrit() && mTargetPokemon.hasAbility(Ability.ANGER_POINT)) {
 			mTargetPokemon.setStatStageChange(ModdableBattleStats.ATTACK, 6);
@@ -78,7 +92,8 @@ public class MoveExecutionThread {
 	}
 
 	private void applyAttackerStatChanges() {
-		//TODO fill this in with the stats and stuff
+		int[] statChanges = mMove.getMoveStatChanges();
+		mAttackerPokemon.addStatChangeArray(statChanges);
 	}
 	
 	private void applyTargetStatChanges() {
@@ -118,7 +133,7 @@ public class MoveExecutionThread {
 		hits += mGenerator.nextInt(var) + 1;
 		
 		for (int i = 0; i < hits; i++) {
-			dealDamage(accuracyCheck());
+			dealDamage(accuracyCheck()); //TODO check if moves like fury swipes calc accuracy for each hit
 		}
 	}
 	

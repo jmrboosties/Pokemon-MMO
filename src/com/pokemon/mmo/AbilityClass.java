@@ -9,7 +9,7 @@ public class AbilityClass {
 	private Ability mAlteredAbility = Ability.NONE;
 	
 	public AbilityClass(Pokemon pokemon) {
-		mAbility = pokemon.getAbility();
+		mAbility = pokemon.getTrueAbility();
 	}
 	
 	public void setAbilityActiveStatus(boolean b) {
@@ -29,11 +29,16 @@ public class AbilityClass {
 	}
 	
 	public Ability getBattleAbility() {
-		if(mAlteredAbility != Ability.NONE) {
-			return mAlteredAbility;
+		if(mAbilityIsActive) {
+			if(mAlteredAbility != Ability.NONE) {
+				return mAlteredAbility;
+			}
+			else {
+				return mAbility;
+			}
 		}
 		else {
-			return mAbility;
+			return Ability.NONE;
 		}
 	}
 	

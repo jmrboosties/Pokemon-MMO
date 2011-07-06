@@ -244,7 +244,7 @@ public class Battle {
 		if(player.isGastroAcid()) {
 			return sm;
 		}
-		switch(pokemon.getAbility()) {
+		switch(pokemon.getBattleAbility()) {
 		case CHLOROPHYLL :
 			if(mWeather == Weather.SUNNY_DAY) {
 				sm =  2;
@@ -284,7 +284,7 @@ public class Battle {
 
 	protected double getPayalyzeMod(Pokemon pokemon) {
 		if(pokemon.getStatus() == NonVolatileStatusAilment.PARALYZE
-				&& pokemon.getAbility() != Ability.QUICK_FEET) {
+				&& pokemon.getBattleAbility() != Ability.QUICK_FEET) {
 			return 0.25;
 		}
 		else {

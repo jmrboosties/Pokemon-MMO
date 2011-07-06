@@ -285,14 +285,22 @@ public class Enums {
 	}
 
 	public static enum MoveTargetId {
-		SPECIFIC_TO_MOVE(1), SELECTED(2), ALLY(3), USERS_FIELD(4), USER_OR_ALLY(
-				5), OPPONENTS_FIELD(6), USER(7), RANDOM_OPPONENT(8), ALL_OTHER_POKEMON(
-				9), SELECTED_POKEMON(10), ALL_OPPONENTS(11), ENTIRE_FIELD(12);
+		SPECIFIC_TO_MOVE(1), SELECTED(2), ALLY(3), USERS_FIELD(4), USER_OR_ALLY(5), OPPONENTS_FIELD(6), USER(7), RANDOM_OPPONENT(8), 
+		ALL_OTHER_POKEMON(9), SELECTED_POKEMON(10), ALL_OPPONENTS(11), ENTIRE_FIELD(12);
 
-		public final int id;
+		public final int fId;
 
 		private MoveTargetId(int i) {
-			this.id = i;
+			this.fId = i;
+		}
+		
+		public static MoveTargetId getTarget(int i) {
+			for (MoveTargetId target : MoveTargetId.values()) {
+				if(i == target.fId) {
+					return target;
+				}
+			}
+			return SPECIFIC_TO_MOVE;
 		}
 	}
 	

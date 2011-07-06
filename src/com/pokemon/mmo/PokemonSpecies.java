@@ -295,10 +295,9 @@ public class PokemonSpecies {
 	public Ability getAbility(int index)		{ return this.getAbilityArray()[index]; }
 	public Ability getDreamAbility()		{ return Ability.getAbility(mAbility3); }
 	public Ability[] getAbilityArray() {
-		Ability[] abilities = new Ability[3];
+		Ability[] abilities = new Ability[2];
 		abilities[0] = Ability.getAbility(mAbility1);
 		abilities[1] = Ability.getAbility(mAbility2);
-		abilities[2] = Ability.getAbility(mAbility3);
 		return abilities;
 	}
 	public int getHappiness()			{ return mHappiness; }

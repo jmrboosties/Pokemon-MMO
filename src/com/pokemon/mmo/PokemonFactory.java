@@ -122,36 +122,40 @@ public class PokemonFactory {
 	private static Ability determineAbility(PokemonSpecies species) {
 		Random generator = new Random();
 		int numOfAbilities = 0;
+		Ability ability = Ability.NONE;
 		Ability[] abilities = species.getAbilityArray();
 		for (int i = 0; i < abilities.length; i++) {
 			if(abilities[i] != Ability.NONE) {
 				numOfAbilities++;
 			}
 		}
+		
 		boolean hasDream = species.hasDreamAbility();
 		if(!hasDream) {
 			int odds = 100 / numOfAbilities;
 			int r = generator.nextInt(100) + 1;
 			if(r <= odds) {
-				return abilities[0];
+				ability = abilities[0];
 			}
 			else {
-				return abilities[1];
+				ability = abilities[1];
 			}
 		}
 		else {
 			int odds = 90 / numOfAbilities;
 			int r = generator.nextInt(100) + 1;
 			if(r <= 10) {
-				return species.getDreamAbility();
+				ability = species.getDreamAbility();
 			}
 			else if(r <= odds + 10) {
-				return abilities[0];
+				ability = abilities[0];
 			}
 			else {
-				return abilities[1];
+				ability = abilities[1];
 			}
 		}
+		System.out.println(species.getSpeciesName() + " has ability " + ability.getName());
+		return ability;
 	}
 	
 	private static Gender determineGender(PokemonSpecies species) {

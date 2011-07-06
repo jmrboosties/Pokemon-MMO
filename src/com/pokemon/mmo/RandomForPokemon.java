@@ -28,7 +28,13 @@ public class RandomForPokemon extends Random {
 				numOfMoves++;
 			}
 		}
-		Move slot = moves[nextInt(numOfMoves)];
-		return slot;
+		if(numOfMoves == 0) {
+			throw new IllegalStateException("Pokemon has no moves.");
+		}
+		else {
+			Move slot = moves[nextInt(numOfMoves)];
+			return slot;
+		}
 	}
+	
 }

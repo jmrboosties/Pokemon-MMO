@@ -6,6 +6,7 @@ import com.pokemon.mmo.Enums.MetaStatusAilment;
 import com.pokemon.mmo.Enums.MoveEffectGroup;
 import com.pokemon.mmo.Enums.MoveKinds;
 import com.pokemon.mmo.Enums.MoveMetaCategory;
+import com.pokemon.mmo.Enums.MoveTargetId;
 import com.pokemon.mmo.Enums.Types;
 
 public class MoveFactory {
@@ -35,6 +36,7 @@ public class MoveFactory {
 					move.setMoveMetaCategory(MoveMetaCategory.getCategory(rs.getInt("meta_category_id")));
 					move.setStatusAilment(MetaStatusAilment.getAilment(rs.getInt("meta_ailment_id")));
 					move.setMoveEffect(rs.getInt("effect_id"));
+					move.setMoveTarget(MoveTargetId.getTarget(rs.getInt("target_id")));
 					
 					move.setMaxHits(rs.getInt("max_hits"));
 					move.setMinHits(rs.getInt("min_hits"));
@@ -60,9 +62,24 @@ public class MoveFactory {
 					move.setMoveMetaCategory(MoveMetaCategory.MULTI_HIT);
 				}
 				
-				if(move.getMoveId() == 251) {
+				switch(move.getMoveId()) {
+				case 251 :
 					move.setMoveMetaCategory(MoveMetaCategory.UNIQUE_EFFECT);
+					break;
+				case 91 :
+					move.setMoveMetaCategory(MoveMetaCategory.UNIQUE_EFFECT);
+					break;
+				case 19 :
+					move.setMoveMetaCategory(MoveMetaCategory.UNIQUE_EFFECT);
+					break;
+				case 291 :
+					move.setMoveMetaCategory(MoveMetaCategory.UNIQUE_EFFECT);
+					break;
+				case 507 :
+					move.setMoveMetaCategory(MoveMetaCategory.UNIQUE_EFFECT);
+					break;
 				}
+				
 				moveArray[i] = move;
 			}
 			adapter.close();
