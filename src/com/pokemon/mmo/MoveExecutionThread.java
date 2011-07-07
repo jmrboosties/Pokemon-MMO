@@ -52,7 +52,8 @@ public class MoveExecutionThread {
 					mAttackerPokemon.setCurrentHP(total);
 				}
 				else {
-					//TODO faint
+					mAttackerPokemon.setCurrentHP(0);
+					mAttackerPokemon.setStatus(NonVolatileStatusAilment.FAINTED);
 				}
 			}
 		}
@@ -108,11 +109,13 @@ public class MoveExecutionThread {
 	private void applyAttackerStatChanges() {
 		int[] statChanges = mMove.getMoveStatChanges();
 		mAttackerPokemon.addStatChangeArray(statChanges);
+		//TODO output saying what has changed
 	}
 	
 	private void applyTargetStatChanges() {
 		int[] statChanges = mMove.getMoveStatChanges();
 		mTargetPokemon.addStatChangeArray(statChanges);
+		//TODO output saying what has changed
 	}
 	
 	private void applyAttackerStatusAilments() {
@@ -146,6 +149,7 @@ public class MoveExecutionThread {
 			default :
 				//TODO blank?
 			}
+			System.out.println(mTargetPokemon.getNickName() + " is " + mMove.getStatusAilment());
 		}
 	}
 	
@@ -177,6 +181,7 @@ public class MoveExecutionThread {
 				//TODO nothing goes here, dunno if i need to do anything even
 				break;
 			}
+			System.out.println(mTargetPokemon.getNickName() + " has " + mMove.getStatusAilment());
 		}
 		//TODO SET TIMERS FOR ABOVE VOLATILE EFFECTS!
 	}
@@ -297,6 +302,24 @@ public class MoveExecutionThread {
 			mTargetPokemon.setCurrentHP(totalHp);
 		}
 		System.out.println(mAttackerPokemon.getNickName() + " restores " + mTargetPokemon.getNickName() + "'s health!");
+	}
+	
+	private void absorb() {
+		//TODO big root, etc
+		int restore = mDamageDealt / 2;
+		int newTotal = mAttackerPokemon.getCurrentHP() + restore;
+		if(newTotal > mAttackerPokemon.getStat(Stats.HP)) {
+			mAttackerPokemon.setCurrentHP(mAttackerPokemon.getStat(Stats.HP));
+		}
+		else {
+			mAttackerPokemon.setCurrentHP(newTotal);
+		}
+		System.out.println(mAttackerPokemon.getNickName() + " drains" + restore + " HP from " + mTargetPokemon.getNickName());
+	}
+	
+	public void damageAndAbsorb() {
+		dealDamage(accuracyCheck());
+		absorb();
 	}
 	
 }

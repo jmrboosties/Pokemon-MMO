@@ -323,6 +323,8 @@ public class Enums {
 		NONE, PARALYSIS, SLEEP, FREEZE, BURN, POISON, CONFUSION, INFATUATION, TRAPPED, NIGHTMARE, TORMENT, DISABLE, YAWN, HEAL_BLOCK,
 		NO_TYPE_IMMUNITY, LEECH_SEED, EMBARGO, PERISH_SONG, INGRAIN, TOXIC, RISE;
 		
+		//TODO string for battle "is confused" "will faint in 3 turns", etc.
+		
 		public static MetaStatusAilment getAilment(int i) {
 			for (MetaStatusAilment ailment : MetaStatusAilment.values()) {
 				if(i == ailment.ordinal()) {

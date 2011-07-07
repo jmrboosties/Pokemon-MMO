@@ -141,6 +141,9 @@ public class Battle {
 		case HEALS :
 			execution.healUser();
 			break;
+		case CHANGE_STATS_ONLY :
+			execution.changeStatsOnly();
+			break;
 		case STATUS_AILMENT_ONLY :
 			execution.ailmentOnly();
 			break;
@@ -155,6 +158,9 @@ public class Battle {
 			break;
 		case INFLICTS_AILMENT_AND_STAT_CHANGE :
 			execution.swaggerAndFlatter();
+			break;
+		case INFLICTS_AND_ABSORBS :
+			execution.damageAndAbsorb();
 			break;
 		default :
 			System.out.println(move.getMoveName() + " has a meta category of " + move.getMoveMetaCategory() + " and we don't have that coded.");
