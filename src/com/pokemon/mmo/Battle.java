@@ -138,6 +138,24 @@ public class Battle {
 		case MULTI_HIT :
 			execution.multiHit();
 			break;
+		case HEALS :
+			execution.healUser();
+			break;
+		case STATUS_AILMENT_ONLY :
+			execution.ailmentOnly();
+			break;
+		case INFLICTS_DAMAGE_AND_STATUS_AILMENT :
+			execution.inflictDamageAndStatusAilment();
+			break;
+		case INFLICTS_DAMAGE_LOWER_TARGET_STATS :
+			execution.inflictDamageAndChangeTargetStats();
+			break;
+		case INFLICTS_DAMAGE_RAISES_USER_STATS :
+			execution.inflictDamageAndChangeUserStats();
+			break;
+		case INFLICTS_AILMENT_AND_STAT_CHANGE :
+			execution.swaggerAndFlatter();
+			break;
 		default :
 			System.out.println(move.getMoveName() + " has a meta category of " + move.getMoveMetaCategory() + " and we don't have that coded.");
 			break;

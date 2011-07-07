@@ -311,6 +311,12 @@ public class Pokemon {
 		else {
 			for (int i = 0; i < mBattleStatBuffs.length; i++) {
 				mBattleStatBuffs[i] = mBattleStatBuffs[i] + array[i];
+				if(mBattleStatBuffs[i] > 6) {
+					mBattleStatBuffs[i] = 6;
+				}
+				else if(mBattleStatBuffs[i] < -6) {
+					mBattleStatBuffs[i] = -6;
+				}
 			}
 		}
 	}

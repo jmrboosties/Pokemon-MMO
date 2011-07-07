@@ -35,6 +35,7 @@ public class MoveFactory {
 					move.setType(Types.getType(rs.getInt("type_id")));
 					move.setMoveMetaCategory(MoveMetaCategory.getCategory(rs.getInt("meta_category_id")));
 					move.setStatusAilment(MetaStatusAilment.getAilment(rs.getInt("meta_ailment_id")));
+					move.setSecondaryEffectChance(rs.getInt("ailment_chance"));
 					move.setMoveEffect(rs.getInt("effect_id"));
 					move.setMoveTarget(MoveTargetId.getTarget(rs.getInt("target_id")));
 					
@@ -62,6 +63,8 @@ public class MoveFactory {
 					move.setMoveMetaCategory(MoveMetaCategory.MULTI_HIT);
 				}
 				
+				//TODO outrage and stuff
+				
 				switch(move.getMoveId()) {
 				case 251 :
 					move.setMoveMetaCategory(MoveMetaCategory.UNIQUE_EFFECT);
@@ -78,7 +81,19 @@ public class MoveFactory {
 				case 507 :
 					move.setMoveMetaCategory(MoveMetaCategory.UNIQUE_EFFECT);
 					break;
+				case 34 :
+					move.setStatusAilment(MetaStatusAilment.TOXIC);
+					//TODO i think more can toxic
+					break;
+				case 286 :
+					move.setStatusAilment(MetaStatusAilment.RISE);
+					break;
+				case 275 :
+					move.setMoveMetaCategory(MoveMetaCategory.UNIQUE_EFFECT);
+					break;
 				}
+				
+				
 				
 				moveArray[i] = move;
 			}
