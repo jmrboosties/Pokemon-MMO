@@ -3,7 +3,6 @@ package com.pokemon.mmo;
 import java.sql.ResultSet;
 
 import com.pokemon.mmo.Enums.MetaStatusAilment;
-import com.pokemon.mmo.Enums.MoveEffectGroup;
 import com.pokemon.mmo.Enums.MoveKinds;
 import com.pokemon.mmo.Enums.MoveMetaCategory;
 import com.pokemon.mmo.Enums.MoveTargetId;
@@ -27,7 +26,12 @@ public class MoveFactory {
 				while (rs.next()) {
 					move.setMoveName(rs.getString("name"));
 					move.setBasePower(rs.getInt("power"));
-					move.setAccuracy(rs.getInt("accuracy"));
+					if(rs.getInt("accuracy") == 0) {
+						move.setAccuracy(100);
+					}
+					else {
+						move.setAccuracy(rs.getInt("accuracy"));
+					}
 					move.setMoveId(rs.getInt("id"));
 					move.setPP(rs.getInt("pp"));
 					move.setPriority(rs.getInt("priority"));
@@ -35,7 +39,18 @@ public class MoveFactory {
 					move.setType(Types.getType(rs.getInt("type_id")));
 					move.setMoveMetaCategory(MoveMetaCategory.getCategory(rs.getInt("meta_category_id")));
 					move.setStatusAilment(MetaStatusAilment.getAilment(rs.getInt("meta_ailment_id")));
-					move.setSecondaryEffectChance(rs.getInt("ailment_chance"));
+					if(rs.getInt("ailment_chance") == 0) {
+						move.setSecondaryAilmentChance(100);
+					}
+					else {
+						move.setSecondaryAilmentChance(rs.getInt("ailment_chance"));
+					}
+					if(rs.getInt("stat_chance") == 0) { 
+						move.setSecondaryStatChangeChance(100);
+					}
+					else {
+						move.setSecondaryStatChangeChance(rs.getInt("stat_chance"));
+					}
 					move.setMoveEffect(rs.getInt("effect_id"));
 					move.setMoveTarget(MoveTargetId.getTarget(rs.getInt("target_id")));
 					
@@ -104,18 +119,6 @@ public class MoveFactory {
 		}
 		System.out.println("Done populating moves.");
 		return moveArray;
-	}
-	
-	public static MoveEffectGroup getMoveEffectGroup(Move move) {
-		int effectId = move.getMoveCode();
-		switch(effectId) {
-		case 1 : 
-			
-			return MoveEffectGroup.REGULAR;
-		case 2 :
-			
-		}
-		return null;
 	}
 	
 //	private static void setMoveNonVolatileEffect(ResultSet rs, Move move) {

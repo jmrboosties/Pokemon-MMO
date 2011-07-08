@@ -18,12 +18,12 @@ public class Move {
 	private int mPriority;
 	private int[] mMoveStatChanges = new int[7];
 	private MetaStatusAilment mAilment;
-	private int mSecondaryChance;
+	private int mSecondaryAilmentChance;
+	private int mSecondaryStatChangeChance;
 	private MoveKinds mKind;
 	private MoveTargetId mTarget;
 	private int mPP;
 	private int mMoveId;	
-	private int mMoveCode;
 	private MoveMetaCategory mMetaCategory;
 	private int mMoveEffect;
 	private int mMinHits;
@@ -78,12 +78,12 @@ public class Move {
 		return mType;
 	}
 
-	public void setSecondaryEffectChance(int chance) {
-		this.mSecondaryChance = chance;
+	public void setSecondaryAilmentChance(int chance) {
+		this.mSecondaryAilmentChance = chance;
 	}
 
-	public int getSecondaryEffectChance() {
-		return mSecondaryChance;
+	public int getSecondaryAilmentChance() {
+		return mSecondaryAilmentChance;
 	}
 
 	public void setMoveTarget(MoveTargetId target) {
@@ -142,19 +142,6 @@ public class Move {
 	public int getPriority() {
 		return mPriority;
 	}
-	
-	public void setMoveCode(int i) {
-		this.mMoveCode = i;
-	}
-	
-	public int getMoveCode() {
-		return mMoveCode;
-	}
-	
-	
-//	public void executeMove(Battle battle, Pokemon attacker, Pokemon defender/*Consider list of moves to record history and then just pick the most recent?*/) {
-//		
-//	}
 
 	public void setMoveStatChangesArray(int[] moveStatChanges) throws IllegalArgumentException {
 		if(moveStatChanges.length != 7) {
@@ -242,6 +229,14 @@ public class Move {
 		else {
 			return false;
 		}
+	}
+
+	public void setSecondaryStatChangeChance(int secondaryStatChangeChance) {
+		this.mSecondaryStatChangeChance = secondaryStatChangeChance;
+	}
+
+	public int getSecondaryStatChangeChance() {
+		return mSecondaryStatChangeChance;
 	}
 
 }

@@ -353,7 +353,18 @@ public class Enums {
 	}
 	
 	public static enum ModdableBattleStats {
-		ATTACK, DEFENSE, SPECIAL_ATTACK, SPECIAL_DEFENSE, SPEED, ACCURACY, EVASION;
+		ATTACK("Attack"), DEFENSE("Defense"), SPECIAL_ATTACK("Special Attack"), SPECIAL_DEFENSE("Special Defense"), 
+		SPEED("Speed"), ACCURACY("Accuracy"), EVASION("Evasion");
+		
+		private String fName;
+		
+		private ModdableBattleStats(String name) {
+			this.fName = name;
+		}
+		
+		public String getName() {
+			return fName;
+		}
 		
 		public static ModdableBattleStats getStat(int i) {
 			for (ModdableBattleStats stat : ModdableBattleStats.values()) {

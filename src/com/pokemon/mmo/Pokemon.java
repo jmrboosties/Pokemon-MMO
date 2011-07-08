@@ -310,12 +310,25 @@ public class Pokemon {
 		}
 		else {
 			for (int i = 0; i < mBattleStatBuffs.length; i++) {
-				mBattleStatBuffs[i] = mBattleStatBuffs[i] + array[i];
-				if(mBattleStatBuffs[i] > 6) {
-					mBattleStatBuffs[i] = 6;
+				if(array[i] == 0) {
+					//Nothing
 				}
-				else if(mBattleStatBuffs[i] < -6) {
-					mBattleStatBuffs[i] = -6;
+				else {
+					mBattleStatBuffs[i] = mBattleStatBuffs[i] + array[i];
+					if(mBattleStatBuffs[i] > 6) {
+						mBattleStatBuffs[i] = 6;
+						System.out.println(mNickName + "'s " + ModdableBattleStats.getStat(i).getName() + " is maxed out!");
+					}
+					else if(mBattleStatBuffs[i] < -6) {
+						mBattleStatBuffs[i] = -6;
+						System.out.println(mNickName + "'s " + ModdableBattleStats.getStat(i).getName() + " can't go lower!");
+					}
+					else if(array[i] < 0){
+						System.out.println(mNickName + "'s " + ModdableBattleStats.getStat(i).getName() + " decreases!");
+					}
+					else if(array[i] > 0) {
+						System.out.println(mNickName + "'s " + ModdableBattleStats.getStat(i).getName() + " increases!");
+					}
 				}
 			}
 		}

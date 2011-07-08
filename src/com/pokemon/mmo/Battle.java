@@ -64,7 +64,7 @@ public class Battle {
 	protected void round(boolean b) {
 		while(mBattlePlayerYou.getPokemon().getStatus() != NonVolatileStatusAilment.FAINTED && 
 				mBattlePlayerEnemy.getPokemon().getStatus() != NonVolatileStatusAilment.FAINTED) {
-			
+			//TODO redo how it checks for fainted
 			if(b) {
 				if(mBattlePlayerYou == determineOrder(mBattlePlayerYou, mBattlePlayerEnemy)) {
 					executeMove(mBattlePlayerYou, mBattlePlayerEnemy, true);
@@ -131,6 +131,7 @@ public class Battle {
 		//if bool is true, user goes first, if false, enemy goes first
 		Move move = attacker.getCurrentChosenMove();
 		MoveExecutionThread execution = new MoveExecutionThread(attacker, target, move, this);
+		System.out.println(attacker.getPokemon().getNickName() + " uses " + move.getMoveName() + "!");
 		switch(move.getMoveMetaCategory()) {
 		case INFLICTS_DAMAGE : //means move is "normal, damage with possible effect to user or target.
 			execution.standardMove();

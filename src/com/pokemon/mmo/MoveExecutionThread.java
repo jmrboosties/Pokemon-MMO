@@ -41,7 +41,6 @@ public class MoveExecutionThread {
 	}
 	
 	public void dealDamage(boolean bool) {
-		System.out.println(mAttackerPokemon.getNickName() + " uses " + mMove.getMoveName() + "!");
 		if(!bool) {
 			System.out.println(mAttackerPokemon.getNickName() + "'s attack missed!");
 			if(mMove.getMoveId() == 46) {
@@ -61,6 +60,9 @@ public class MoveExecutionThread {
 			int targetHp = mTargetPokemon.getCurrentHP();
 			int attackerHp = mAttackerPokemon.getCurrentHP();
 			mDamageDealt = GameFields.damageCalc(mAttacker, mTarget, mMove, mBattle);
+			if(mDamageDealt == 0) {
+				return;
+			}
 			targetHp = targetHp - mDamageDealt;
 			System.out.println(mTargetPokemon.getNickName() + " takes " + mDamageDealt + " damage!");
 			
@@ -91,11 +93,13 @@ public class MoveExecutionThread {
 			applyAttackerStatChanges();
 			break;
 		case SELECTED_POKEMON :
-			applyTargetStatChanges();
-			break;
-		case ALL_OPPONENTS :
-			//TODO same as selected for now, but in double battles this could change
-			applyTargetStatChanges();
+		case ALL_OPPONENTS : //TODO same as selected for now, but in double battles this could change
+			if(accuracyCheck()) {
+				applyTargetStatChanges();
+			}
+			else {
+				System.out.println(mAttackerPokemon.getNickName() + "'s attack missed!");
+			}
 			break;
 		}
 	}
@@ -107,14 +111,22 @@ public class MoveExecutionThread {
 	}
 
 	private void applyAttackerStatChanges() {
-		int[] statChanges = mMove.getMoveStatChanges();
-		mAttackerPokemon.addStatChangeArray(statChanges);
+		int chance = mMove.getSecondaryStatChangeChance();
+		int gen = mGenerator.nextInt(100) + 1;
+		if(gen <= chance) {
+			int[] statChanges = mMove.getMoveStatChanges();
+			mAttackerPokemon.addStatChangeArray(statChanges);
+		}
 		//TODO output saying what has changed
 	}
 	
 	private void applyTargetStatChanges() {
-		int[] statChanges = mMove.getMoveStatChanges();
-		mTargetPokemon.addStatChangeArray(statChanges);
+		int chance = mMove.getSecondaryStatChangeChance();
+		int gen = mGenerator.nextInt(100) + 1;
+		if(gen <= chance) {
+			int[] statChanges = mMove.getMoveStatChanges();
+			mTargetPokemon.addStatChangeArray(statChanges);
+		}
 		//TODO output saying what has changed
 	}
 	
@@ -126,10 +138,10 @@ public class MoveExecutionThread {
 		if(mTargetPokemon.isAffectedByStatusAilment()) {
 			return;
 		}
-		int chance = mMove.getSecondaryEffectChance();
+		int chance = mMove.getSecondaryAilmentChance();
 		//TODO enhance chance of secondary effect here with abilities/items etc
-		int i = mGenerator.nextInt(chance) + 1;
-		if(i <= 10) {
+		int i = mGenerator.nextInt(100) + 1;
+		if(i <= chance) {
 			switch(mMove.getStatusAilment()) {
 			case POISON :
 				mTargetPokemon.setStatus(NonVolatileStatusAilment.POISON);
@@ -154,10 +166,10 @@ public class MoveExecutionThread {
 	}
 	
 	private void applyTargetVolatileStatusAilments() {
-		int chance = mMove.getSecondaryEffectChance();
+		int chance = mMove.getSecondaryAilmentChance();
 		//TODO enhance chance of secondary effect here with abilities/items etc
-		int i = mGenerator.nextInt(chance) + 1;
-		if(i <= 10) {
+		int i = mGenerator.nextInt(100) + 1;
+		if(i <= chance) {
 			switch(mMove.getStatusAilment()) {
 			case CONFUSION :
 				mTargetPokemon.setBatonVolatileAilment(VolatileEffectBatonPass.CONFUSION, true);
@@ -252,14 +264,28 @@ public class MoveExecutionThread {
 	}
 	
 	public void ailmentOnly() {
-		applyTargetNonVolatileStatusAilments();
-		applyTargetVolatileStatusAilments();
+		if(accuracyCheck()) {
+			applyTargetNonVolatileStatusAilments();
+			applyTargetVolatileStatusAilments();
+		}
+		else {
+			System.out.println(mAttackerPokemon.getNickName() + "'s attack missed!");
+		}
+	}
+	
+	private void secondaryEffect() {
+		int prob = mMove.getSecondaryAilmentChance();
+		int gen = mGenerator.nextInt(100) + 1;
+		if(gen <= prob) {
+			applyTargetNonVolatileStatusAilments();
+			applyTargetVolatileStatusAilments();
+		}
 	}
 	
 	public void inflictDamageAndStatusAilment() {
 		dealDamage(accuracyCheck());
 		if(mTargetPokemon.getStatus() != NonVolatileStatusAilment.FAINTED) {
-			ailmentOnly();
+			secondaryEffect();
 		}
 	}
 	
