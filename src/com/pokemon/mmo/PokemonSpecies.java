@@ -173,7 +173,7 @@ public class PokemonSpecies {
 							// add moveIds
 							mLevelMoves.put(lastLevel,moveIds);
 						}
-						// put newl moveId into buffer first
+						// put new moveId into buffer first
 						moveIdsBuff[cnt] = moves.getInt("move_id");
 						cnt++;
 						lastLevel = newLevel;
@@ -191,6 +191,19 @@ public class PokemonSpecies {
 						throw new Exception();
 				}
 			}
+			
+			/*	This is necessary if we do not want to loose the last move a
+				pokemon learns by level up or moves of a pokemon only
+				learning moves at level 1.	*/
+			Integer[] moveIds = new Integer[cnt];
+			// flush buffer and reset cnt
+			for(int i = 0; i < cnt; i++){
+				moveIds[i] = (Integer)moveIdsBuff[i];
+			}
+			moveIdsBuff = new int[20];
+			cnt = 0;
+			// add moveIds
+			mLevelMoves.put(lastLevel,moveIds);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
