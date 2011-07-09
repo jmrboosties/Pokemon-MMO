@@ -8,19 +8,22 @@ import com.pokemon.mmo.Enums.VolatileEffectBatonPass;
 
 public class MoveExecutionThread {
 
+	/******************************************/
+	/********     Member Variables     ********/
+	/******************************************/
+	
 	private BattlePlayer mAttacker;
 	private BattlePlayer mTarget;
-	
 	private Pokemon mAttackerPokemon;
 	private Pokemon mTargetPokemon;
-	
 	private Battle mBattle;
-	
 	private Move mMove;
-	
 	private int mDamageDealt;
-	
 	private RandomForPokemon mGenerator = new RandomForPokemon();
+	
+	/**************************************/
+	/********     Constructors     ********/
+	/**************************************/
 	
 	public MoveExecutionThread(BattlePlayer attacker, BattlePlayer target, Move move, Battle battle) {
 		this.mAttacker = attacker;
@@ -32,6 +35,10 @@ public class MoveExecutionThread {
 		this.mTargetPokemon = mTarget.getPokemon();
 	}
 	
+	/***********************************/
+	/********     Accessors     ********/
+	/***********************************/
+	
 	public BattlePlayer getAttacker() {
 		return mAttacker;
 	}
@@ -40,7 +47,126 @@ public class MoveExecutionThread {
 		return mTarget;
 	}
 	
-	public void dealDamage(boolean bool) {
+	/***********************************/
+	/********   Public Methods   *******/
+	/***********************************/
+	
+
+	public void standardMove() {
+		dealDamage(accuracyCheck());
+	}
+	
+	public void changeStatsOnly() {
+		switch(mMove.getMoveTarget()) {
+		case USER :
+			applyAttackerStatChanges();
+			break;
+		case SELECTED_POKEMON :
+		case ALL_OPPONENTS : //TODO same as selected for now, but in double battles this could change
+			if(accuracyCheck()) {
+				applyTargetStatChanges();
+			}
+			else {
+				System.out.println(mAttackerPokemon.getNickName() + "'s attack missed!");
+			}
+			break;
+		}
+	}
+	
+	public void multiHit() {
+		int hits = mMove.getMinHits();
+		int max = mMove.getMaxHits();
+		int var = max - hits;
+		
+		hits += mGenerator.nextInt(var) + 1;
+		
+		for (int i = 0; i < hits; i++) {
+			if(mMove.getMoveId() == 78) {
+				dealDamage(accuracyCheck());
+				ailmentOnly();
+			}
+			else {
+				dealDamage(accuracyCheck()); //TODO check if moves like fury swipes calc accuracy for each hit
+			}
+		}
+	}
+	
+	public void ailmentOnly() {
+		if(accuracyCheck()) {
+			applyTargetNonVolatileStatusAilments();
+			applyTargetVolatileStatusAilments();
+		}
+		else {
+			System.out.println(mAttackerPokemon.getNickName() + "'s attack missed!");
+		}
+	}
+	
+	public void healUser() {
+		switch(mMove.getMoveEffect()) {
+		case 33 :
+			healFormula(50);
+			break;
+		case 133 :
+			switch(mMove.getMoveId()) {
+			case 234 :
+			case 235 :
+				switch(mBattle.getWeather()) {
+				case SUNNY_DAY :
+					//TODO get the rest, not sure what makes it stronger or weaker
+					break;
+				}
+			}
+			break;
+		case 215 :
+			healFormula(50);
+			//TODO flying pokemon sits down
+			break;
+		case 310 :
+			healPulse();
+			//TODO targeting works differently in double battle, but i think that is handled in battle not here
+			break;
+		case 163 :
+			//TODO get amount swallowed and calc accordingly
+			break;
+		}
+	}
+	
+	public void damageAndAbsorb() {
+		dealDamage(accuracyCheck());
+		absorb();
+	}
+	
+	public void inflictDamageAndStatusAilment() {
+		dealDamage(accuracyCheck());
+		if(mTargetPokemon.getStatus() != NonVolatileStatusAilment.FAINTED) {
+			secondaryEffect();
+		}
+	}
+	
+	public void inflictDamageAndChangeUserStats() {
+		dealDamage(accuracyCheck());
+		if(mTargetPokemon.getStatus() != NonVolatileStatusAilment.FAINTED) {
+			applyAttackerStatChanges();
+		}
+	}
+	
+	public void inflictDamageAndChangeTargetStats() {
+		dealDamage(accuracyCheck());
+		if(mTargetPokemon.getStatus() != NonVolatileStatusAilment.FAINTED) {
+			applyTargetStatChanges();
+		}
+	}
+	
+	public void swaggerAndFlatter() {
+		applyTargetVolatileStatusAilments();
+		applyTargetStatChanges();
+	}
+	
+	/***********************************/
+	/*******   Private Methods   *******/
+	/***********************************/	
+	
+	private void dealDamage(boolean bool) {
 		if(!bool) {
 			System.out.println(mAttackerPokemon.getNickName() + "'s attack missed!");
 			if(mMove.getMoveId() == 46) {
@@ -81,26 +207,9 @@ public class MoveExecutionThread {
 				int recoilDamage = (mDamageDealt * recoil) / 100;
 				attackerHp = attackerHp + recoilDamage;
 				mAttackerPokemon.setCurrentHP(attackerHp);
-				System.out.println(mAttackerPokemon.getNickName() + " takes " + recoilDamage + " in recoil.");
+				System.out.println(mAttackerPokemon.getNickName() + " takes " + (recoilDamage * -1) + " in recoil.");
 			}
 			applyAttackerStatusAilments();
-		}
-	}
-	
-	public void changeStatsOnly() {
-		switch(mMove.getMoveTarget()) {
-		case USER :
-			applyAttackerStatChanges();
-			break;
-		case SELECTED_POKEMON :
-		case ALL_OPPONENTS : //TODO same as selected for now, but in double battles this could change
-			if(accuracyCheck()) {
-				applyTargetStatChanges();
-			}
-			else {
-				System.out.println(mAttackerPokemon.getNickName() + "'s attack missed!");
-			}
-			break;
 		}
 	}
 	
@@ -210,68 +319,6 @@ public class MoveExecutionThread {
 			return false;
 		}
 	}
-
-	public void standardMove() {
-		dealDamage(accuracyCheck());
-	}
-	
-	public void multiHit() {
-		int hits = mMove.getMinHits();
-		int max = mMove.getMaxHits();
-		int var = max - hits;
-		
-		hits += mGenerator.nextInt(var) + 1;
-		
-		for (int i = 0; i < hits; i++) {
-			if(mMove.getMoveId() == 78) {
-				dealDamage(accuracyCheck());
-				ailmentOnly();
-			}
-			else {
-				dealDamage(accuracyCheck()); //TODO check if moves like fury swipes calc accuracy for each hit
-			}
-		}
-	}
-	
-	public void healUser() {
-		switch(mMove.getMoveEffect()) {
-		case 33 :
-			healFormula(50);
-			break;
-		case 133 :
-			switch(mMove.getMoveId()) {
-			case 234 :
-			case 235 :
-				switch(mBattle.getWeather()) {
-				case SUNNY_DAY :
-					//TODO get the rest, not sure what makes it stronger or weaker
-					break;
-				}
-			}
-			break;
-		case 215 :
-			healFormula(50);
-			//TODO flying pokemon sits down
-			break;
-		case 310 :
-			healPulse();
-			//TODO targeting works differently in double battle, but i think that is handled in battle not here
-			break;
-		case 163 :
-			//TODO get amount swallowed and calc accordingly
-			break;
-		}
-	}
-	
-	public void ailmentOnly() {
-		if(accuracyCheck()) {
-			applyTargetNonVolatileStatusAilments();
-			applyTargetVolatileStatusAilments();
-		}
-		else {
-			System.out.println(mAttackerPokemon.getNickName() + "'s attack missed!");
-		}
-	}
 	
 	private void secondaryEffect() {
 		int prob = mMove.getSecondaryAilmentChance();
@@ -280,32 +327,6 @@ public class MoveExecutionThread {
 			applyTargetNonVolatileStatusAilments();
 			applyTargetVolatileStatusAilments();
 		}
-	}
-	
-	public void inflictDamageAndStatusAilment() {
-		dealDamage(accuracyCheck());
-		if(mTargetPokemon.getStatus() != NonVolatileStatusAilment.FAINTED) {
-			secondaryEffect();
-		}
-	}
-	
-	public void inflictDamageAndChangeUserStats() {
-		dealDamage(accuracyCheck());
-		if(mTargetPokemon.getStatus() != NonVolatileStatusAilment.FAINTED) {
-			applyAttackerStatChanges();
-		}
-	}
-	
-	public void inflictDamageAndChangeTargetStats() {
-		dealDamage(accuracyCheck());
-		if(mTargetPokemon.getStatus() != NonVolatileStatusAilment.FAINTED) {
-			applyTargetStatChanges();
-		}
-	}
-	
-	public void swaggerAndFlatter() {
-		applyTargetVolatileStatusAilments();
-		applyTargetStatChanges();
 	}
 	
 	private void healFormula(int healPercentage) {
@@ -341,11 +362,6 @@ public class MoveExecutionThread {
 			mAttackerPokemon.setCurrentHP(newTotal);
 		}
 		System.out.println(mAttackerPokemon.getNickName() + " drains" + restore + " HP from " + mTargetPokemon.getNickName());
-	}
-	
-	public void damageAndAbsorb() {
-		dealDamage(accuracyCheck());
-		absorb();
 	}
 	
 }

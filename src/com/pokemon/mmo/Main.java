@@ -25,8 +25,7 @@ public class Main {
 	private static void battleSim() {
 		RandomForPokemon gen = new RandomForPokemon();
 		Trainer trainer1 = new Trainer();
-//		trainer1.setLeadingPokemon(gen.randomPokemon(20));
-		trainer1.setLeadingPokemon(PokemonFactory.getPokemonAtLevel(mSpeciesArray[512],20));
+		trainer1.setLeadingPokemon(gen.randomPokemon(20));
 		Trainer trainer2 = new Trainer();
 		trainer2.setLeadingPokemon(gen.randomPokemon(20));
 		Battle battle = new Battle(trainer1, trainer2);
