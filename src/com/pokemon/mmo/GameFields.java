@@ -58,7 +58,7 @@ public class GameFields {
 		else if(retValue == 0) {
 			System.out.println("It has no effect!");
 		}
-		else {
+		else if(retValue < 1){
 			System.out.println("It's not very effective...");
 		}
 		return retValue;
