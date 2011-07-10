@@ -28,7 +28,7 @@ public class Pokemon {
 	private boolean[] mBatonPassVolatileStatus = new boolean[VolatileEffectBatonPass.values().length];
 	private boolean[] mNoBatonPassVolatileStatus = new boolean[VolatileEffectNoBatonPass.values().length];
 	private NonVolatileStatusAilment mAilment;
-	private int[] mBattleStatBuffs = new int[7];
+	private int[] mBattleStatBuffs = new int[7]; //Att, Def, SpAtt, SpDef, Speed, Acc, Evade
 	
 	/**
 	 * The following arrays are structed like so: 
@@ -214,6 +214,10 @@ public class Pokemon {
 
 	public void setCurrentHP(int hp) {
 		this.mCurrentHP = hp;
+		if(mCurrentHP <= 0) {
+			mCurrentHP = 0;
+			mAilment = NonVolatileStatusAilment.FAINTED;
+		}
 	}
 
 	public int getCurrentHP() {
@@ -348,7 +352,18 @@ public class Pokemon {
 	}
 
 	public int getAccuracy() {
-		return mAccuracy;
+		//TODO check for held items here too
+		int acc = mAccuracy;
+		if(mAbility == Ability.COMPOUNDEYES) {
+			acc = (int) (acc * 1.3);
+		}
+		if(mBattleStatBuffs[5] > 0) {
+			acc = (int) (acc * (1 + (mBattleStatBuffs[5] / 3)));
+		}
+		else if(mBattleStatBuffs[5] < 0) {
+			acc = (int) (acc * (3 / (3 - mBattleStatBuffs[5])));
+		}
+		return acc;
 	}
 
 	public void setEvasion(int evasion) {
@@ -356,7 +371,15 @@ public class Pokemon {
 	}
 
 	public int getEvasion() {
-		return mEvasion;
+		//TODO check for held items AND abilities
+		int evade = mEvasion;
+		if(mBattleStatBuffs[6] > 0) {
+			evade = (int) (evade * (1 + (mBattleStatBuffs[6] / 3)));
+		}
+		else if(mBattleStatBuffs[6] < 0) {
+			evade = (int) (evade * (3 / (3 - mBattleStatBuffs[6])));
+		}
+		return evade;
 	}
 	
 	public boolean hasAbility(Ability ability) {

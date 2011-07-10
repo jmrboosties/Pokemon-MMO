@@ -2,11 +2,15 @@ package com.pokemon.mmo;
 
 import com.pokemon.mmo.Enums.MetaStatusAilment;
 import com.pokemon.mmo.Enums.ModdableBattleStats;
+import com.pokemon.mmo.Enums.MoveFlag;
 import com.pokemon.mmo.Enums.MoveKinds;
 import com.pokemon.mmo.Enums.MoveMetaCategory;
 import com.pokemon.mmo.Enums.MoveTargetId;
 import com.pokemon.mmo.Enums.Moves;
+import com.pokemon.mmo.Enums.Room;
+import com.pokemon.mmo.Enums.Sport;
 import com.pokemon.mmo.Enums.Types;
+import com.pokemon.mmo.Enums.Weather;
 
 public class Move {
 
@@ -31,6 +35,10 @@ public class Move {
 	private int mMinTurns;
 	private int mMaxTurns;
 	private int mRecoilPercentage;
+	private boolean[] mFlags = new boolean[MoveFlag.values().length];
+	private Weather mConjuredWeather;
+	private Sport mSport;
+	private Room mRoom;
 
 	public Move() {
 		mName = "-----";
@@ -51,6 +59,10 @@ public class Move {
 		
 		for (int i = 0; i < mMoveStatChanges.length; i++) {
 			mMoveStatChanges[i] = 0;
+		}
+		
+		for (int i = 0; i < mFlags.length; i++) {
+			mFlags[i] = false;
 		}
 	}
 
@@ -124,11 +136,6 @@ public class Move {
 
 	public void setKind(MoveKinds kind) {
 		this.mKind = kind;
-	}
-
-	public boolean isPunching() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	public Moves getMoveEnum() {
@@ -237,6 +244,45 @@ public class Move {
 
 	public int getSecondaryStatChangeChance() {
 		return mSecondaryStatChangeChance;
+	}
+	
+	public void setMoveFlag(MoveFlag flag) {
+		this.mFlags[flag.ordinal()] = true;
+	}
+	
+	public boolean hasFlag(MoveFlag flag) {
+		return mFlags[flag.ordinal()];
+	}
+	
+	public boolean[] getMoveFlagArray() {
+		return mFlags;
+	}
+
+	public void setConjuredWeather(Weather conjuredWeather) {
+		this.mConjuredWeather = conjuredWeather;
+		setMoveFlag(MoveFlag.WEATHER);
+	}
+
+	public Weather getConjuredWeather() {
+		return mConjuredWeather;
+	}
+
+	public void setMoveSport(Sport sport) {
+		this.mSport = sport;
+		setMoveFlag(MoveFlag.SPORT);
+	}
+
+	public Sport getMoveSport() {
+		return mSport;
+	}
+
+	public void setRoom(Room room) {
+		this.mRoom = room;
+		setMoveFlag(MoveFlag.ROOM);
+	}
+
+	public Room getRoom() {
+		return mRoom;
 	}
 
 }

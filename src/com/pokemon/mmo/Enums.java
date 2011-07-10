@@ -240,7 +240,7 @@ public class Enums {
 	}
 
 	public static enum Weather {
-		NORMAL, SUNNY_DAY, RAIN_DANCE, SANDSTORM, HAIL
+		NORMAL, SUNNY_DAY, RAIN_DANCE, SANDSTORM, HAIL, HAZE
 	}
 	
 	public static enum TeamBuff {
@@ -307,7 +307,7 @@ public class Enums {
 	public static enum MoveMetaCategory {
 		INFLICTS_DAMAGE, STATUS_AILMENT_ONLY, CHANGE_STATS_ONLY, HEALS, INFLICTS_DAMAGE_AND_STATUS_AILMENT,  INFLICTS_AILMENT_AND_STAT_CHANGE,
 		INFLICTS_DAMAGE_LOWER_TARGET_STATS, INFLICTS_DAMAGE_RAISES_USER_STATS, INFLICTS_AND_ABSORBS, OHKO, FULL_FIELD_EFFECT, ONE_SIDE_FIELD_EFFECT,
-		FORCES_TARGET_TO_SWITCH, UNIQUE_EFFECT, MULTI_HIT;
+		FORCES_TARGET_TO_SWITCH, UNIQUE_EFFECT, MULTI_HIT, DAMAGE_AND_FORCE_SWITCH;
 		
 		public static MoveMetaCategory getCategory(int i) {
 			for (MoveMetaCategory category : MoveMetaCategory.values()) {
@@ -320,7 +320,7 @@ public class Enums {
 	}
 	
 	public static enum MetaStatusAilment {
-		NONE, PARALYSIS, SLEEP, FREEZE, BURN, POISON, CONFUSION, INFATUATION, TRAPPED, NIGHTMARE, TORMENT, DISABLE, YAWN, HEAL_BLOCK,
+		NONE, PARALYSIS, SLEEP, FREEZE, BURN, POISON, CONFUSION, INFATUATION, TRAPPED, NIGHTMARE, TORMENT, YAWN, HEAL_BLOCK,
 		NO_TYPE_IMMUNITY, LEECH_SEED, EMBARGO, PERISH_SONG, INGRAIN, TOXIC, RISE;
 		
 		//TODO string for battle "is confused" "will faint in 3 turns", etc.
@@ -340,12 +340,12 @@ public class Enums {
 	}
 	
 	public static enum VolatileEffectBatonPass {
-		CONFUSION, CURSE, LEECH_SEED, LOCK_ON, PERISH_SONG, EMBARGO, HEAL_BLOCK, INGRAIN, AQUA_RING,
+		CONFUSION, CURSE, LEECH_SEED, LOCK_ON, PERISH_SONG, EMBARGO, HEAL_BLOCK, AQUA_RING,
 		SUBSTITUTE, RISE
 	}
 	
 	public static enum VolatileEffectNoBatonPass {
-		TORMENT, TAUNT, TRAP, NIGHTMARE, INFATUATION, IDENTIFY, ENCORE, KNOCKDOWN
+		TORMENT, TAUNT, TRAP, NIGHTMARE, INFATUATION, IDENTIFY, ENCORE, KNOCKDOWN, YAWN, INGRAIN
 	}
 	
 	public static enum PokemonVolatileBattleStatus {
@@ -374,6 +374,30 @@ public class Enums {
 			}
 			return ATTACK;
 		}
+	}
+	
+	public static enum MoveFlag {
+		MAKES_CONTACT, HAS_A_CHARGING_TURN, MUST_RECHARGE, BLOCKED_BY_PROTECT_AND_DETECT, REFLECTABLE,
+		SNATCHABLE, COPIED_BY_MIRROR_MOVE, PUNCHING, SOUND_BASED, FAILS_DURING_GRAVITY, DEFROSTS_WHEN_USED,
+		TARGETS_OPPOSITE_SIDE_IN_TRIPLES, HEALS, IGNORES_SUBSTITUTE, WEATHER, SPORT, ROOM;
+		
+		public static MoveFlag getFlag(int i) {
+			i = i - 1;
+			for (MoveFlag flag : MoveFlag.values()) {
+				if(i == flag.ordinal()) {
+					return flag;
+				}
+			}
+			return null;
+		}
+	}
+	
+	public static enum Room {
+		TRICK_ROOM, WONDER_ROOM, MAGIC_ROOM
+	}
+	
+	public static enum Sport {
+		MUD_SPORT, WATER_SPORT
 	}
 	
 }

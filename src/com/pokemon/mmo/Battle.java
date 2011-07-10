@@ -4,8 +4,9 @@ import java.util.Scanner;
 
 import com.pokemon.mmo.Enums.Ability;
 import com.pokemon.mmo.Enums.NonVolatileStatusAilment;
+import com.pokemon.mmo.Enums.Room;
+import com.pokemon.mmo.Enums.Sport;
 import com.pokemon.mmo.Enums.Stats;
-import com.pokemon.mmo.Enums.TeamBuff;
 import com.pokemon.mmo.Enums.VolatileStatus;
 import com.pokemon.mmo.Enums.Weather;
 
@@ -15,7 +16,8 @@ public class Battle {
 	
 	protected Weather mWeather;
 	protected Sport mSport;
-	protected TeamBuff mTeamBuff;
+	protected boolean mGravity = false;
+	protected Room mRoom;
 
 	protected BattlePlayer mBattlePlayerYou;
 	protected BattlePlayer mBattlePlayerEnemy;
@@ -23,10 +25,6 @@ public class Battle {
 	protected VolatileStatus mUserPokemonVolatile;
 
 	protected boolean mBattleContinues = true;
-
-	public static enum Sport {
-		MUD_SPORT, WATER_SPORT
-	}
 
 	public Battle(Trainer trainer1, Trainer trainer2) {
 		mWeather = Weather.NORMAL;
@@ -133,7 +131,7 @@ public class Battle {
 		MoveExecutionThread execution = new MoveExecutionThread(attacker, target, move, this);
 		System.out.println(attacker.getPokemon().getNickName() + " uses " + move.getMoveName() + "!");
 		switch(move.getMoveMetaCategory()) {
-		case INFLICTS_DAMAGE : //means move is "normal, damage with possible effect to user or target.
+		case INFLICTS_DAMAGE : 
 			execution.standardMove();
 			break;
 		case MULTI_HIT :
@@ -163,6 +161,17 @@ public class Battle {
 		case INFLICTS_AND_ABSORBS :
 			execution.damageAndAbsorb();
 			break;
+		case OHKO :
+			execution.onehitKO();
+			break;
+		case FORCES_TARGET_TO_SWITCH :
+			execution.forceSwitchNoDamage();
+			break;
+		case DAMAGE_AND_FORCE_SWITCH :
+			execution.damageAndForceSwitch();
+			break;
+		case FULL_FIELD_EFFECT :
+			
 		default :
 			System.out.println(move.getMoveName() + " has a meta category of " + move.getMoveMetaCategory() + " and we don't have that coded.");
 			break;
@@ -175,6 +184,7 @@ public class Battle {
 			setBattlePlayerEnemy(execution.getAttacker());
 			setBattlePlayerYou(execution.getDefender());
 		}
+		//TODO set this to battle...? how will we do this...
 	}
 	
 	protected void setBattlePlayerYou(BattlePlayer player) {
@@ -184,46 +194,6 @@ public class Battle {
 	protected void setBattlePlayerEnemy(BattlePlayer player) {
 		this.mBattlePlayerEnemy = player;
 	}
-
-//	protected boolean executeMoves(Pokemon firstPokemon, Move firstMove,
-//			Pokemon secondPokemon, Move secondMove) {
-//		int firstHpValue = firstPokemon.getCurrentHP();
-//		int secondHpValue = secondPokemon.getCurrentHP();
-//
-//		System.out.println(firstPokemon.getNickName() + " uses "
-//				+ firstMove.getMoveName() + "!");
-//
-//		int damage1 = GameFields.damageCalc(firstPokemon, secondPokemon,
-//				firstMove, this);
-//		System.out.println(secondPokemon.getNickName() + " takes " + damage1
-//				+ " damage!");
-//		secondPokemon.setCurrentHP(secondHpValue - damage1);
-//
-//		if (secondPokemon.getCurrentHP() <= 0) {
-//			secondPokemon.setCurrentHP(0);
-//			secondPokemon.setStatus(NonVolatileStatusAilment.FAINTED);
-//			System.out.println(secondPokemon.getNickName() + " fainted!");
-//			return false;
-//		}
-//
-//		System.out.println(secondPokemon.getNickName() + " uses "
-//				+ secondMove.getMoveName() + "!");
-//
-//		int damage2 = GameFields.damageCalc(secondPokemon, firstPokemon,
-//				secondMove, this);
-//		System.out.println(firstPokemon.getNickName() + " takes " + damage2
-//				+ " damage!");
-//		firstPokemon.setCurrentHP(firstHpValue - damage2);
-//
-//		if (firstPokemon.getCurrentHP() <= 0) {
-//			firstPokemon.setCurrentHP(0);
-//			firstPokemon.setStatus(NonVolatileStatusAilment.FAINTED);
-//			System.out.println(firstPokemon.getNickName() + " fainted!");
-//			return false;
-//		}
-//
-//		return true;
-//	}
 
 	protected Move getTrainerMove(Pokemon pokemon) {
 		Scanner scan = new Scanner(System.in);
@@ -255,11 +225,11 @@ public class Battle {
 		this.mWeather = weather;
 	}
 
-	protected void setSport(Sport sport) {
+	public void setSport(Sport sport) {
 		this.mSport = sport;
 	}
 
-	protected Sport getSport() {
+	public Sport getSport() {
 		return mSport;
 	}
 
@@ -320,6 +290,14 @@ public class Battle {
 	protected int getTailwindMod(Pokemon pokemon) {
 		// TODO Need to work in Tailwind into battle, for later.
 		return 1;
+	}
+	
+	public void setRoom(Room room) {
+		this.mRoom = room;
+	}
+	
+	public void setGravity(boolean bool) {
+		this.mGravity = bool;
 	}
 
 }

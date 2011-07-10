@@ -1,10 +1,13 @@
 package com.pokemon.mmo;
 
 import com.pokemon.mmo.Enums.Ability;
+import com.pokemon.mmo.Enums.Gender;
 import com.pokemon.mmo.Enums.ModdableBattleStats;
+import com.pokemon.mmo.Enums.MoveFlag;
 import com.pokemon.mmo.Enums.NonVolatileStatusAilment;
 import com.pokemon.mmo.Enums.Stats;
 import com.pokemon.mmo.Enums.VolatileEffectBatonPass;
+import com.pokemon.mmo.Enums.VolatileEffectNoBatonPass;
 
 public class MoveExecutionThread {
 
@@ -51,8 +54,12 @@ public class MoveExecutionThread {
 	/********   Public Methods   *******/
 	/***********************************/
 	
+	//TODO PROTECT AND DETECT PRIVATE METHOD INSERTED INTO PUBLIC
 
 	public void standardMove() {
+		if(targetIsProtected()) {
+			return;
+		}
 		dealDamage(accuracyCheck());
 	}
 	
@@ -63,6 +70,9 @@ public class MoveExecutionThread {
 			break;
 		case SELECTED_POKEMON :
 		case ALL_OPPONENTS : //TODO same as selected for now, but in double battles this could change
+			if(targetIsProtected()) {
+				return;
+			}
 			if(accuracyCheck()) {
 				applyTargetStatChanges();
 			}
@@ -74,6 +84,9 @@ public class MoveExecutionThread {
 	}
 	
 	public void multiHit() {
+		if(targetIsProtected()) {
+			return;
+		}
 		int hits = mMove.getMinHits();
 		int max = mMove.getMaxHits();
 		int var = max - hits;
@@ -92,6 +105,9 @@ public class MoveExecutionThread {
 	}
 	
 	public void ailmentOnly() {
+		if(targetIsProtected()) {
+			return;
+		}
 		if(accuracyCheck()) {
 			applyTargetNonVolatileStatusAilments();
 			applyTargetVolatileStatusAilments();
@@ -132,11 +148,17 @@ public class MoveExecutionThread {
 	}
 	
 	public void damageAndAbsorb() {
+		if(targetIsProtected()) {
+			return;
+		}
 		dealDamage(accuracyCheck());
 		absorb();
 	}
 	
 	public void inflictDamageAndStatusAilment() {
+		if(targetIsProtected()) {
+			return;
+		}
 		dealDamage(accuracyCheck());
 		if(mTargetPokemon.getStatus() != NonVolatileStatusAilment.FAINTED) {
 			secondaryEffect();
@@ -144,6 +166,9 @@ public class MoveExecutionThread {
 	}
 	
 	public void inflictDamageAndChangeUserStats() {
+		if(targetIsProtected()) {
+			return;
+		}
 		dealDamage(accuracyCheck());
 		if(mTargetPokemon.getStatus() != NonVolatileStatusAilment.FAINTED) {
 			applyAttackerStatChanges();
@@ -151,6 +176,9 @@ public class MoveExecutionThread {
 	}
 	
 	public void inflictDamageAndChangeTargetStats() {
+		if(targetIsProtected()) {
+			return;
+		}
 		dealDamage(accuracyCheck());
 		if(mTargetPokemon.getStatus() != NonVolatileStatusAilment.FAINTED) {
 			applyTargetStatChanges();
@@ -158,8 +186,27 @@ public class MoveExecutionThread {
 	}
 	
 	public void swaggerAndFlatter() {
+		if(targetIsProtected()) {
+			return;
+		}
 		applyTargetVolatileStatusAilments();
 		applyTargetStatChanges();
+	}
+	
+	public void onehitKO() {
+		if(targetIsProtected()) {
+			return;
+		}
+		ohko();
+	}
+	
+	public void forceSwitchNoDamage() {
+		forceSwitch();
+	}
+	
+	public void damageAndForceSwitch() {
+		dealDamage(accuracyCheck());
+		forceSwitch();
 	}
 	
 	/***********************************/
@@ -298,6 +345,33 @@ public class MoveExecutionThread {
 			case RISE :
 				mTargetPokemon.setBatonVolatileAilment(VolatileEffectBatonPass.RISE, true);
 				break;
+			case NIGHTMARE :
+				if(mTargetPokemon.getStatus() == NonVolatileStatusAilment.SLEEP) {
+					mTargetPokemon.setNoBatonVolatileAilment(VolatileEffectNoBatonPass.NIGHTMARE, true);
+				}
+				break;
+			case INFATUATION :
+				if(attractionCheck()) {
+					mTargetPokemon.setNoBatonVolatileAilment(VolatileEffectNoBatonPass.INFATUATION, true);
+				}
+				break;
+			case YAWN :
+				if(mTargetPokemon.getStatus() != NonVolatileStatusAilment.SLEEP) {
+					mTargetPokemon.setNoBatonVolatileAilment(VolatileEffectNoBatonPass.YAWN, true);
+				}
+				break;
+			case TORMENT :
+				mTargetPokemon.setNoBatonVolatileAilment(VolatileEffectNoBatonPass.TORMENT, true);
+				break;
+			case NO_TYPE_IMMUNITY :
+				mTargetPokemon.setNoBatonVolatileAilment(VolatileEffectNoBatonPass.IDENTIFY, true);
+				break;
+			case INGRAIN :
+				mTargetPokemon.setNoBatonVolatileAilment(VolatileEffectNoBatonPass.INGRAIN, true);
+				break;
+			case TRAPPED :
+				mTargetPokemon.setNoBatonVolatileAilment(VolatileEffectNoBatonPass.TRAP, true);
+				break;
 			default :
 				//TODO nothing goes here, dunno if i need to do anything even
 				break;
@@ -308,11 +382,28 @@ public class MoveExecutionThread {
 	}
 	
 	private boolean accuracyCheck() {
+		//TODO CHECK FLY
+		if(mMove.getAccuracy() == -1) {
+			return true;
+		}
 		/**Probability = MoveAccuracy * (AttackerAccuracy/TargetEvasion)*/
 		int prob = 100;
 		prob = mMove.getAccuracy() * (mAttacker.getPokemon().getAccuracy() / mTarget.getPokemon().getAccuracy());
 		int gen = mGenerator.nextInt(101);
 		if(gen <= prob) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	private boolean attractionCheck() {
+		if(mAttackerPokemon.getGender() == Gender.GENDERLESS || 
+				mTargetPokemon.getGender() == Gender.GENDERLESS) {
+			return false;
+		}
+		else if(mAttackerPokemon.getGender() != mTargetPokemon.getGender()) {
 			return true;
 		}
 		else {
@@ -362,6 +453,47 @@ public class MoveExecutionThread {
 			mAttackerPokemon.setCurrentHP(newTotal);
 		}
 		System.out.println(mAttackerPokemon.getNickName() + " drains" + restore + " HP from " + mTargetPokemon.getNickName());
+	}
+	
+	private void ohko() {
+		if(mAttackerPokemon.getLevel() >= mTargetPokemon.getLevel()) {
+			//Accuracy = (level of user minus level of target) + 30%
+			int acc = mAttackerPokemon.getLevel() - mTargetPokemon.getLevel() + 30;
+			int gen = mGenerator.nextInt(101);
+			if(gen <= acc) {
+				mTargetPokemon.setCurrentHP(0);
+				mTargetPokemon.setStatus(NonVolatileStatusAilment.FAINTED);
+				System.out.println("One hit KO!");
+			}
+		}
+		else {
+			System.out.println(mAttackerPokemon.getNickName() + "'s attack missed!");
+		}
+	}
+	
+	private boolean targetIsProtected() {
+		//TODO if target has protect or detect activated return true
+		// but if mMove is Feint return false and deactivate protect/detect 
+		//(this is for multibattles but might as well code it now)
+		
+		//TODO also read up on moves that arent affected like shadow force and some others on bulbapedia
+		return false; //temp
+	}
+	
+	private void forceSwitch() {
+		//TODO force a switch
+	}
+	
+	private void fieldEffect() {
+		if(mMove.getMoveId() == 356) {
+			mBattle.setGravity(true);
+		}
+		else if(mMove.hasFlag(MoveFlag.WEATHER)) {
+			//TODO need to reference actual battle somehow
+		}
+		else if(mMove.hasFlag(MoveFlag.SPORT)) {
+			//TODO hm
+		}
 	}
 	
 }

@@ -5,6 +5,7 @@ import java.util.Random;
 import com.pokemon.mmo.Battle.Sport;
 import com.pokemon.mmo.Enums.Ability;
 import com.pokemon.mmo.Enums.ModdableBattleStats;
+import com.pokemon.mmo.Enums.MoveFlag;
 import com.pokemon.mmo.Enums.MoveKinds;
 import com.pokemon.mmo.Enums.Moves;
 import com.pokemon.mmo.Enums.NonVolatileStatusAilment;
@@ -211,7 +212,7 @@ public class GameFields {
 			}
 			break;
 		case IRON_FIST: 
-			if (move.isPunching()) { //TODO change this to flags or something
+			if (move.hasFlag(MoveFlag.PUNCHING)) { //TODO change this to flags or something
 				ua = (long) 1.2;
 			}
 			break;
