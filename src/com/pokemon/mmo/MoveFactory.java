@@ -37,6 +37,7 @@ public class MoveFactory {
 						move.setAccuracy(rs.getInt("accuracy"));
 					}
 					move.setMoveId(rs.getInt("id"));
+					move.setMoveEffectId(rs.getInt("effect_id"));
 					move.setPP(rs.getInt("pp"));
 					move.setPriority(rs.getInt("priority"));
 					move.setKind(MoveKinds.getMoveKind(rs.getInt("damage_class_id")));
@@ -117,7 +118,7 @@ public class MoveFactory {
 					move.setStatusAilment(MetaStatusAilment.RISE);
 					break;
 				case 114 :
-					move.setConjuredWeather(Weather.HAZE);
+					move.setMoveMetaCategory(MoveMetaCategory.UNIQUE_EFFECT);
 					break;
 				case 201 :
 					move.setConjuredWeather(Weather.SANDSTORM);

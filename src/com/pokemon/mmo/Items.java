@@ -1,5 +1,7 @@
 package com.pokemon.mmo;
 
+import com.pokemon.mmo.Enums.Weather;
+
 public class Items {
 
 	/** Items Pokemon can hold */
@@ -20,5 +22,15 @@ public class Items {
 	public static final int METAL_POWDER = 12;
 	public static final int MARVEL_SCALE = 13;
 	public static final int DEEPSEASCALE = 14;
+	
+	private DiddlePiddle mWiddle;
 
+	public Items(DiddlePiddle widdle) {
+		mWiddle = widdle;
+	}
+
+	public void members() {
+		mWiddle.setWeather(Weather.RAIN_DANCE);
+	}
+	
 }

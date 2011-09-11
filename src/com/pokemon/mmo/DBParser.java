@@ -1,5 +1,6 @@
 package com.pokemon.mmo;
 
+import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.sql.ResultSet;
@@ -7,9 +8,16 @@ import java.sql.ResultSet;
 import com.pokemon.mmo.Enums.Stats;
 
 public class DBParser {
-	
+		
 	public static void main(String[] args) {
-		test();
+		Point pnt1 = new Point(0,0);
+		Point pnt2 = new Point(0,0);
+		System.out.println("X: " + pnt1.x + " Y: " +pnt1.y); 
+		System.out.println("X: " + pnt2.x + " Y: " +pnt2.y);
+		System.out.println(" ");
+		DiddlePiddle widdle = new DiddlePiddle(pnt1, pnt2);
+		System.out.println("X: " + pnt1.x + " Y:" + pnt1.y); 
+		System.out.println("X: " + pnt2.x + " Y: " +pnt2.y);
 	}
 	
 	public static void test() {
@@ -35,6 +43,23 @@ public class DBParser {
 		if(!isNull) {
 			System.out.println(fill);
 		}
+	}
+	
+	public static void newTest() {
+		DbAdapter adapter;
+		ResultSet rs;
+		int i = 0;
+		
+		try {
+			adapter = new DbAdapter();
+			rs = adapter.makeQuery("SELECT * FROM moves WHERE meta_category_id = '13'");
+			while(rs.next()) {
+				i++;
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println(i);
 	}
 	
 	public static void natureEnumCreator() {

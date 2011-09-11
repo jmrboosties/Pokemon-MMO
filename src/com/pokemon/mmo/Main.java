@@ -25,9 +25,19 @@ public class Main {
 	private static void battleSim() {
 		RandomForPokemon gen = new RandomForPokemon();
 		Trainer trainer1 = new Trainer();
-		trainer1.setLeadingPokemon(gen.randomPokemon(20));
+		Pokemon pokemon1 = PokemonFactory.getPokemonAtLevel(mSpeciesArray[383], 100);
+//		System.out.println(pokemon1.getNickName() + ":");
+//		for (int i = 0; i < pokemon1.getStatsArray().length; i++) {
+//			System.out.println(pokemon1.getStatsArray()[i]);
+//		}
+		trainer1.setLeadingPokemon(pokemon1);
 		Trainer trainer2 = new Trainer();
-		trainer2.setLeadingPokemon(gen.randomPokemon(20));
+		Pokemon pokemon2 = gen.randomPokemon(20);
+//		System.out.println(pokemon2.getNickName() + ":");
+//		for (int i = 0; i < pokemon2.getStatsArray().length; i++) {
+//			System.out.println(pokemon2.getStatsArray()[i]);
+//		}
+		trainer2.setLeadingPokemon(pokemon2);
 		Battle battle = new Battle(trainer1, trainer2);
 		battle.battleThread();
 		retryQuestion();

@@ -2,13 +2,13 @@ package com.pokemon.mmo;
 
 import java.util.Random;
 
-import com.pokemon.mmo.Battle.Sport;
 import com.pokemon.mmo.Enums.Ability;
 import com.pokemon.mmo.Enums.ModdableBattleStats;
 import com.pokemon.mmo.Enums.MoveFlag;
 import com.pokemon.mmo.Enums.MoveKinds;
 import com.pokemon.mmo.Enums.Moves;
 import com.pokemon.mmo.Enums.NonVolatileStatusAilment;
+import com.pokemon.mmo.Enums.Sport;
 import com.pokemon.mmo.Enums.Stats;
 import com.pokemon.mmo.Enums.Types;
 import com.pokemon.mmo.Enums.Weather;
@@ -65,12 +65,9 @@ public class GameFields {
 		return retValue;
 	}
 
-	public static int damageCalc(BattlePlayer attacker, BattlePlayer defender, Move move,
+	public static int damageCalc(BattlingPokemon attacker, BattlingPokemon defender, Move move,
 			Battle battle) {
 		int damageInt = 1;
-
-		Pokemon pokemonAttacker = attacker.getPokemon();
-		Pokemon pokemonDefender = defender.getPokemon();
 		
 		/**
 		 * I am doing it step by step because the game cuts off any decimals at
@@ -81,7 +78,7 @@ public class GameFields {
 		 * Type2 * Mod3)
 		 */
 
-		int levelVar = ((pokemonAttacker.getLevel() * 2 / 5) + 2);
+		int levelVar = ((attacker.getPokemon().getLevel() * 2 / 5) + 2);
 		int next1 = levelVar * calcBasePower(attacker, defender, move, battle);
 		int next2 = next1
 				* calcAttackOrSpAttack(attacker, defender, move, battle) / 50;
@@ -89,13 +86,13 @@ public class GameFields {
 				/ calcDefenseOrSpecialDefense(defender, attacker, move, battle);
 		int next4 = (next3 * calcMod1(attacker, defender, move, battle)) + 2;
 		int next5 = (int) (next4 * calcCritHit(attacker, defender) * calcMod2(
-				pokemonAttacker, move));
+				attacker, move));
 		int next6 = (int) (next5 * .9);
-		int next7 = (int) (next6 * stabDetermine(pokemonAttacker.getType(1),
-				pokemonAttacker.getType(2), move.getType()));
+		int next7 = (int) (next6 * stabDetermine(attacker.getPokemon().getType(1),
+				attacker.getPokemon().getType(2), move.getType()));
 
-		double effectiveness = typeMath(move.getType(), pokemonDefender.getType(1),
-				pokemonDefender.getType(2));
+		double effectiveness = typeMath(move.getType(), defender.getPokemon().getType(1),
+				defender.getPokemon().getType(2));
 
 		double next8 = (next7 * effectiveness);
 
@@ -106,11 +103,8 @@ public class GameFields {
 		return damageInt;
 	}
 
-	private static int calcBasePower(BattlePlayer playerAttacker, BattlePlayer playerDefender,
+	private static int calcBasePower(BattlingPokemon attacker, BattlingPokemon defender,
 			Move move, Battle stats) {
-		
-		Pokemon attacker = playerAttacker.getPokemon();
-		Pokemon defender = playerDefender.getPokemon();
 		
 		double hh = 1;
 		double bp = move.getBasePower();
@@ -130,7 +124,7 @@ public class GameFields {
 
 		/** IT variable */
 
-		switch (attacker.getHeldItem()) {
+		switch (attacker.getItem()) {
 		case Items.MUSCLE_BAND:
 			if (move.getKind() == MoveKinds.PHYSICAL) {
 				it = 1.1;
@@ -147,7 +141,7 @@ public class GameFields {
 			//PERHAPS DO THIS WHOLE THING IN A SEPARATE CLASS OR METHOD, ITS KIND OF BIG.
 
 		case Items.ADAMANT_ORB:
-			if (attacker.getSpecies().getDexNumber() == 483) {
+			if (attacker.getPokemon().getSpecies().getDexNumber() == 483) {
 				if (move.getType() == Types.STEEL
 						|| move.getType() == Types.DRAGON) {
 					it = (long) 1.2;
@@ -156,14 +150,14 @@ public class GameFields {
 			break;
 
 		case Items.LUSTROUS_ORB:
-			if (attacker.getSpecies().getDexNumber() == 484
+			if (attacker.getPokemon().getSpecies().getDexNumber() == 484
 					&& (move.getType() == Types.WATER || move.getType() == Types.DRAGON)) {
 				it = (long) 1.2;
 			}
 			break;
 
 		case Items.GRISEOUS_ORB:
-			if (attacker.getSpecies().getDexNumber() == 480 /*
+			if (attacker.getPokemon().getSpecies().getDexNumber() == 480 /*
 															 * GIRITANIA, FIX
 															 * THE INT
 															 */
@@ -196,11 +190,11 @@ public class GameFields {
 
 		/** UA variable */
 
-		switch (attacker.getBattleAbility()) {
+		switch (attacker.getAbility()) {
 		case RIVALRY :
-			if (attacker.getGender() == defender.getGender()) {
+			if (attacker.getPokemon().getGender() == defender.getPokemon().getGender()) {
 				ua = (long) 1.25;
-			} else if (attacker.getGender() != defender.getGender()) {
+			} else if (attacker.getPokemon().getGender() != defender.getPokemon().getGender()) {
 				ua = (long) 0.75;
 			} else {
 				ua = 1;
@@ -217,25 +211,25 @@ public class GameFields {
 			}
 			break;
 		case BLAZE:
-			if (attacker.getCurrentHealthRatio() < 0.3
+			if (attacker.getPokemon().getCurrentHealthRatio() < 0.3
 					&& move.getType() == Types.FIRE) {
 				ua = (long) 1.5;
 			}
 			break;
 		case TORRENT:
-			if (attacker.getCurrentHealthRatio() < 0.3
+			if (attacker.getPokemon().getCurrentHealthRatio() < 0.3
 					&& move.getType() == Types.WATER) {
 				ua = (long) 1.5;
 			}
 			break;
 		case OVERGROW:
-			if (attacker.getCurrentHealthRatio() < 0.3
+			if (attacker.getPokemon().getCurrentHealthRatio() < 0.3
 					&& move.getType() == Types.GRASS) {
 				ua = (long) 1.5;
 			}
 			break;
 		case SWARM: 
-			if (attacker.getCurrentHealthRatio() < 0.3
+			if (attacker.getPokemon().getCurrentHealthRatio() < 0.3
 					&& move.getType() == Types.BUG) {
 				ua = (long) 1.5;
 			}
@@ -249,7 +243,7 @@ public class GameFields {
 
 		/** FA variable */
 
-		switch (defender.getBattleAbility()) {
+		switch (defender.getAbility()) {
 		case THICK_FAT: 
 			if (move.getType() == Types.FIRE || move.getType() == Types.ICE) {
 				fa = (long) 0.5;
@@ -273,11 +267,8 @@ public class GameFields {
 		return basePower;
 	}
 
-	private static int calcAttackOrSpAttack(BattlePlayer playerAttacker, BattlePlayer playerDefender,
+	private static int calcAttackOrSpAttack(BattlingPokemon attacker, BattlingPokemon defender,
 			Move move, Battle stats) {
-		
-		Pokemon attacker = playerAttacker.getPokemon();
-		Pokemon defender = playerDefender.getPokemon();
 		
 		int attack = 1;
 		int stat = 1;
@@ -286,7 +277,7 @@ public class GameFields {
 		long im = 1;
 		// [Sp]Attack = stat * sm * am * im
 		if (move.getKind() == MoveKinds.PHYSICAL) {
-			stat = attacker.getStat(Stats.ATTACK);
+			stat = attacker.getPokemon().getStat(Stats.ATTACK);
 
 			if (attacker.getStatStageChange(ModdableBattleStats.ATTACK) > 0) {
 				sm = (attacker.getStatStageChange(ModdableBattleStats.ATTACK) + 2) / 2;
@@ -294,12 +285,12 @@ public class GameFields {
 				sm = 2 / (attacker.getStatStageChange(ModdableBattleStats.ATTACK) + 2);
 			}
 
-			if (defender.getBattleAbility() == Ability.UNAWARE
+			if (defender.getAbility() == Ability.UNAWARE
 					&& attacker.getStatStageChange(ModdableBattleStats.ATTACK) > 0) {
 				sm = 1;
 			}
 
-			switch (attacker.getBattleAbility()) {
+			switch (attacker.getAbility()) {
 			case PURE_POWER:
 			case HUGE_POWER:
 				am = 2;
@@ -328,25 +319,25 @@ public class GameFields {
 				break;
 			}
 
-			switch (attacker.getHeldItem()) {
+			switch (attacker.getItem()) {
 			case Items.CHOICE_BAND:
 				im = (long) 1.5;
 				break;
 			case Items.LIGHT_BALL:
-				if (attacker.getSpecies().getDexNumber() == 25) {
+				if (attacker.getPokemon().getSpecies().getDexNumber() == 25) {
 					im = 2;
 				}
 				break;
 			case Items.THICK_CLUB:
-				if (attacker.getSpecies().getDexNumber() == 104
-						|| attacker.getSpecies().getDexNumber() == 105) {
+				if (attacker.getPokemon().getSpecies().getDexNumber() == 104
+						|| attacker.getPokemon().getSpecies().getDexNumber() == 105) {
 					im = 2;
 				}
 				break;
 			}
 
 		} else if (move.getKind() == MoveKinds.SPECIAL) {
-			stat = attacker.getStat(Stats.SPECIAL_ATTACK);
+			stat = attacker.getPokemon().getStat(Stats.SPECIAL_ATTACK);
 
 			if (attacker.getStatStageChange(ModdableBattleStats.SPECIAL_ATTACK) > 0) {
 				sm = (attacker.getStatStageChange(ModdableBattleStats.SPECIAL_ATTACK) + 2) / 2;
@@ -359,30 +350,30 @@ public class GameFields {
 				sm = 1;
 			}
 
-			switch (attacker.getBattleAbility()) {
+			switch (attacker.getAbility()) {
 			case SOLAR_POWER:
 				if (stats.getWeather() == Weather.SUNNY_DAY) {
 					am = (long) 1.5;
 				}
 			}
 
-			switch (attacker.getHeldItem()) {
+			switch (attacker.getItem()) {
 			case Items.CHOICE_SPECS:
 				im = (long) 1.5;
 				break;
 			case Items.LIGHT_BALL:
-				if (attacker.getSpecies().getDexNumber() == 25) {
+				if (attacker.getPokemon().getSpecies().getDexNumber() == 25) {
 					im = 2;
 				}
 				break;
 			case Items.SOUL_DEW:
-				if (attacker.getSpecies().getDexNumber() == 380
-						|| attacker.getSpecies().getDexNumber() == 381) {
+				if (attacker.getPokemon().getSpecies().getDexNumber() == 380
+						|| attacker.getPokemon().getSpecies().getDexNumber() == 381) {
 					im = (long) 1.5;
 				}
 				break;
 			case Items.DEEPSEATOOTH:
-				if (attacker.getSpecies().getDexNumber() == 366) {
+				if (attacker.getPokemon().getSpecies().getDexNumber() == 366) {
 					im = 2;
 				}
 				break;
@@ -394,11 +385,8 @@ public class GameFields {
 		return attack;
 	}
 
-	private static int calcDefenseOrSpecialDefense(BattlePlayer playerDefender,
-			BattlePlayer playerAttacker, Move move, Battle stats) {
-		
-		Pokemon defender = playerDefender.getPokemon();
-		Pokemon attacker = playerAttacker.getPokemon();
+	private static int calcDefenseOrSpecialDefense(BattlingPokemon defender,
+			BattlingPokemon attacker, Move move, Battle stats) {
 		
 		// [Sp]Def = Stat * SM * Mod
 		int defense = 1;
@@ -408,7 +396,7 @@ public class GameFields {
 
 		switch (move.getKind()) {
 		case PHYSICAL:
-			stat = defender.getStat(Stats.DEFENSE);
+			stat = defender.getPokemon().getStat(Stats.DEFENSE);
 
 			if (defender.getStatStageChange(ModdableBattleStats.DEFENSE) > 0) {
 				sm = (defender.getStatStageChange(ModdableBattleStats.DEFENSE) + 2) / 2;
@@ -427,9 +415,9 @@ public class GameFields {
 				mod = 1.5;
 			}
 
-			switch (defender.getHeldItem()) {
+			switch (defender.getItem()) {
 			case Items.METAL_POWDER:
-				if (defender.getSpecies().getDexNumber() == 132) {
+				if (defender.getPokemon().getSpecies().getDexNumber() == 132) {
 					mod = (mod * 1.5);
 				}
 				break;
@@ -442,7 +430,7 @@ public class GameFields {
 			break;
 
 		case SPECIAL:
-			stat = defender.getStat(Stats.SPECIAL_DEFENSE);
+			stat = defender.getPokemon().getStat(Stats.SPECIAL_DEFENSE);
 
 			if (defender.getStatStageChange(ModdableBattleStats.SPECIAL_DEFENSE) > 0) {
 				sm = (defender.getStatStageChange(ModdableBattleStats.SPECIAL_DEFENSE) + 2) / 2;
@@ -458,26 +446,26 @@ public class GameFields {
 					&& stats.getWeather() == Weather.SUNNY_DAY) {
 				mod = 1.5;
 			}
-			switch (defender.getHeldItem()) {
+			switch (defender.getItem()) {
 			case Items.METAL_POWDER:
-				if (defender.getSpecies().getDexNumber() == 132) {
+				if (defender.getPokemon().getSpecies().getDexNumber() == 132) {
 					mod = (mod * 1.5);
 				}
 				break;
 			case Items.SOUL_DEW:
-				if (defender.getSpecies().getDexNumber() == 380
-						|| defender.getSpecies().getDexNumber() == 381) {
+				if (defender.getPokemon().getSpecies().getDexNumber() == 380
+						|| defender.getPokemon().getSpecies().getDexNumber() == 381) {
 					mod = (mod * 1.5);
 				}
 				break;
 			case Items.DEEPSEASCALE:
-				if (defender.getSpecies().getDexNumber() == 366) {
+				if (defender.getPokemon().getSpecies().getDexNumber() == 366) {
 					mod = (mod * 1.5);
 				}
 				break;
 			}
 			if (stats.getWeather() == Weather.SANDSTORM
-					&& (defender.getType(1) == Types.ROCK || defender
+					&& (defender.getPokemon().getType(1) == Types.ROCK || defender.getPokemon()
 							.getType(2) == Types.ROCK)) {
 				mod = (mod * 1.5);
 			}
@@ -502,10 +490,8 @@ public class GameFields {
 		return stab;
 	}
 
-	private static int calcMod1(BattlePlayer playerAttacker, BattlePlayer playerDefender, Move move,
+	private static int calcMod1(BattlingPokemon attacker, BattlingPokemon defender, Move move,
 			Battle battle) {
-		
-		Pokemon attacker = playerAttacker.getPokemon();
 		
 		/* Mod1 = BRN * RL * TVT * SR * FF */
 		double calcMod = 1;
@@ -517,8 +503,8 @@ public class GameFields {
 		if (attacker.getStatus() == NonVolatileStatusAilment.BURN) {
 			brn = 0.5;
 		}
-		if ((playerDefender.hasReflect() && move.getKind() == MoveKinds.PHYSICAL) //TODO PLACEHOLDER REWORK WITH
-				|| (playerDefender.hasLightScreen() && move.getKind() == MoveKinds.SPECIAL)) { //BATTLEPLAYER IN MIND
+		if ((defender.hasReflect() && move.getKind() == MoveKinds.PHYSICAL) //TODO PLACEHOLDER REWORK WITH
+				|| (defender.hasLightScreen() && move.getKind() == MoveKinds.SPECIAL)) { //BATTLEPLAYER IN MIND
 			rl = 0.5;
 		}
 		if (battle.getWeather() != Weather.NORMAL) {
@@ -541,7 +527,7 @@ public class GameFields {
 				break;
 			}
 		}
-		if (playerAttacker.hasFlashFire() /*TODO create a buff system in the pokemon class which returns 
+		if (attacker.hasFlashFire() /*TODO create a buff system in the pokemon class which returns 
 		 								an array of buffs (we could do the buffs as enums) This is useful
 		 								all over our code.*/) {
 			ff = 1.5;
@@ -551,12 +537,12 @@ public class GameFields {
 		return (int) calcMod;
 	}
 
-	private static double calcMod2(Pokemon attacker, Move move) {
+	private static double calcMod2(BattlingPokemon attacker, Move move) {
 		double mod2 = 1;
-		if (attacker.getHeldItem() == Items.LIFE_ORB) {
+		if (attacker.getItem() == Items.LIFE_ORB) {
 			mod2 = mod2 * 1.5;
 		}
-		if (attacker.getHeldItem() == Items.METRONOME) {
+		if (attacker.getItem() == Items.METRONOME) {
 			// TODO fuck if i know, will have to keep track of move history I guess. save this for later lol
 		}
 		if (move.getMoveEnum() == Moves.ME_FIRST) {
@@ -565,11 +551,8 @@ public class GameFields {
 		return (int) mod2;
 	}
 
-	private static int calcMod3(BattlePlayer playerAttacker, BattlePlayer playerDefender,
+	private static int calcMod3(BattlingPokemon attacker, BattlingPokemon defender,
 			double effectiveness) {
-		
-		Pokemon attacker = playerAttacker.getPokemon();
-		Pokemon defender = playerDefender.getPokemon();
 		
 		double mod3 = 1;
 		double srf = 1;
@@ -581,13 +564,13 @@ public class GameFields {
 				|| defender.hasAbility(Ability.FILTER)) {
 			srf = 0.75;
 		}
-		if (attacker.getHeldItem() == Items.EXPERT_BELT && (effectiveness >= 2)) {
+		if (attacker.getItem() == Items.EXPERT_BELT && (effectiveness >= 2)) {
 			eb = 1.2;
 		}
 		if(effectiveness > 1 && attacker.hasAbility(Ability.TINTED_LENS)) {
 			tl = 2;
 		}
-		if (defender.getHeldItem() <= 200 && defender.getHeldItem() >= 217) {
+		if (defender.getItem() <= 200 && defender.getItem() >= 217) {
 			// TODO method to determine super effectiveness from type & berry
 			// held, if matches...
 			trb = 0.5;
@@ -596,9 +579,8 @@ public class GameFields {
 		return (int) mod3;
 	}
 
-	private static int calcCritHit(BattlePlayer playerAttacker, BattlePlayer playerDefender) {
-		Pokemon attacker = playerAttacker.getPokemon();
-		Pokemon defender = playerDefender.getPokemon();
+	private static int calcCritHit(BattlingPokemon attacker, BattlingPokemon defender) {
+		
 		int critMult = 1;
 		if (defender.hasAbility(Ability.BATTLE_ARMOR)) {
 			return critMult;
@@ -615,11 +597,12 @@ public class GameFields {
 		}
 		
 		if (ran <= chance) {
+			System.out.println("Critical Hit!");
 			critMult = 2;
 			if (attacker.hasAbility(Ability.SNIPER)) {
 				critMult = 3;
 			}
-			playerDefender.setTookACrit(true);
+			//TODO set the actual thing for this: defender.setTookACrit(true);
 		}
 		return critMult;
 	}

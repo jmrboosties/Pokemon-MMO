@@ -28,6 +28,7 @@ public class Move {
 	private MoveTargetId mTarget;
 	private int mPP;
 	private int mMoveId;	
+	private int mMoveEffectId;
 	private MoveMetaCategory mMetaCategory;
 	private int mMoveEffect;
 	private int mMinHits;
@@ -43,6 +44,7 @@ public class Move {
 	public Move() {
 		mName = "-----";
 		mMoveId = 0;
+		setMoveEffectId(0);
 		mMoveEnum = Moves.EMPTY;
 		mType = Types.NONE;
 		mPower = 0;
@@ -283,6 +285,14 @@ public class Move {
 
 	public Room getRoom() {
 		return mRoom;
+	}
+
+	public void setMoveEffectId(int moveEffectId) {
+		this.mMoveEffectId = moveEffectId;
+	}
+
+	public int getMoveEffectId() {
+		return mMoveEffectId;
 	}
 
 }

@@ -19,17 +19,22 @@ public class Battle {
 	protected boolean mGravity = false;
 	protected Room mRoom;
 
-	protected BattlePlayer mBattlePlayerYou;
-	protected BattlePlayer mBattlePlayerEnemy;
+	protected BattlingPokemon mBattlePlayerYou;
+	protected BattlingPokemon mBattlePlayerEnemy;
 	
-	protected VolatileStatus mUserPokemonVolatile;
+	protected VolatileStatus mUserPokemonVolatile; //TODO what does this do?
 
 	protected boolean mBattleContinues = true;
+	
+	private static final int FIGHT = 1;
+	private static final int POKEMON = 2;
+	private static final int ITEM = 3;
+	private static final int RUN = 4;
 
 	public Battle(Trainer trainer1, Trainer trainer2) {
 		mWeather = Weather.NORMAL;
-		mBattlePlayerYou = new BattlePlayer(trainer1); //TODO set trainer as a global
-		mBattlePlayerEnemy = new BattlePlayer(trainer2); //TODO method which will get this from online or gen, in due time
+		mBattlePlayerYou = new BattlingPokemon(trainer1); //TODO set trainer as a global
+		mBattlePlayerEnemy = new BattlingPokemon(trainer2); //TODO method which will get this from online or gen, in due time
 		mBattlePlayerEnemy.setCurrentChosenMove(Main.mMoveArray[1]);
 	}
 
@@ -54,38 +59,65 @@ public class Battle {
 	}
 	
 	protected boolean preRound() {
-		mBattlePlayerYou.setCurrentChosenMove(getTrainerMove(mBattlePlayerYou.getPokemon()));
+		switch(getTrainerCommand()) {
+		case FIGHT :
+			mBattlePlayerYou.setCurrentChosenMove(getTrainerMove(mBattlePlayerYou));
+			break;
+		case POKEMON :
+			//TODO switch pokemon function
+			System.out.println("Not here yet.");
+			preRound();
+			break;
+		case ITEM :
+			//TODO item function
+			System.out.println("Not here yet.");
+			preRound();
+			break;
+		case RUN :
+			//TODO run function
+			System.out.println("Not here yet.");
+			preRound();
+			break;
+		}
+		
 		mBattlePlayerEnemy.setCurrentChosenMove(mGenerator.getRandomMove(mBattlePlayerEnemy.getPokemon()));
 		return true;
 	}
 	
 	protected void round(boolean b) {
-		while(mBattlePlayerYou.getPokemon().getStatus() != NonVolatileStatusAilment.FAINTED && 
-				mBattlePlayerEnemy.getPokemon().getStatus() != NonVolatileStatusAilment.FAINTED) {
-			//TODO redo how it checks for fainted
-			if(b) {
-				if(mBattlePlayerYou == determineOrder(mBattlePlayerYou, mBattlePlayerEnemy)) {
-					executeMove(mBattlePlayerYou, mBattlePlayerEnemy, true);
-					executeMove(mBattlePlayerEnemy, mBattlePlayerYou, false);
+		if(b) {
+			if(mBattlePlayerYou == determineOrder(mBattlePlayerYou, mBattlePlayerEnemy)) {
+				executeMove(mBattlePlayerYou, mBattlePlayerEnemy, true);
+				if(mBattlePlayerEnemy.getStatus() == NonVolatileStatusAilment.FAINTED) {
+					return;
 				}
-				else {
-					executeMove(mBattlePlayerEnemy, mBattlePlayerYou, false);
-					executeMove(mBattlePlayerYou, mBattlePlayerEnemy, true);
+				System.out.println(mBattlePlayerEnemy.getNickname() + "'s Status: " + mBattlePlayerEnemy.getStatus()); //TODO TEMP
+				executeMove(mBattlePlayerEnemy, mBattlePlayerYou, false);
+				if(mBattlePlayerEnemy.getStatus() == NonVolatileStatusAilment.FAINTED) {
+					return;
 				}
 			}
 			else {
-				System.out.println("Can you get here?");
+				executeMove(mBattlePlayerEnemy, mBattlePlayerYou, false);
+				if(mBattlePlayerEnemy.getStatus() == NonVolatileStatusAilment.FAINTED) {
+					return;
+				}
+				System.out.println(mBattlePlayerYou.getStatus()); //TODO TEMP
+				executeMove(mBattlePlayerYou, mBattlePlayerEnemy, true);
 			}
-			return; //when someone faints
 		}
-		
+		else {
+			System.out.println("Can you get here?");
+		}
+		return; //when someone faints
 	}
 	
 	protected void postRound() {
 		mBattleContinues = false;
+		//TODO if frozen, pokemon has 20% chance of thawing
 	}
 
-	protected BattlePlayer determineOrder(BattlePlayer player1, BattlePlayer player2) {
+	protected BattlingPokemon determineOrder(BattlingPokemon player1, BattlingPokemon player2) {
 		Move player1Move = player1.getCurrentChosenMove();
 		Move player2Move = player2.getCurrentChosenMove();
 		
@@ -113,18 +145,17 @@ public class Battle {
 		}
 	}
 
-	protected int battleAdjustedSpeed(BattlePlayer player) {
+	protected int battleAdjustedSpeed(BattlingPokemon pokemon) {
 		// Speed = Stat * Stat Modifier * Speed Ability Modifier * Speed Item
 		// Modifier
-		Pokemon pokemon = player.getPokemon();
-		int pokemonSpeed = (int) (pokemon.getStat(Stats.SPEED) * getSpeedAbilityMod(player));
+		int pokemonSpeed = (int) (pokemon.getPokemon().getStat(Stats.SPEED) * getSpeedAbilityMod(pokemon));
 		pokemonSpeed = (int) (pokemonSpeed * getSpeedItemMod(pokemon));
 		pokemonSpeed = (int) (pokemonSpeed * getPayalyzeMod(pokemon));
 		pokemonSpeed = pokemonSpeed * getTailwindMod(pokemon);
 		return pokemonSpeed;
 	}
 	
-	protected void executeMove(BattlePlayer attacker, BattlePlayer target, boolean bool) {
+	protected void executeMove(BattlingPokemon attacker, BattlingPokemon target, boolean bool) {
 		//TODO this is the big one, better put it here than in each and every move object, I think...
 		//if bool is true, user goes first, if false, enemy goes first
 		Move move = attacker.getCurrentChosenMove();
@@ -171,31 +202,64 @@ public class Battle {
 			execution.damageAndForceSwitch();
 			break;
 		case FULL_FIELD_EFFECT :
-			
+			execution.getFullFieldEffect();
+			break;
+		case ONE_SIDE_FIELD_EFFECT :
+			execution.getOneSideFieldEffect();
+			break;
+//		case UNIQUE_EFFECT :
+//			
+//			break;
 		default :
 			System.out.println(move.getMoveName() + " has a meta category of " + move.getMoveMetaCategory() + " and we don't have that coded.");
 			break;
 		}
-		if(bool) {
-			setBattlePlayerYou(execution.getAttacker());
-			setBattlePlayerEnemy(execution.getDefender());
-		}
-		else {
-			setBattlePlayerEnemy(execution.getAttacker());
-			setBattlePlayerYou(execution.getDefender());
-		}
+//		if(bool) {
+//			setBattlePlayerYou(execution.getAttacker());
+//			setBattlePlayerEnemy(execution.getDefender());
+//		}
+//		else {
+//			setBattlePlayerEnemy(execution.getAttacker());
+//			setBattlePlayerYou(execution.getDefender());
+//		}
 		//TODO set this to battle...? how will we do this...
 	}
 	
-	protected void setBattlePlayerYou(BattlePlayer player) {
+	protected void setBattlePlayerYou(BattlingPokemon player) {
 		this.mBattlePlayerYou = player;
 	}
 	
-	protected void setBattlePlayerEnemy(BattlePlayer player) {
+	protected void setBattlePlayerEnemy(BattlingPokemon player) {
 		this.mBattlePlayerEnemy = player;
 	}
+	
+	protected int getTrainerCommand() {
+		Scanner scan = new Scanner(System.in);
+		int choice = -1;
+		
+		do {
+			System.out.println("What will you do?");
+			System.out.println("(1) Fight");
+			System.out.println("(2) Pokemon");
+			System.out.println("(3) Items");
+			System.out.println("(4) Run");
+			
+			System.out.println("Enter a number between 1 and 4");
+			String input = scan.nextLine();
+			Integer number = new Integer(input);
+			if(number > 4 || number < 1) {
+				System.out.println("1 through 4 jackass");
+				getTrainerCommand();
+			}
+			else {
+				choice = number;
+			}
+		} while(choice == -1);
+		
+		return choice;
+	}
 
-	protected Move getTrainerMove(Pokemon pokemon) {
+	protected Move getTrainerMove(BattlingPokemon pokemon) {
 		Scanner scan = new Scanner(System.in);
 		int choice = -1;
 		Move[] moves = pokemon.getMoveArray();
@@ -223,23 +287,24 @@ public class Battle {
 
 	public void setWeather(Weather weather) {
 		this.mWeather = weather;
+		System.out.println(weather.getBattleText());
 	}
 
 	public void setSport(Sport sport) {
 		this.mSport = sport;
+		System.out.println(sport.getBattleText());
 	}
 
 	public Sport getSport() {
 		return mSport;
 	}
 
-	protected double getSpeedAbilityMod(BattlePlayer player) {
+	protected double getSpeedAbilityMod(BattlingPokemon pokemon) {
 		double sm = 1;
-		Pokemon pokemon = player.getPokemon();
-		if(player.isGastroAcid()) {
+		if(pokemon.isGastroAcid()) {
 			return sm;
 		}
-		switch(pokemon.getBattleAbility()) {
+		switch(pokemon.getAbility()) {
 		case CHLOROPHYLL :
 			if(mWeather == Weather.SUNNY_DAY) {
 				sm =  2;
@@ -272,14 +337,14 @@ public class Battle {
 		return sm;
 	}
 
-	protected double getSpeedItemMod(Pokemon pokemon) {
+	protected double getSpeedItemMod(BattlingPokemon pokemon) {
 		// TODO Work on this later, we don't have items yet.
 		return 1;
 	}
 
-	protected double getPayalyzeMod(Pokemon pokemon) {
+	protected double getPayalyzeMod(BattlingPokemon pokemon) {
 		if(pokemon.getStatus() == NonVolatileStatusAilment.PARALYZE
-				&& pokemon.getBattleAbility() != Ability.QUICK_FEET) {
+				&& pokemon.getAbility() != Ability.QUICK_FEET) {
 			return 0.25;
 		}
 		else {
@@ -287,7 +352,7 @@ public class Battle {
 		}
 	}
 
-	protected int getTailwindMod(Pokemon pokemon) {
+	protected int getTailwindMod(BattlingPokemon pokemon) {
 		// TODO Need to work in Tailwind into battle, for later.
 		return 1;
 	}
@@ -298,6 +363,124 @@ public class Battle {
 	
 	public void setGravity(boolean bool) {
 		this.mGravity = bool;
+		if(bool) {
+			System.out.println("Gravity's effect has been increased!");
+		}
+		else {
+			System.out.println("Gravity returns to normal.");
+		}
+	}
+	
+//	private void handleFullFieldEffect(FullFieldEffect effect) {
+//		/** 
+//		 *  -1 = no effect, error shouldn't happen
+//		 *   1 = weather
+//		 *   2 = sport
+//		 *   3 = gravity
+//		 *   4 = room		  
+//		 */
+//		int flag = effect.getFlag();
+//		switch(flag) {
+//		case -1 :
+//			throw new IllegalArgumentException();
+//		case 1 :
+//			weatherChange(effect);
+//			break;
+//		case 2 :
+//			sportChange(effect);
+//		case 3 :
+//			changeGravity(true);
+//			break;
+//		case 4 :
+//			roomChange(effect);
+//			break;
+//		}
+//	}
+//	
+//	private void weatherChange(FullFieldEffect effect) {
+//		//TODO timer for postround
+//		switch(effect) {
+//		case SUNNY :
+//			mWeather = Weather.SUNNY_DAY;
+//			System.out.println("The sun begins to shine brightly!");
+//			break;
+//		case RAIN :
+//			mWeather = Weather.RAIN_DANCE;
+//			System.out.println("It started to rain!");
+//			break;
+//		case HAIL :
+//			mWeather = Weather.HAIL;
+//			System.out.println("It started to hail!");
+//			break;
+//		case SANDSTORM :
+//			mWeather = Weather.SANDSTORM;
+//			System.out.println("A sandstorm has brewed!");
+//			break;
+//		}
+//	}
+//	
+//	private void stopWeather(Weather weather) {
+//		//TODO
+//	}
+//	
+//	private void sportChange(FullFieldEffect effect) {
+//		switch(effect) {
+//		case MUD_SPORT :
+//			mSport = Sport.MUD_SPORT;
+//			System.out.println("Electricity's power weakened!");
+//			break;
+//		case WATER_SPORT :
+//			mSport = Sport.WATER_SPORT;
+//			System.out.println("Fire's power weakened!");
+//			break;
+//		}
+//	}
+//	
+//	private void changeGravity(boolean b) {
+//		//TODO timer for post
+//		mGravity = b;
+//	}
+//	
+//	private void roomChange(FullFieldEffect effect) {
+//		//TODO timer
+//		switch(effect) {
+//		case TRICK_ROOM :
+//			mRoom = Room.TRICK_ROOM;
+//			System.out.println("Dimensions have been warped by the Trick Room!");
+//			break;
+//		case WONDER_ROOM :
+//			mRoom = Room.WONDER_ROOM;
+//			System.out.println("Dimensions have been warped by the Wonder Room!");
+//			break;
+//		case MAGIC_ROOM :
+//			mRoom = Room.MAGIC_ROOM;
+//			System.out.println("Dimensions have been warped by the Magic Room!");
+//			break;
+//		}
+//	}
+//	
+////	private void handleOneSideFieldEffect(OneSideFieldEffect effect, boolean b) {
+////		/** If b is true, side effect affects the user. If not, it affects the opponent. */
+////		
+////		if(b) {
+////			mBattlePlayerYou.setSideFieldEffect(effect, b);
+////		}
+////		else if(!b) {
+////			mBattlePlayerEnemy.setSideFieldEffect(effect, b);
+////		}
+////		else {
+////			throw new IllegalArgumentException("Target for one side field effect not set");
+////		}
+////	}
+	
+	private void handleTimedStatusAilments(BattlingPokemon pokemon) {
+		if(pokemon.getStatus() == NonVolatileStatusAilment.FREEZE) {
+			int chanc = mGenerator.nextInt(100) + 1;
+			if(chanc <= 20) {
+				pokemon.setStatus(NonVolatileStatusAilment.NONE);
+			}
+		}
+		
 	}
 
 }

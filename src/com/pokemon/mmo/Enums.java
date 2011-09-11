@@ -240,7 +240,25 @@ public class Enums {
 	}
 
 	public static enum Weather {
-		NORMAL, SUNNY_DAY, RAIN_DANCE, SANDSTORM, HAIL, HAZE
+		NORMAL("Normal", "The weather returned to normal."), SUNNY_DAY("Sunny Day", "The sun begins to shine brightly!"), 
+		RAIN_DANCE("Rain Dance", "It started to rain!"), SANDSTORM("Sandstorm", "A sandstorm has brewed!"), 
+		HAIL("Hail", "It started to hail!");
+		
+		private final String fName;
+		private final String fBattleText;
+		
+		private Weather(String name, String battleText) {
+			this.fName = name;
+			this.fBattleText = battleText;
+		}
+		
+		public String getName() {
+			return fName;
+		}
+		
+		public String getBattleText() {
+			return fBattleText;
+		}
 	}
 	
 	public static enum TeamBuff {
@@ -320,14 +338,19 @@ public class Enums {
 	}
 	
 	public static enum MetaStatusAilment {
-		NONE, PARALYSIS, SLEEP, FREEZE, BURN, POISON, CONFUSION, INFATUATION, TRAPPED, NIGHTMARE, TORMENT, YAWN, HEAL_BLOCK,
-		NO_TYPE_IMMUNITY, LEECH_SEED, EMBARGO, PERISH_SONG, INGRAIN, TOXIC, RISE;
+		NONE(0), PARALYSIS(1), SLEEP(2), FREEZE(3), BURN(4), POISON(5), CONFUSION(6), INFATUATION(7), TRAPPED(8), NIGHTMARE(9), TORMENT(12), YAWN(14), HEAL_BLOCK(15),
+		NO_TYPE_IMMUNITY(17), LEECH_SEED(18), EMBARGO(19), PERISH_SONG(20), INGRAIN(21), TOXIC(25), RISE(26);
 		
+		private final int fId;
+		
+		private MetaStatusAilment(int id) {
+			this.fId = id;
+		}
 		//TODO string for battle "is confused" "will faint in 3 turns", etc.
 		
 		public static MetaStatusAilment getAilment(int i) {
 			for (MetaStatusAilment ailment : MetaStatusAilment.values()) {
-				if(i == ailment.ordinal()) {
+				if(i == ailment.fId) {
 					return ailment;
 				}
 			}
@@ -341,11 +364,11 @@ public class Enums {
 	
 	public static enum VolatileEffectBatonPass {
 		CONFUSION, CURSE, LEECH_SEED, LOCK_ON, PERISH_SONG, EMBARGO, HEAL_BLOCK, AQUA_RING,
-		SUBSTITUTE, RISE
+		SUBSTITUTE, RISE, TORMENT, TAUNT
 	}
 	
 	public static enum VolatileEffectNoBatonPass {
-		TORMENT, TAUNT, TRAP, NIGHTMARE, INFATUATION, IDENTIFY, ENCORE, KNOCKDOWN, YAWN, INGRAIN
+		TRAP, NIGHTMARE, INFATUATION, IDENTIFY, ENCORE, KNOCKDOWN, YAWN, INGRAIN
 	}
 	
 	public static enum PokemonVolatileBattleStatus {
@@ -397,7 +420,45 @@ public class Enums {
 	}
 	
 	public static enum Sport {
-		MUD_SPORT, WATER_SPORT
+		MUD_SPORT("Mud Sport", "Electricity's power is weakened!"), WATER_SPORT("Water Sport", "Fire's power is weakened!");
+		
+		private String fName;
+		private String fBattleText;
+		
+		private Sport(String name, String battleText) {
+			this.fName = name;
+			this.fBattleText = battleText;
+		}
+		
+		public String getName() {
+			return fName;
+		}
+		
+		public String getBattleText() {
+			return fBattleText;
+		}
+	}
+	
+	public static enum FullFieldEffect {
+		NONE(-1), SUNNY(1), RAIN(1), HAIL(1), SANDSTORM(1), MUD_SPORT(2), WATER_SPORT(2), GRAVITY(3), MAGIC_ROOM(4), TRICK_ROOM(4), WONDER_ROOM(4);
+		
+		private int fFlag;
+		
+		private FullFieldEffect(int flag) {
+			this.fFlag = flag;
+		}
+		
+		public int getFlag() {
+			return fFlag;
+		}
+	}
+	
+	public static enum OneSideFieldEffect {
+		MIST, LIGHT_SCREEN, REFLECT, SPIKES, SAFEGUARD, TAILWIND, LUCKY_CHANT, TOXIC_SPIKES, STEALTH_ROCK, WIDE_GUARD, QUICK_GUARD
+	}
+	
+	public static enum EffectType {
+		
 	}
 	
 }
