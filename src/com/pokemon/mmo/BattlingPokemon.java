@@ -11,7 +11,7 @@ import com.pokemon.mmo.Enums.VolatileEffectNoBatonPass;
 
 public class BattlingPokemon {
 
-	private final Pokemon mPokemon;
+	private Pokemon mFinalPokemon;
 	private String mNickName;
 	
 	private Trainer mTrainer;
@@ -48,9 +48,13 @@ public class BattlingPokemon {
 	
 	public BattlingPokemon(Trainer trainer) {
 		this.mTrainer = trainer;
-		mPokemon = mTrainer.getLeadingPokemon();
-		mBattlePokemon = mPokemon;
-		mNickName = mPokemon.getNickName();
+		mFinalPokemon = mTrainer.getLeadingPokemon();
+		mBattlePokemon = mFinalPokemon;
+		initializeBattlePokemon();
+	}
+	
+	private void initializeBattlePokemon() {
+		mNickName = mBattlePokemon.getNickName();
 		
 		for (int i = 0; i < mOnFieldBuffs.length; i++) {
 			mOnFieldBuffs[i] = false;
@@ -88,8 +92,16 @@ public class BattlingPokemon {
 		return mTrainer;
 	}
 	
-	public void setPokemon(Pokemon pokemon) {
-		this.mBattlePokemon = pokemon;
+	public boolean setPokemon(Pokemon pokemon) {
+		if(pokemon == null) {
+			return false;
+		}
+		else {
+			this.mFinalPokemon = pokemon;
+			mBattlePokemon = mFinalPokemon;
+			initializeBattlePokemon();
+			return true;
+		}
 	}
 	
 	public Pokemon getPokemon() {
@@ -146,7 +158,7 @@ public class BattlingPokemon {
 		mBatonPassVolatileStatus[i] = bool;
 	}
 	
-	public boolean getBatonVolatileAilment(VolatileEffectBatonPass ailment) {
+	public boolean checkForBatonVolatileAilment(VolatileEffectBatonPass ailment) {
 		int i = ailment.ordinal();
 		return mBatonPassVolatileStatus[i];
 	}
@@ -156,7 +168,7 @@ public class BattlingPokemon {
 		mNoBatonPassVolatileStatus[i] = bool;
 	}
 	
-	public boolean getNoBatonVolatileAilment(VolatileEffectNoBatonPass ailment) {
+	public boolean checkForNoBatonVolatileAilment(VolatileEffectNoBatonPass ailment) {
 		int i = ailment.ordinal();
 		return mNoBatonPassVolatileStatus[i];
 	}
@@ -310,12 +322,36 @@ public class BattlingPokemon {
 		return mSleepCounter;
 	}
 	
+	public boolean reduceSleepCounter() {	
+		mSleepCounter = mSleepCounter - 1;
+		if(mSleepCounter <= 0) {
+			mSleepCounter = -1;
+			this.setStatus(NonVolatileStatusAilment.NONE);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
 	public void setConfuseCounter(int i) {
 		this.mConfuseCounter = i;
 	}
 	
 	public int getConfuseCounter() {
 		return mConfuseCounter;
+	}
+	
+	public boolean reduceConfusionCounter() {
+		mConfuseCounter = mConfuseCounter - 1;
+		if(mConfuseCounter <= 0) {
+			mConfuseCounter = -1;
+			this.setBatonVolatileAilment(VolatileEffectBatonPass.CONFUSION, false);
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	public int getPerishCount() {
@@ -342,6 +378,19 @@ public class BattlingPokemon {
 
 	public int getCurrentHP() {
 		return mCurrentHP;
+	}
+	
+	public String getNotAttackingText() {
+		switch(mAilment) {
+		case PARALYZE :
+			return " is paralyzed and can't move!";
+		case SLEEP :
+			return " is fast asleep.";
+		case FREEZE :
+			return " is frozen!";
+		default :
+			throw new IllegalArgumentException("Shouldn't see this, under notAttackingText() method in BattlingPokemon");
+		}
 	}
 	
 }

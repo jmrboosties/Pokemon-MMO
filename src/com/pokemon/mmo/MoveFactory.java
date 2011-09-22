@@ -15,7 +15,7 @@ import com.pokemon.mmo.Enums.Weather;
 public class MoveFactory {
 
 	public static Move[] createMoveArray() {
-		Move[] moveArray = new Move[560];
+		Move[] moveArray = new Move[563];
 		moveArray[0] = new Move();
 		DbAdapter adapter;
 		ResultSet rs;
@@ -44,6 +44,7 @@ public class MoveFactory {
 					move.setType(Types.getType(rs.getInt("type_id")));
 					move.setMoveMetaCategory(MoveMetaCategory.getCategory(rs.getInt("meta_category_id")));
 					move.setStatusAilment(MetaStatusAilment.getAilment(rs.getInt("meta_ailment_id")));
+					
 					if(rs.getInt("ailment_chance") == 0) {
 						move.setSecondaryAilmentChance(100);
 					}
@@ -110,10 +111,10 @@ public class MoveFactory {
 				case 50 :
 					move.setMoveMetaCategory(MoveMetaCategory.UNIQUE_EFFECT);
 					break;
-				case 34 :
-					move.setStatusAilment(MetaStatusAilment.TOXIC);
-					//TODO i think more can toxic
-					break;
+//				case 34 :
+//					move.setStatusAilment(MetaStatusAilment.TOXIC);
+//					//TODO i think more can toxic
+//					break;
 				case 286 :
 					move.setStatusAilment(MetaStatusAilment.RISE);
 					break;
@@ -152,6 +153,21 @@ public class MoveFactory {
 				moveArray[i] = move;
 			}
 			adapter.close();
+			
+			Move confusion = new Move();
+			confusion.setBasePower(40);
+			confusion.setMoveTarget(MoveTargetId.USER);
+			confusion.setMoveMetaCategory(MoveMetaCategory.CONFUSED);
+			moveArray[560] = confusion;
+			
+			Move notAttacking = new Move();
+			notAttacking.setMoveMetaCategory(MoveMetaCategory.NOT_ATTACKING);
+			moveArray[561] = notAttacking;
+			
+			Move switched = new Move();
+			switched.setMoveMetaCategory(MoveMetaCategory.SWITCHED);
+			switched.setPriority(7);
+			moveArray[562] = switched;
 
 		} catch (Exception e) {
 			e.printStackTrace();

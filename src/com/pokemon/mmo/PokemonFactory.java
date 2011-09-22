@@ -154,7 +154,6 @@ public class PokemonFactory {
 				ability = abilities[1];
 			}
 		}
-		System.out.println(species.getSpeciesName() + " has ability " + ability.getName());
 		return ability;
 	}
 	

@@ -1,6 +1,7 @@
 package com.pokemon.mmo;
 
 import java.sql.ResultSet;
+import java.util.HashMap;
 
 public class PokemonSpeciesFactory {
 
@@ -44,5 +45,26 @@ public class PokemonSpeciesFactory {
 			e.printStackTrace();
 		}
 		return speciesArray;
+	}
+	
+	public static HashMap<String, Integer> createNameDexNumHashMap() {
+		DbAdapter adapter;
+		ResultSet rs;
+		HashMap<String, Integer> hashMap = new HashMap<String, Integer>();
+		
+		try {
+			adapter = new DbAdapter();
+			rs = adapter.makeQuery("SELECT * FROM pokemon");
+			while(rs.next()) {
+				String name = rs.getString("name");
+				Integer dexNum = new Integer(rs.getString("id"));
+				hashMap.put(name, dexNum);
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return hashMap;
 	}
 }

@@ -66,7 +66,7 @@ public class MoveExecutionThread {
 				applyTargetStatChanges();
 			}
 			else {
-				System.out.println(mAttackerPokemon.getNickName() + "'s attack missed!");
+				System.out.println(mAttacker.getNickname() + "'s attack missed!");
 			}
 			break;
 		}
@@ -84,13 +84,18 @@ public class MoveExecutionThread {
 			hits += mGenerator.nextInt(var) + 1;
 		}
 		
+		boolean bool = accuracyCheck();
+		if(!bool) {
+			System.out.println(mAttacker.getNickname() + "'s attack missed!");
+			return;
+		}
 		for (int i = 0; i < hits; i++) {
 			if(mMove.getMoveId() == 78) {
-				dealDamage(accuracyCheck());
+				dealDamage(bool);
 				ailmentOnly();
 			}
 			else {
-				dealDamage(accuracyCheck()); //TODO check if moves like fury swipes calc accuracy for each hit
+				dealDamage(bool);
 			}
 		}
 	}
@@ -102,9 +107,10 @@ public class MoveExecutionThread {
 		if(accuracyCheck()) {
 			applyTargetNonVolatileStatusAilments();
 			applyTargetVolatileStatusAilments();
+			System.out.println(mTarget.getNickname() + " has " + mMove.getStatusAilment().toString());
 		}
 		else {
-			System.out.println(mAttackerPokemon.getNickName() + "'s attack missed!");
+			System.out.println(mAttacker.getNickname() + "'s attack missed!");
 		}
 	}
 	
@@ -151,7 +157,7 @@ public class MoveExecutionThread {
 			return;
 		}
 		dealDamage(accuracyCheck());
-		if(mTargetPokemon.getStatus() != NonVolatileStatusAilment.FAINTED) {
+		if(mTarget.getStatus() != NonVolatileStatusAilment.FAINTED) {
 			secondaryEffect();
 		}
 	}
@@ -161,7 +167,7 @@ public class MoveExecutionThread {
 			return;
 		}
 		dealDamage(accuracyCheck());
-		if(mTargetPokemon.getStatus() != NonVolatileStatusAilment.FAINTED) {
+		if(mTarget.getStatus() != NonVolatileStatusAilment.FAINTED) {
 			applyAttackerStatChanges();
 		}
 	}
@@ -170,9 +176,12 @@ public class MoveExecutionThread {
 		if(targetIsProtected()) {
 			return;
 		}
-		dealDamage(accuracyCheck());
-		if(mTargetPokemon.getStatus() != NonVolatileStatusAilment.FAINTED) {
-			applyTargetStatChanges();
+		boolean b = accuracyCheck();
+		if(b) {
+			dealDamage(b);
+			if(mTarget.getStatus() != NonVolatileStatusAilment.FAINTED) {
+				applyTargetStatChanges();
+			}
 		}
 	}
 	
@@ -208,13 +217,17 @@ public class MoveExecutionThread {
 		determineOneSideEffect();
 	}
 	
+	public void dealConfusion() {
+		doConfusion();
+	}
+	
 	/***********************************/
 	/*******   Private Methods   *******/
 	/***********************************/	
 	
-	private  void dealDamage(boolean bool) {
+	private void dealDamage(boolean bool) {
 		if(!bool) {
-			System.out.println(mAttackerPokemon.getNickName() + "'s attack missed!");
+			System.out.println(mAttacker.getNickname() + "'s attack missed!");
 			if(mMove.getMoveEffectId() == 46) {
 				System.out.println(mAttacker.getNickname() + " kept going and crashed!");
 				int attackerHp = mAttacker.getCurrentHP();
@@ -225,7 +238,7 @@ public class MoveExecutionThread {
 				}
 				else {
 					mAttacker.setCurrentHP(0);
-					mAttackerPokemon.setStatus(NonVolatileStatusAilment.FAINTED);
+					mAttacker.setStatus(NonVolatileStatusAilment.FAINTED);
 				}
 			}
 		}
@@ -237,7 +250,7 @@ public class MoveExecutionThread {
 				return;
 			}
 			targetHp = targetHp - mDamageDealt;
-			System.out.println(mTargetPokemon.getNickName() + " takes " + mDamageDealt + " damage!");
+			System.out.println(mTarget.getNickname() + " takes " + mDamageDealt + " damage!");
 			
 			if(targetHp > 0) {
 				mTarget.setCurrentHP(targetHp);
@@ -245,16 +258,23 @@ public class MoveExecutionThread {
 			}
 			else {
 				mTarget.setCurrentHP(0);
-				mTargetPokemon.setStatus(NonVolatileStatusAilment.FAINTED);
-				System.out.println(mTargetPokemon.getNickName() + " fainted!");
+				mTarget.setStatus(NonVolatileStatusAilment.FAINTED);
+				System.out.println(mTarget.getNickname() + " fainted!");
 			}
 			
 			int recoil = mMove.getRecoilPercentage();
 			if(recoil < 0) { //TODO change this to below 0, absorb handled differently... or do a switch or something which handles items like bigroot
 				int recoilDamage = (mDamageDealt * recoil) / 100;
 				attackerHp = attackerHp + recoilDamage;
+				if(attackerHp < 0) {
+					attackerHp = 0;
+				}
 				mAttacker.setCurrentHP(attackerHp);
-				System.out.println(mAttackerPokemon.getNickName() + " takes " + (recoilDamage * -1) + " in recoil.");
+				System.out.println(mAttacker.getNickname() + " takes " + (recoilDamage * -1) + " damage in recoil!");
+				if(mAttacker.getCurrentHP() == 0) {
+					mAttacker.setStatus(NonVolatileStatusAilment.FAINTED);
+					System.out.println(mTarget.getNickname() + " fainted!");
+				}
 			}
 			applyAttackerStatusAilments();
 		}
@@ -300,19 +320,19 @@ public class MoveExecutionThread {
 		if(i <= chance) {
 			switch(mMove.getStatusAilment()) {
 			case POISON :
-				mTargetPokemon.setStatus(NonVolatileStatusAilment.POISON);
+				mTarget.setStatus(NonVolatileStatusAilment.POISON);
 				break;
 			case TOXIC :
-				mTargetPokemon.setStatus(NonVolatileStatusAilment.TOXIC);
+				mTarget.setStatus(NonVolatileStatusAilment.TOXIC);
 				break;
 			case PARALYSIS :
-				mTargetPokemon.setStatus(NonVolatileStatusAilment.PARALYZE);
+				mTarget.setStatus(NonVolatileStatusAilment.PARALYZE);
 				break;
 			case FREEZE :
-				mTargetPokemon.setStatus(NonVolatileStatusAilment.FREEZE);
+				mTarget.setStatus(NonVolatileStatusAilment.FREEZE);
 				break;
 			case BURN :
-				mTargetPokemon.setStatus(NonVolatileStatusAilment.BURN);
+				mTarget.setStatus(NonVolatileStatusAilment.BURN);
 				break;
 			case SLEEP :
 				mTarget.setStatus(NonVolatileStatusAilment.SLEEP);
@@ -321,7 +341,6 @@ public class MoveExecutionThread {
 			default :
 				//TODO blank?
 			}
-			System.out.println(mTargetPokemon.getNickName() + " is " + mMove.getStatusAilment());
 		}
 	}
 	
@@ -351,7 +370,7 @@ public class MoveExecutionThread {
 				mTarget.setBatonVolatileAilment(VolatileEffectBatonPass.RISE, true);
 				break;
 			case NIGHTMARE :
-				if(mTargetPokemon.getStatus() == NonVolatileStatusAilment.SLEEP) {
+				if(mTarget.getStatus() == NonVolatileStatusAilment.SLEEP) {
 					mTarget.setNoBatonVolatileAilment(VolatileEffectNoBatonPass.NIGHTMARE, true);
 				}
 				break;
@@ -361,7 +380,7 @@ public class MoveExecutionThread {
 				}
 				break;
 			case YAWN :
-				if(mTargetPokemon.getStatus() == NonVolatileStatusAilment.NONE) {
+				if(mTarget.getStatus() == NonVolatileStatusAilment.NONE) {
 					mTarget.setNoBatonVolatileAilment(VolatileEffectNoBatonPass.YAWN, true);
 				}
 				break;
@@ -381,7 +400,6 @@ public class MoveExecutionThread {
 				//TODO nothing goes here, dunno if i need to do anything even
 				break;
 			}
-			System.out.println(mTargetPokemon.getNickName() + " has " + mMove.getStatusAilment().toString());
 		}
 		//TODO SET TIMERS FOR ABOVE VOLATILE EFFECTS!
 	}
@@ -393,7 +411,7 @@ public class MoveExecutionThread {
 		}
 		/**Probability = MoveAccuracy * (AttackerAccuracy/TargetEvasion)*/
 		int prob = 100;
-		prob = mMove.getAccuracy() * (mAttacker.getAccuracy() / mTarget.getAccuracy());
+		prob = mMove.getAccuracy() * (mAttacker.getAccuracy() / mTarget.getEvasion());
 		int gen = mGenerator.nextInt(101);
 		if(gen <= prob) {
 			return true;
@@ -434,7 +452,7 @@ public class MoveExecutionThread {
 		if(mAttacker.getCurrentHP() > totalHp){
 			mAttacker.setCurrentHP(totalHp);
 		}
-		System.out.println(mAttackerPokemon.getNickName() + " recovers health!");
+		System.out.println(mAttacker.getNickname() + " recovers health!");
 	}
 	
 	private void healPulse() {
@@ -444,7 +462,7 @@ public class MoveExecutionThread {
 		if(mTarget.getCurrentHP() > totalHp){
 			mTarget.setCurrentHP(totalHp);
 		}
-		System.out.println(mAttackerPokemon.getNickName() + " restores " + mTargetPokemon.getNickName() + "'s health!");
+		System.out.println(mAttacker.getNickname() + " restores " + mTarget.getNickname() + "'s health!");
 	}
 	
 	private void absorb() {
@@ -457,7 +475,7 @@ public class MoveExecutionThread {
 		else {
 			mAttacker.setCurrentHP(newTotal);
 		}
-		System.out.println(mAttackerPokemon.getNickName() + " drains" + restore + " HP from " + mTargetPokemon.getNickName());
+		System.out.println(mAttacker.getNickname() + " drains" + restore + " HP from " + mTarget.getNickname());
 	}
 	
 	private void ohko() {
@@ -467,12 +485,12 @@ public class MoveExecutionThread {
 			int gen = mGenerator.nextInt(101);
 			if(gen <= acc) {
 				mTarget.setCurrentHP(0);
-				mTargetPokemon.setStatus(NonVolatileStatusAilment.FAINTED);
+				mTarget.setStatus(NonVolatileStatusAilment.FAINTED);
 				System.out.println("One hit KO!");
 			}
 		}
 		else {
-			System.out.println(mAttackerPokemon.getNickName() + "'s attack missed!");
+			System.out.println(mAttacker.getNickname() + "'s attack missed!");
 		}
 	}
 	
@@ -513,40 +531,52 @@ public class MoveExecutionThread {
 	private void determineOneSideEffect() {
 		switch(mMove.getMoveId()) {
 		case 54 :
-			System.out.println(mAttackerPokemon.getNickName() + "'s team is covered in mist!");
+			System.out.println(mAttacker.getNickname() + "'s team is covered in mist!");
 			mAttacker.setSideFieldEffect(OneSideFieldEffect.MIST, true);
+			break;
 		case 113 :
-			System.out.println(mAttackerPokemon.getNickName() + "'s team is protected by light screen!");
+			System.out.println(mAttacker.getNickname() + "'s team is protected by light screen!");
 			mAttacker.setSideFieldEffect(OneSideFieldEffect.LIGHT_SCREEN, true);
+			break;
 		case 115 :
-			System.out.println(mAttackerPokemon.getNickName() + "'s team is protected by reflect");
+			System.out.println(mAttacker.getNickname() + "'s team is protected by reflect");
 			mAttacker.setSideFieldEffect(OneSideFieldEffect.LIGHT_SCREEN, true);
+			break;
 		case 191 :
-			System.out.println(mTargetPokemon.getNickName() + "'s team is surrounded by spikes!");
+			System.out.println(mTarget.getNickname() + "'s team is surrounded by spikes!");
 			mTarget.setSideFieldEffect(OneSideFieldEffect.SPIKES, true);
+			break;
 		case 219 :
-			System.out.println(mAttackerPokemon.getNickName() + "'s team is protected by safeguard!");
+			System.out.println(mAttacker.getNickname() + "'s team is protected by safeguard!");
 			mAttacker.setSideFieldEffect(OneSideFieldEffect.SAFEGUARD, true);
+			break;
 		case 366 :
-			System.out.println(mAttackerPokemon.getNickName() + "'s team receives a tailwind!");
+			System.out.println(mAttacker.getNickname() + "'s team receives a tailwind!");
 			mAttacker.setSideFieldEffect(OneSideFieldEffect.TAILWIND, true);
+			break;
 		case 381 :
 			//TODO what to say?
 			mAttacker.setSideFieldEffect(OneSideFieldEffect.LUCKY_CHANT, true);
+			break;
 		case 390 :
-			System.out.println(mTargetPokemon.getNickName() + "'s team is surrounded by toxic spikes!");
+			System.out.println(mTarget.getNickname() + "'s team is surrounded by toxic spikes!");
 			mTarget.setSideFieldEffect(OneSideFieldEffect.TOXIC_SPIKES, true);
+			break;
 		case 446 :
-			System.out.println(mTargetPokemon.getNickName() + "'s team is surrounded by floating rocks!");
+			System.out.println(mTarget.getNickname() + "'s team is surrounded by floating rocks!");
 			mTarget.setSideFieldEffect(OneSideFieldEffect.STEALTH_ROCK, true);
+			break;
 		case 469 :
-			System.out.println(mAttackerPokemon.getNickName() + "'s team is protected by wide guard!");
+			System.out.println(mAttacker.getNickname() + "'s team is protected by wide guard!");
 			mAttacker.setSideFieldEffect(OneSideFieldEffect.WIDE_GUARD, true);
+			break;
 		case 501 :
-			System.out.println(mAttackerPokemon.getNickName() + "'s team is protected by quick guard!");
+			System.out.println(mAttacker.getNickname() + "'s team is protected by quick guard!");
 			mAttacker.setSideFieldEffect(OneSideFieldEffect.QUICK_GUARD, true);
+			break;
+		default :
+			throw new IllegalArgumentException();
 		}
-		throw new IllegalArgumentException();
 	}
 	
 	private void sleepCounter(BattlingPokemon pokemon) {
@@ -559,4 +589,7 @@ public class MoveExecutionThread {
 		pokemon.setConfuseCounter(len);
 	}
 	
+	private void doConfusion() {
+		mAttacker.setCurrentHP(mAttacker.getCurrentHP() - GameFields.damageCalcConfusion(mAttacker, mMove, mBattle));
+	}
 }

@@ -9,38 +9,55 @@ public class Main {
 
 	public static PokemonSpecies[] mSpeciesArray;
 	public static Move[] mMoveArray;
+	public static HashMap<String, Integer> mPokemonNameDexNum;
+	public static Scanner mScanner = new Scanner(System.in);
 	
 	public static GUI mGui = null;
 
 	public static void main(String[] args) throws Exception {
 		mSpeciesArray = PokemonSpeciesFactory.createSpeciesArray();
 		mMoveArray = MoveFactory.createMoveArray();
+		mPokemonNameDexNum = PokemonSpeciesFactory.createNameDexNumHashMap();
 		
 		battleSim();
-		//mGui = new GUI();
-		//gui.start();
-		
+//		mGui = new GUI();
+//		mGui.start();
 	}
 	
 	private static void battleSim() {
 		RandomForPokemon gen = new RandomForPokemon();
 		Trainer trainer1 = new Trainer();
-		Pokemon pokemon1 = PokemonFactory.getPokemonAtLevel(mSpeciesArray[383], 100);
-//		System.out.println(pokemon1.getNickName() + ":");
-//		for (int i = 0; i < pokemon1.getStatsArray().length; i++) {
-//			System.out.println(pokemon1.getStatsArray()[i]);
-//		}
+		trainer1.setName("Player");
+		System.out.println("Would you like to choose your own pokemon? Y/N");
+		mScanner = new Scanner(System.in);
+		String input = mScanner.nextLine();
+		Pokemon pokemon1;
+		if(input.equals("Y") || input.equals("y")) {
+			pokemon1 = choosePokemon();
+		}
+		else {
+			pokemon1 = gen.randomPokemon(20);
+		}
 		trainer1.setLeadingPokemon(pokemon1);
 		Trainer trainer2 = new Trainer();
+		trainer2.setName("CPU");
 		Pokemon pokemon2 = gen.randomPokemon(20);
-//		System.out.println(pokemon2.getNickName() + ":");
-//		for (int i = 0; i < pokemon2.getStatsArray().length; i++) {
-//			System.out.println(pokemon2.getStatsArray()[i]);
-//		}
 		trainer2.setLeadingPokemon(pokemon2);
 		Battle battle = new Battle(trainer1, trainer2);
 		battle.battleThread();
 		retryQuestion();
+	}
+	
+	public static Pokemon choosePokemon() {
+		System.out.println("Enter the name of your pokemon");
+		String pokemon = mScanner.nextLine();
+		if(mPokemonNameDexNum.containsKey(pokemon)) {
+			return PokemonFactory.getPokemonAtLevel(mSpeciesArray[mPokemonNameDexNum.get(pokemon)], 20);
+		}
+		else {
+			System.out.println("You entered a non-existant pokemon or spelled it wrong. Try again.");
+			return choosePokemon();
+		}
 	}
 	
 	public static void retryQuestion() {

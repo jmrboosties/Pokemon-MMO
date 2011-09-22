@@ -7,6 +7,7 @@ import com.pokemon.mmo.Enums.NonVolatileStatusAilment;
 import com.pokemon.mmo.Enums.Room;
 import com.pokemon.mmo.Enums.Sport;
 import com.pokemon.mmo.Enums.Stats;
+import com.pokemon.mmo.Enums.VolatileEffectBatonPass;
 import com.pokemon.mmo.Enums.VolatileStatus;
 import com.pokemon.mmo.Enums.Weather;
 
@@ -52,21 +53,31 @@ public class Battle {
 	}
 	
 	protected void onBattleStart() {
-		System.out.println("Challenge Appears!");
-		System.out.println("Trainer 1 sends out " + mBattlePlayerYou.getPokemon().getNickName());
-		System.out.println("Trainer 2 sends out " + mBattlePlayerEnemy.getPokemon().getNickName());
+		System.out.println("Challenger Appears!");
+		System.out.println(mBattlePlayerYou.getTrainer().getName() + " sends out " + mBattlePlayerYou.getPokemon().getNickName());
+		System.out.println(mBattlePlayerEnemy.getTrainer().getName() + " 2 sends out " + mBattlePlayerEnemy.getPokemon().getNickName());
 		//TODO make a method which handles a pokemon's entry to the battlefield. call this whenever someone switches too
 	}
 	
 	protected boolean preRound() {
 		switch(getTrainerCommand()) {
 		case FIGHT :
-			mBattlePlayerYou.setCurrentChosenMove(getTrainerMove(mBattlePlayerYou));
+			if(preRoundExecutionCheck(mBattlePlayerYou)) {
+				mBattlePlayerYou.setCurrentChosenMove(getTrainerMove(mBattlePlayerYou));
+			}
+			//TODO else statement? i think we should just set the current chosen move within the preRoundExecutionCheck method.
 			break;
 		case POKEMON :
 			//TODO switch pokemon function
-			System.out.println("Not here yet.");
-			preRound();
+			System.out.println("Do you want to choose your new Pokemon? Y/N");
+			String input = Main.mScanner.nextLine();
+			if(input.equals("Y") || input.equals("y")) {
+				switchingPokemon(mBattlePlayerYou, true);
+			}
+			else {
+				switchingPokemon(mBattlePlayerYou, false);
+			}
+			mBattlePlayerYou.setCurrentChosenMove(Main.mMoveArray[562]);
 			break;
 		case ITEM :
 			//TODO item function
@@ -74,13 +85,14 @@ public class Battle {
 			preRound();
 			break;
 		case RUN :
-			//TODO run function
-			System.out.println("Not here yet.");
-			preRound();
-			break;
+			//TODO run function, THIS IS NOT COMPLETE
+			System.out.println("Got away saftely!");
+			return false;
 		}
-		
-		mBattlePlayerEnemy.setCurrentChosenMove(mGenerator.getRandomMove(mBattlePlayerEnemy.getPokemon()));
+		//TODO normally the internet connection will just send a move over
+		if(preRoundExecutionCheck(mBattlePlayerEnemy)) {
+			mBattlePlayerEnemy.setCurrentChosenMove(mGenerator.getRandomMove(mBattlePlayerEnemy.getPokemon()));
+		}
 		return true;
 	}
 	
@@ -88,33 +100,40 @@ public class Battle {
 		if(b) {
 			if(mBattlePlayerYou == determineOrder(mBattlePlayerYou, mBattlePlayerEnemy)) {
 				executeMove(mBattlePlayerYou, mBattlePlayerEnemy, true);
-				if(mBattlePlayerEnemy.getStatus() == NonVolatileStatusAilment.FAINTED) {
+				if(faintCheck()) {
 					return;
 				}
-				System.out.println(mBattlePlayerEnemy.getNickname() + "'s Status: " + mBattlePlayerEnemy.getStatus()); //TODO TEMP
 				executeMove(mBattlePlayerEnemy, mBattlePlayerYou, false);
-				if(mBattlePlayerEnemy.getStatus() == NonVolatileStatusAilment.FAINTED) {
+				if(faintCheck()) {
 					return;
 				}
 			}
 			else {
 				executeMove(mBattlePlayerEnemy, mBattlePlayerYou, false);
-				if(mBattlePlayerEnemy.getStatus() == NonVolatileStatusAilment.FAINTED) {
+				if(faintCheck()) {
 					return;
 				}
-				System.out.println(mBattlePlayerYou.getStatus()); //TODO TEMP
 				executeMove(mBattlePlayerYou, mBattlePlayerEnemy, true);
+				if(faintCheck()) {
+					return;
+				}
 			}
 		}
 		else {
-			System.out.println("Can you get here?");
+			mBattleContinues = false;
 		}
 		return; //when someone faints
 	}
 	
 	protected void postRound() {
-		mBattleContinues = false;
-		//TODO if frozen, pokemon has 20% chance of thawing
+		if(!handleFaintedPokemon(mBattlePlayerYou)) {
+			mBattleContinues = false;
+		}
+		else if(!handleFaintedPokemon(mBattlePlayerEnemy)) {
+			mBattleContinues = false;
+		}
+		handleTimedStatusAilmentsPostRound(mBattlePlayerYou);
+		handleTimedStatusAilmentsPostRound(mBattlePlayerEnemy);
 	}
 
 	protected BattlingPokemon determineOrder(BattlingPokemon player1, BattlingPokemon player2) {
@@ -160,7 +179,9 @@ public class Battle {
 		//if bool is true, user goes first, if false, enemy goes first
 		Move move = attacker.getCurrentChosenMove();
 		MoveExecutionThread execution = new MoveExecutionThread(attacker, target, move, this);
-		System.out.println(attacker.getPokemon().getNickName() + " uses " + move.getMoveName() + "!");
+		if(!move.getMoveName().equals("-----")) {
+			System.out.println(attacker.getPokemon().getNickName() + " uses " + move.getMoveName() + "!");
+		}
 		switch(move.getMoveMetaCategory()) {
 		case INFLICTS_DAMAGE : 
 			execution.standardMove();
@@ -210,6 +231,15 @@ public class Battle {
 //		case UNIQUE_EFFECT :
 //			
 //			break;
+		case CONFUSED :
+			execution.dealConfusion();
+			break;
+		case NOT_ATTACKING :
+			System.out.println(attacker.getNickname() + attacker.getNotAttackingText());
+			break;
+		case SWITCHED :
+			
+			break;
 		default :
 			System.out.println(move.getMoveName() + " has a meta category of " + move.getMoveMetaCategory() + " and we don't have that coded.");
 			break;
@@ -473,14 +503,88 @@ public class Battle {
 ////		}
 ////	}
 	
-	private void handleTimedStatusAilments(BattlingPokemon pokemon) {
+	private void handleTimedStatusAilmentsPostRound(BattlingPokemon pokemon) {
 		if(pokemon.getStatus() == NonVolatileStatusAilment.FREEZE) {
 			int chanc = mGenerator.nextInt(100) + 1;
 			if(chanc <= 20) {
 				pokemon.setStatus(NonVolatileStatusAilment.NONE);
 			}
 		}
-		
+		//TODO MORE TO DO HERE
+	}
+	
+	private boolean handleFaintedPokemon(BattlingPokemon pokemon) {
+		if(pokemon.getStatus() == NonVolatileStatusAilment.FAINTED) {
+			return pokemon.setPokemon(pokemon.getTrainer().selectRandomPokemon());
+		}
+		else {
+			return true;
+		}
+	}
+	
+	private void switchingPokemon(BattlingPokemon battlePokemon, boolean bool) {
+		Trainer trainer = battlePokemon.getTrainer();
+		System.out.println(trainer.getName() + " withdraws " + battlePokemon.getNickname());
+		if(bool) {
+			battlePokemon.setPokemon(trainer.selectPokemon());
+		}
+		else {
+			battlePokemon.setPokemon(trainer.selectRandomPokemon());
+		}		
 	}
 
+	private boolean faintCheck() {
+		if(mBattlePlayerYou.getStatus() == NonVolatileStatusAilment.FAINTED) {
+			return true;
+		}
+		else if(mBattlePlayerEnemy.getStatus() == NonVolatileStatusAilment.FAINTED) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	private boolean preRoundExecutionCheck(BattlingPokemon pokemon) {
+		switch(pokemon.getStatus()) {
+		case SLEEP :
+			if(pokemon.reduceSleepCounter()) {
+				System.out.println(pokemon.getNickname() + " woke up!");
+				return true;
+			}
+			else {
+				pokemon.setCurrentChosenMove(Main.mMoveArray[561]);
+				return false;
+			}
+		case PARALYZE :
+			if(mGenerator.randomBoolean(50)) {
+				return true;
+			}
+			else {
+				pokemon.setCurrentChosenMove(Main.mMoveArray[561]);
+				return false;
+			}
+		case FREEZE :
+			pokemon.setCurrentChosenMove(Main.mMoveArray[561]);
+			return false;
+		}
+		if(pokemon.checkForBatonVolatileAilment(VolatileEffectBatonPass.CONFUSION)) {
+			if(pokemon.reduceConfusionCounter()) {
+				System.out.println(pokemon.getNickname() + " is confused no more!");
+				return true;
+			}
+			else {
+				System.out.println(pokemon.getNickname() + " is confused!");
+				if(mGenerator.randomBoolean(50)) {
+					System.out.println(pokemon.getNickname() + " hurt itself in its confusion!");
+					pokemon.setCurrentChosenMove(Main.mMoveArray[560]);
+					return false;
+				}
+				else {
+					return true;
+				}
+			}
+		}
+		return true;
+	}
 }

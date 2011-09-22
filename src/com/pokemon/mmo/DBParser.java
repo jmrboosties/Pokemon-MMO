@@ -1,6 +1,5 @@
 package com.pokemon.mmo;
 
-import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.sql.ResultSet;
@@ -10,14 +9,7 @@ import com.pokemon.mmo.Enums.Stats;
 public class DBParser {
 		
 	public static void main(String[] args) {
-		Point pnt1 = new Point(0,0);
-		Point pnt2 = new Point(0,0);
-		System.out.println("X: " + pnt1.x + " Y: " +pnt1.y); 
-		System.out.println("X: " + pnt2.x + " Y: " +pnt2.y);
-		System.out.println(" ");
-		DiddlePiddle widdle = new DiddlePiddle(pnt1, pnt2);
-		System.out.println("X: " + pnt1.x + " Y:" + pnt1.y); 
-		System.out.println("X: " + pnt2.x + " Y: " +pnt2.y);
+		pokemonEnumCreator();
 	}
 	
 	public static void test() {
@@ -60,6 +52,26 @@ public class DBParser {
 			e.printStackTrace();
 		}
 		System.out.println(i);
+	}
+	
+	public static void pokemonEnumCreator() {
+		String result = "MISSINGNO, ";
+		DbAdapter adapter;
+		ResultSet rs;
+		
+		try {
+			adapter = new DbAdapter();
+			rs = adapter.makeQuery("SELECT * FROM pokemon");
+			while(rs.next()) {
+				result += rs.getString("identifier").toUpperCase() + ", ";
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		result = result.replace((char)39, (char)34);
+		
+		System.out.println(result);
 	}
 	
 	public static void natureEnumCreator() {

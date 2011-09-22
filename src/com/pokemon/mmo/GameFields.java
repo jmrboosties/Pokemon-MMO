@@ -64,6 +64,23 @@ public class GameFields {
 		}
 		return retValue;
 	}
+	
+	public static int damageCalcConfusion(BattlingPokemon attacker, Move move, Battle battle) {
+		int damageInt = 1;
+		int levelVar = ((attacker.getPokemon().getLevel() * 2 / 5) + 2);
+		int next1 = levelVar * calcBasePower(attacker, attacker, move, battle);
+		int next2 = next1
+				* calcAttackOrSpAttack(attacker, attacker, move, battle) / 50;
+		int next3 = next2
+				/ calcDefenseOrSpecialDefense(attacker, attacker, move, battle);
+		int next4 = (next3 * calcMod1(attacker, attacker, move, battle)) + 2;
+		
+		damageInt = (int) (next4 * .9);
+		if(damageInt <= 0) {
+			damageInt = 1;
+		}
+		return damageInt;
+	}
 
 	public static int damageCalc(BattlingPokemon attacker, BattlingPokemon defender, Move move,
 			Battle battle) {
@@ -95,11 +112,15 @@ public class GameFields {
 				defender.getPokemon().getType(2));
 
 		double next8 = (next7 * effectiveness);
+		if(effectiveness == 0) {
+			return 0;
+		}
 
 		damageInt = (int) (next8 * calcMod3(attacker, defender, effectiveness));
 		
-		
-
+		if(damageInt <= 0) {
+			damageInt = 1;
+		}
 		return damageInt;
 	}
 
@@ -301,11 +322,7 @@ public class GameFields {
 				}
 				break;
 			case GUTS:
-				if (attacker.isAffectedByStatusAilment() /*
-														 * TODO THIS IS SUPPOSED
-														 * TO BE BURN, SLEEP,
-														 * PARALYZE, POISON
-														 */) {
+				if (attacker.isAffectedByStatusAilment()) {
 					am = (long) 1.5;
 				}
 				break;
@@ -313,7 +330,7 @@ public class GameFields {
 				am = (long) 1.5;
 				break;
 			case SLOW_START:
-				if (attacker.getTurnsInBattle() < 5) { //TODO
+				if (attacker.getTurnsInBattle() < 5) {
 					am = (long) 0.5;
 				}
 				break;
